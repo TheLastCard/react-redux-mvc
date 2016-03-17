@@ -1,0 +1,31 @@
+﻿@using System.Web.Optimization
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React .NET Application</title>
+
+
+    <link href="~/css/foundation.min.css" rel="stylesheet" />
+
+    @Styles.Render("~/bundles/main.css")
+    @Scripts.Render("~/bundles/foundation.js")
+    @Scripts.Render("~/bundles/react.js")
+
+</head>
+<body>
+    <header></header>
+
+    <div class="container" role="main">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Walter K. Dahl</p>
+    </footer>
+
+
+</body>
+</html>
