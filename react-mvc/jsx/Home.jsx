@@ -1,8 +1,8 @@
 ﻿
 
-// Start the main app logic.
-requirejs(['react', 'ReactDOM', 'ReactRedux', 'redux', 'expect', 'deepFreeze'],
-    function (React, ReactDOM, ReactRedux, redux, expect, deepFreeze) {
+requirejs(['react', 'ReactDOM', 'ReactRedux', 'jsx!/jsx/components/orbit/Orbit', 'jsx!/jsx/components/counter/Counter'],
+    function (React, ReactDOM, ReactRedux, Orbit, Counter) {
+
 
         var HomeContainer = React.createClass({
             render: function () {

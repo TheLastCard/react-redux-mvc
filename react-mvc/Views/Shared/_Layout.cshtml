@@ -5,6 +5,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.png" sizes="16x16 32x32" type="image/png">
+
     <title>React .NET Application</title>
 
     @Styles.Render("~/bundles/main.css")
@@ -20,7 +22,13 @@
                 ReactRedux: 'node_modules/react-redux/dist/react-redux',
                 redux: 'node_modules/redux/dist/redux',
                 expect: 'node_modules/expect/umd/expect',
-                deepFreeze: 'node_modules/deep-freeze/index'
+                deepFreeze: 'node_modules/deep-freeze/index',
+                jsx: 'scripts/jsx',
+                text: 'scripts/text',
+                JSXTransformer: 'scripts/jsxtransformer'
+            },
+            jsx: {
+                fileExtension: '.jsx'
             }
         });
 
@@ -34,7 +42,7 @@
     </div>
 
     <footer>
-        <p>&copy; @DateTime.Now.Year - Walter K. Dahl</p>
+        <p>&copy; @DateTime.Now.Year - Knowit Sør. Credits to Walter K. Dahl</p>
     </footer>
 
 

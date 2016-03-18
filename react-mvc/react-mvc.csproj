@@ -225,6 +225,8 @@
     <Content Include="scripts\foundation\vendor\what-input.min.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\jsx.js" />
+    <Content Include="scripts\jsxtransformer.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\r.js" />
     <Content Include="scripts\react\react-dom-0.14.7.js" />
@@ -234,6 +236,7 @@
     <Content Include="scripts\showdown.js" />
     <Content Include="scripts\showdown.min.js" />
     <Content Include="jsx\Tutorial.jsx" />
+    <Content Include="scripts\text.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +279,7 @@
     <None Include="jsx\components\orbit\Orbit.jsx" />
     <TypeScriptCompile Include="scripts\typings\redux-action-utils\redux-action-utils.d.ts" />
     <TypeScriptCompile Include="scripts\typings\redux-actions\redux-actions.d.ts" />
+    <TypeScriptCompile Include="ts\counter.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -287,7 +291,7 @@
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />

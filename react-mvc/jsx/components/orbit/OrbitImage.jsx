@@ -1,6 +1,6 @@
 ﻿
 
-requirejs(['react'], function (React) {
+define(['react'], function (React) {
     var OrbitImage = React.createClass({
         render: function () {
             return (
@@ -11,4 +11,5 @@ requirejs(['react'], function (React) {
             );
         }
     });
+    return OrbitImage;
 });
