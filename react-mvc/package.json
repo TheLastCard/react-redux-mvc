@@ -1,0 +1,17 @@
+{
+  "name": "react-mvc",
+  "version": "1.0.0",
+  "description": "Project build on React, Redux and Redux-Saga",
+  "author": "Walter K. Dahl - Knowit S�r",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-redux": "^4.4.1",
+    "redux": "^3.3.1"
+  },
+  "devDependencies": {
+    "deep-freeze": "0.0.1",
+    "expect": "^1.15.2"
+  }
+}

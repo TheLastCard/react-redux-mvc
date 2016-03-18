@@ -7,13 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React .NET Application</title>
 
-
-    <link href="~/css/foundation.min.css" rel="stylesheet" />
-
     @Styles.Render("~/bundles/main.css")
     @Scripts.Render("~/bundles/foundation.js")
-    @Scripts.Render("~/bundles/react.js")
 
+    <script src="~/scripts/require.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: '/',
+            paths: {
+                react: 'node_modules/react/dist/react',
+                ReactDOM: 'node_modules/react-dom/dist/react-dom',
+                ReactRedux: 'node_modules/react-redux/dist/react-redux',
+                redux: 'node_modules/redux/dist/redux',
+                expect: 'node_modules/expect/umd/expect',
+                deepFreeze: 'node_modules/deep-freeze/index'
+            }
+        });
+
+    </script>
 </head>
 <body>
     <header></header>

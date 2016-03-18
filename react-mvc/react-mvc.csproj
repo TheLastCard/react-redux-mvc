@@ -132,6 +132,7 @@
       <HintPath>..\packages\React.Web.Mvc4.2.2.1\lib\net40\React.Web.Mvc4.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -195,12 +196,27 @@
     <Content Include="css\foundation.css" />
     <Content Include="css\foundation.min.css" />
     <Content Include="Global.asax" />
-    <Content Include="jsx_scripts\Home.jsx" />
+    <None Include="jsx\Home.jsx" />
+    <Content Include="node_modules\deep-freeze\index.js" />
+    <Content Include="node_modules\expect\umd\expect.js" />
+    <Content Include="node_modules\react-dom\dist\react-dom-server.js" />
+    <Content Include="node_modules\react-dom\dist\react-dom-server.min.js" />
+    <Content Include="node_modules\react-dom\dist\react-dom.js" />
+    <Content Include="node_modules\react-dom\dist\react-dom.min.js" />
+    <Content Include="node_modules\react-redux\dist\react-redux.js" />
+    <Content Include="node_modules\react-redux\dist\react-redux.min.js" />
+    <Content Include="node_modules\react\dist\react-with-addons.js" />
+    <Content Include="node_modules\react\dist\react-with-addons.min.js" />
+    <Content Include="node_modules\react\dist\react.js" />
+    <Content Include="node_modules\react\dist\react.min.js" />
+    <Content Include="node_modules\redux\dist\redux.js" />
+    <Content Include="node_modules\redux\dist\redux.min.js" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="sass\main.scss" />
     <Content Include="sass\base.scss" />
     <Content Include="sass\variables.scss" />
+    <Content Include="package.json" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\foundation\app.js" />
     <Content Include="scripts\foundation\foundation.js" />
@@ -214,10 +230,10 @@
     <Content Include="scripts\react\react-dom-0.14.7.js" />
     <Content Include="scripts\react\react-0.14.7.js" />
     <Content Include="scripts\require.js" />
+    <Content Include="scripts\requireConfig.js" />
     <Content Include="scripts\showdown.js" />
     <Content Include="scripts\showdown.min.js" />
-    <Content Include="jsx_scripts\Tutorial.jsx" />
-    <Content Include="ts_scripts\Counter.js" />
+    <Content Include="jsx\Tutorial.jsx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -256,18 +272,31 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="jsx\components\orbit\OrbitImage.jsx" />
+    <None Include="jsx\components\orbit\Orbit.jsx" />
     <TypeScriptCompile Include="scripts\typings\redux-action-utils\redux-action-utils.d.ts" />
     <TypeScriptCompile Include="scripts\typings\redux-actions\redux-actions.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\redux-immutable\redux-immutable.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\redux-saga\redux-saga.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\redux\redux.d.ts" />
-    <TypeScriptCompile Include="ts_scripts\Counter.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

@@ -163,6 +163,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\r.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\showdown.js" />
     <Content Include="Scripts\showdown.min.js" />
   </ItemGroup>

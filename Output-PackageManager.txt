@@ -1,0 +1,16 @@
+﻿Attempting to gather dependencies information for package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' with respect to project 'react-mvc.Tests', targeting '.NETFramework,Version=v4.5.2'
+Attempting to resolve dependencies for package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' with DependencyBehavior 'Lowest'
+Resolving actions to install package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1'
+Resolved actions to install package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1'
+Attempting to gather dependencies information for package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' with respect to project 'react-mvc', targeting '.NETFramework,Version=v4.5.2'
+Attempting to resolve dependencies for package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' with DependencyBehavior 'Lowest'
+Resolving actions to install package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1'
+Resolved actions to install package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1'
+Adding package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' to folder 'D:\learning\mvc-react\packages'
+Added package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' to folder 'D:\learning\mvc-react\packages'
+Added package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' to 'packages.config'
+Successfully installed 'redux-action-utils.TypeScript.DefinitelyTyped 0.0.1' to react-mvc.Tests
+Package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' already exists in folder 'D:\learning\mvc-react\packages'
+Added package 'redux-action-utils.TypeScript.DefinitelyTyped.0.0.1' to 'packages.config'
+Successfully installed 'redux-action-utils.TypeScript.DefinitelyTyped 0.0.1' to react-mvc
+========== Finished ==========
