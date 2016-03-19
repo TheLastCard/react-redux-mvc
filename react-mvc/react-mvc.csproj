@@ -195,7 +195,9 @@
     <Content Include="css\foundation-flex.css" />
     <Content Include="css\foundation.css" />
     <Content Include="css\foundation.min.css" />
+    <Content Include="favicon.png" />
     <Content Include="Global.asax" />
+    <Content Include="jsx\components\counter\Counter.jsx" />
     <None Include="jsx\Home.jsx" />
     <Content Include="node_modules\deep-freeze\index.js" />
     <Content Include="node_modules\expect\umd\expect.js" />
@@ -279,7 +281,6 @@
     <None Include="jsx\components\orbit\Orbit.jsx" />
     <TypeScriptCompile Include="scripts\typings\redux-action-utils\redux-action-utils.d.ts" />
     <TypeScriptCompile Include="scripts\typings\redux-actions\redux-actions.d.ts" />
-    <TypeScriptCompile Include="ts\counter.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -287,7 +288,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
