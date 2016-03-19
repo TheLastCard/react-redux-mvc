@@ -190,7 +190,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Site.css" />
     <Content Include="css\app.css" />
     <Content Include="css\foundation-flex.css" />
     <Content Include="css\foundation.css" />
@@ -199,9 +198,12 @@
     <Content Include="Global.asax" />
     <Content Include="jsx\components\counter\Counter.jsx" />
     <Content Include="jsx\components\counter\CounterRedux.jsx" />
+    <Content Include="jsx\components\categories\Categories.jsx" />
+    <Content Include="jsx\components\categories\CategoriesRedux.jsx" />
     <None Include="jsx\Home.jsx" />
     <Content Include="node_modules\deep-freeze\index.js" />
     <Content Include="node_modules\expect\umd\expect.js" />
+    <Content Include="node_modules\jsx-transform\lib\jsx.js" />
     <Content Include="node_modules\react-dom\dist\react-dom-server.js" />
     <Content Include="node_modules\react-dom\dist\react-dom-server.min.js" />
     <Content Include="node_modules\react-dom\dist\react-dom.js" />
@@ -214,6 +216,9 @@
     <Content Include="node_modules\react\dist\react.min.js" />
     <Content Include="node_modules\redux\dist\redux.js" />
     <Content Include="node_modules\redux\dist\redux.min.js" />
+    <Content Include="node_modules\requirejs-react-jsx\babel-5.8.34.min.js" />
+    <Content Include="node_modules\requirejs-react-jsx\jsx.js" />
+    <Content Include="node_modules\requirejs-text\text.js" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="sass\main.scss" />
@@ -246,11 +251,17 @@
     <Compile Include="App_Start\BundeConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OldHomeController.cs" />
+    <Compile Include="DBContexts\WebshopDB.cs" />
+    <Compile Include="DBModels\CategoryDBModel.cs" />
+    <Compile Include="DBModels\ProductDBModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CRUD.cs" />
+    <Compile Include="Helpers\ICRUD.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -273,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Categories\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

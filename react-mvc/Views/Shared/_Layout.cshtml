@@ -18,14 +18,17 @@
             baseUrl: '/',
             paths: {
                 react: 'node_modules/react/dist/react',
-                ReactDOM: 'node_modules/react-dom/dist/react-dom',
-                ReactRedux: 'node_modules/react-redux/dist/react-redux',
+                reactDOM: 'node_modules/react-dom/dist/react-dom',
+                reactRedux: 'node_modules/react-redux/dist/react-redux',
                 redux: 'node_modules/redux/dist/redux',
                 expect: 'node_modules/expect/umd/expect',
-                deepFreeze: 'node_modules/deep-freeze/index',
-                jsx: 'scripts/jsx',
-                text: 'scripts/text',
-                JSXTransformer: 'scripts/jsxtransformer'
+                jsx: 'node_modules/requirejs-react-jsx/jsx',
+                babel: 'node_modules/requirejs-react-jsx/babel-5.8.34.min',
+                text: 'node_modules/requirejs-text/text',
+                jsxtransform: 'node_modules/jsx-transform/lib/jsx',
+                orbit: 'jsx/components/orbit',
+                counter: 'jsx/components/counter',
+                categories: 'jsx/components/categories'
             },
             jsx: {
                 fileExtension: '.jsx'
@@ -38,6 +41,7 @@
     <header></header>
 
     <div class="container" role="main">
+        <div id="content"></div>
         @RenderBody()
     </div>
 

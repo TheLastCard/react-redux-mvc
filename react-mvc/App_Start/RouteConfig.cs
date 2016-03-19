@@ -14,15 +14,15 @@ namespace react_mvc
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Comments",
-                url: "comments",
-                defaults: new { controller = "Home", action = "Comments" }
+                name: "Categories",
+                url: "categories",
+                defaults: new { controller = "Categories", action = "GetCategories" }
             );
 
             routes.MapRoute(
-                name: "NewComment",
-                url: "comments/new",
-                defaults: new { controller = "Home", action = "AddComment" }
+                name: "NewCategory",
+                url: "categories/new",
+                defaults: new { controller = "Categories", action = "AddCategory" }
             );
 
             routes.MapRoute(

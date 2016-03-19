@@ -1,6 +1,6 @@
 ﻿
 
-define(['react', 'jsx!/jsx/components/orbit/OrbitImage'], function (React, OrbitImage) {
+define(['react', 'jsx!orbit/OrbitImage'], function (React, OrbitImage) {
     var Orbit = React.createClass({
         render: function () {
             return (

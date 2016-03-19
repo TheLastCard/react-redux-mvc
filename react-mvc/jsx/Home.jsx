@@ -1,20 +1,20 @@
 ﻿
 requirejs([
     'react',
-    'ReactDOM',
-    'ReactRedux',
+    'reactDOM',
+    'reactRedux',
     'redux',
-    'jsx!/jsx/components/orbit/Orbit',
-    'jsx!/jsx/components/counter/CounterRedux',
-    'jsx!/jsx/components/counter/Counter'
+    'jsx!orbit/Orbit',
+    'jsx!counter/CounterRedux',
+    'jsx!counter/Counter',
+    'jsx!categories/CategoriesRedux',
 ],
-function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter) {
+function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, CategoriesRedux) {
 
     var HomeContainer = React.createClass({
         render: function () {
             return (
                     <div>
-                        <Orbit />,
                         <Counter value={CounterRedux.getState()}
                                  onIncrement={() =>CounterRedux.dispatch({ type: 'INCREMENT' })}
                                  onDecrement={() =>CounterRedux.dispatch({ type: 'DECREMENT' })} />
@@ -29,6 +29,11 @@ function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter) {
                     document.getElementById('content')
                 );
     }
+
+    console.log(CategoriesRedux.getState());
+    CategoriesRedux.dispatch({ type: 'ADD_CATEGORY', name: 'Test' });
+    console.log(CategoriesRedux.getState());
+
     CounterRedux.subscribe(render);
     render();
 });
