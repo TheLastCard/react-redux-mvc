@@ -8,7 +8,7 @@
 //    type: 'Type of input; number, text, url',
 //    value: null, //'Initial value of the input field'
 //    defaultValue: null, //Used for checkboxes and radio buttons. Checkboxes takes an array [] and radio buttons takes a string as defaultValue
-//    options: null, //Array of options for select, radio and checkbox
+//    alternatives: null, //Array of alternatives for select, radio and checkbox
 //    checked: null,
 //    disabled: null,
 //    //onChange : Here you can for example define an additional redux dispatcher which
@@ -17,7 +17,9 @@
 //    placeholder: 'Placeholder text if any. Acts as default selected if using a select list. For textarea, radio and checkbox this will ignored but you can use "value" if you want initiate a text in the textarea',
 //    wrapperClassName: 'Classes to add to the div surrounding the input',
 //    labelClassName: 'Classes to add to the label',
-//    inputClassName: 'Classes to add to the input'
+//    inputClassName: 'Classes to add to the input',
+//    maxValue: 100, //Only used for range slider
+//    minValue: 0 //Only used for range slider
 //}]
 
 //Buttons. Required structure for 'buttons'
@@ -106,21 +108,36 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    if (Array.isArray(input.value) && (!input.options || !Array.isArray(input.options))) {
-                                        console.error('For radio or checkbox types, the "value" property should be null. Use "options" instead to define multiple checkboxes, f.ex ["cars", "toys"]. Default values can be set by using defaultValue, f.ex ["toys", "cars"]');
-                                        return;
-                                    }
+                                    
                                     if (input.checked || Array.isArray(input.checked)) {
-                                        console.error('Trying to make something checked by default? Default values can be set by using defaultValue, f.ex ["toys", "cars"]');
-                                        return;
+                                        console.error(input.type + ' : ' + input.name + '-> Trying to make something checked by default? Default values can be set by using defaultValue, f.ex with an array of strings for checkbox or a single string for radio buttons');
+                                        return null;
                                     }
                                     if (input.type === 'radio' && input.defaultValue && typeof input.defaultValue !== "string") {
-                                        console.error('Radio button defaultValue should be a string!');
-                                        return;
+                                        console.error(input.type + ' : ' + input.name + '-> Radio button defaultValue should be a string!');
+                                        return null;
+                                    }
+
+                                    if (!input.alternatives || !Array.isArray(input.alternatives)) {
+                                        console.error(input.type + ' : '+ input.name + '-> Alternatives is not set or is not an array!');
+                                        return null;
+                                    }
+
+                                    if ((input.type === 'checkbox') && input.defaultValue) {
+                                        if (!Array.isArray(input.defaultValue)) {
+                                            console.error(input.type + ' : ' + input.name + '-> "defaultValue" should be an array!');
+                                            return null;
+                                        }
+                                        for (var i = 0; i < input.defaultValue.length; i++) {
+                                            if (input.alternatives.indexOf(input.defaultValue[i]) === -1) {
+                                                console.error('Checkbox ' + input.name + '-> "defaultValue" does not exist in "alternatives"');
+                                                return null;
+                                            }
+                                        }
                                     }
 
                                     var multiInputs = [];
-                                    input.options.map(function (checkboxRadioOption, checkboxRadioIndex) {
+                                    input.alternatives.map(function (checkboxRadioOption, checkboxRadioIndex) {
                                         multiInputs.push(
                                             <input key={input.name + checkboxRadioIndex}
                                                     type={input.type}
@@ -143,9 +160,9 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                         );
                                     break;
                                 case 'select':
-                                    var optionsHTML = input.options.map(function (selectOptions, selectIndex) {
+                                    var alternativesHTML = input.alternatives.map(function (selectAlternatives, selectIndex) {
                                         return (
-                                            <option key={selectOptions + selectIndex} value={selectOptions}>{selectOptions}</option>
+                                            <option key={selectAlternatives + selectIndex} value={selectAlternatives }>{selectAlternatives}</option>
                                         );
                                     });
 
@@ -162,7 +179,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                                     onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
                                                     defaultValue={input.placeholder}>
                                                 <option disabled value={input.placeholder}>{input.placeholder}</option>
-                                                {optionsHTML}
+                                                {alternativesHTML}
                                             </select>
                                         </div>
                                     );
@@ -179,7 +196,9 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                                     value={input.value}
                                                     disabled={input.disabled}
                                                     className={input.labelClassName}
-                                                    onChange={(event) => self.onChangeHandler(event, index, input.onChange)} />
+                                                    onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                                    max={input.maxValue}
+                                                    min={input.minValue}/>
                                         </div>
                                     );
                                     break;
