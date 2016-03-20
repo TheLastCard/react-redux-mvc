@@ -12,12 +12,12 @@ define(['redux', 'expect'], function (Redux, expect) {
                 });
                 return result;
             case 'UPDATE':
-                if (state.id !== action.id) {
-                    return state;
-                }
-                var copy = Object.assign({}, state);
-                copy.name = action.name;
-                return copy;
+                //if (state.id !== action.id) {
+                //    return state;
+                //}
+                //var copy = Object.assign({}, state);
+                //copy.name = action.name;
+                //return copy;
             default:
                 return state;
         }
@@ -34,39 +34,40 @@ define(['redux', 'expect'], function (Redux, expect) {
                 actionCopy.index = state.length;
                 return state.concat(item(undefined, actionCopy));
             case 'UPDATE':
-                console.log('UPDATE CRUDRedux', action);
-                return state.map(c => item(c, action));
+                console.warn('UPDATE CRUDRedux -> Not implemented yet!');
+                //console.log('UPDATE CRUDRedux', action);
+                //return state.map(c => item(c, action));
             default:
                 return [];
         }
     };
 
 
-    const testInitCrud = () => {
-        const listBefore = [];
-        const action = {
-            type: 'INIT',
-            list: [{
-                id: 0,
-                name: 'Cars'
-            }]
-        };
+    //const testInitCrud = () => {
+    //    const listBefore = [];
+    //    const action = {
+    //        type: 'INIT',
+    //        list: [{
+    //            id: 0,
+    //            name: 'Cars'
+    //        }]
+    //    };
 
-        Object.freeze(listBefore);
-        Object.freeze(action);
+    //    Object.freeze(listBefore);
+    //    Object.freeze(action);
 
-        const listAfter = [
-            {
-                id: 0,
-                name: 'Cars'
-            }];
+    //    const listAfter = [
+    //        {
+    //            id: 0,
+    //            name: 'Cars'
+    //        }];
 
-        expect(
-            crud(listBefore, action)
-        ).toEqual(listAfter);
-    }
-    testInitCrud();
-    console.log('testInitCategory() passed');
+    //    expect(
+    //        crud(listBefore, action)
+    //    ).toEqual(listAfter);
+    //}
+    //testInitCrud();
+    //console.log('testInitCategory() passed');
 
 
     return Redux.createStore(crud);

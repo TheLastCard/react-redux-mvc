@@ -16,14 +16,24 @@ function (React, Category, Create, CRUDRedux) {
                     name: 'categoryName',
                     jsonName: 'name',
                     type: 'text',
-                    wrapperClassName: 'small-12 columns',
-                    placeholder: 'type a category name'
+                    placeholder: 'type a category name',
+                    wrapperClassName: 'small-12 columns'
                 },
                 {
                     label: 'Description',
                     name: 'categoryDescription',
                     jsonName: 'description',
                     type: 'textarea',
+                    wrapperClassName: 'small-12 columns'
+                },
+                {
+                    label: 'Audience Group',
+                    name: 'audience',
+                    jsonName: 'audienceGroup',
+                    type: 'radio',
+                    options: ['Children', 'Young Adults', 'Adults', 'Seniors'],
+                    defaultValue: null,
+                    value: null,
                     wrapperClassName: 'small-12 columns'
                 }],
                 buttons: [{
@@ -46,7 +56,7 @@ function (React, Category, Create, CRUDRedux) {
 
                         <div className="row">
                             {CRUDRedux.getState().map(function (category) {
-                                return <Category key={category.id} category={category}/>
+                                return <Category key={category.id} category={category} />
                             })}
                         </div>
                     </div>

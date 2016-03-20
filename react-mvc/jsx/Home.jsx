@@ -14,7 +14,13 @@ requirejs([
 function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Categories, CreateRedux, CRUDRedux) {
 
     //Mock categories instead of getting from store
-    var mockList = [{ id: 0, name: 'Cars', description: 'Stuff that you drive around with' }];
+    var mockList = [
+        {
+            id: 0,
+            name: 'Cars',
+            description: 'Stuff that you drive around with',
+            audienceGroup: ['Young Adults', 'Adults']
+        }];
 
     var HomeContainer = React.createClass({
         render: function () {
