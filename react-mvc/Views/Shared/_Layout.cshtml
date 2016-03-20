@@ -28,7 +28,8 @@
                 jsxtransform: 'node_modules/jsx-transform/lib/jsx',
                 orbit: 'jsx/components/orbit',
                 counter: 'jsx/components/counter',
-                categories: 'jsx/components/categories'
+                categories: 'jsx/components/categories',
+                CRUD: 'jsx/components/CRUD'
             },
             jsx: {
                 fileExtension: '.jsx'
@@ -45,8 +46,12 @@
         @RenderBody()
     </div>
 
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Knowit Sør. Credits to Walter K. Dahl</p>
+    <footer class="container">
+        <div class="row">
+            <div class="small-12 columns">
+                <p>&copy; @DateTime.Now.Year - Knowit Sør. Created by Walter K. Dahl</p>
+            </div>
+        </div>
     </footer>
 
 
