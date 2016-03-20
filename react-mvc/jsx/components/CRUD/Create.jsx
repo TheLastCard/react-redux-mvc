@@ -174,7 +174,9 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                                     className={input.labelClassName}
                                                     onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
                                                     max={input.maxValue}
-                                                    min={input.minValue}/>
+                                                    min={input.minValue}
+                                                    required={input.required}/>
+                                            <div className="errorMessage"
                                         </div>
                                     );
                                     break;
