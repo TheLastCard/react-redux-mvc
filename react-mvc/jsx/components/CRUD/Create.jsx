@@ -24,15 +24,23 @@
 //[{
 //    name: 'For example: Submit. Will be the label of the button',
 //    action: 'Action. Can be null',
-//    clearFormAfterAction: 'If you want to clear the form after action has been run'
+//    clearFormAfterAction: 'If you want to clear the form after action has been run',
+//    closeModalAfterAction: 'If you have spesified to use modal, set this to true in order to close modal after action',
 //    className: 'Classes to add to the div surrounding the input',
 //    wrapperClassName: 'If you want to add a wrapper class to the div outside the button',
 //}]
 
+//Modal. If you want the create form inside a modal, you need to specify the modal object aswell
+//[{
+//    buttonText: 'Create new category'
+//}]
+
+//Example of element as writting in the parent container
+//<Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions}/>
+
 
 define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
     var Create = React.createClass({
-        hasInitiated: false,
         getInitialState: function () {
             if (!this.props.inputs) {
                 console.error('"inputs" is not defined. Did you forget to add it to the <Create /> component?');
@@ -52,14 +60,17 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 callback(event, index);
             }
         },
-        buttonClickHanlder: function (event, clear, callback) {
+        buttonClickHanlder: function (event, button) {
             event.preventDefault();
-            if (callback) {
+            if (button.action) {
                 var inputsCopy = this.state.inputs.slice();
-                callback(event, inputsCopy);
+                button.action(event, inputsCopy);
             }
-            if (clear) {
+            if (button.clearFormAfterAction) {
                 CreateRedux.dispatch({ type: 'CLEAR' });
+            }
+            if (button.closeModalAfterAction) {
+                this.closeModal('#createModal');
             }
         },
         componentDidMount: function () {
@@ -67,7 +78,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
         },
         render: function () {
             var self = this;
-            return (
+            var form = (
                 <form>
                     <div className="row">
                         {this.state.inputs.map(function (input, index) {
@@ -148,7 +159,6 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                     );
                                     break;
                             }
-                            parent.hasInitiated = true;
                         })}
                     </div>
                     <div className="row">
@@ -158,7 +168,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                     <button key={button.name}
                                             id={button.name}
                                             className={button.className}
-                                            onClick={(event) => self.buttonClickHanlder(event, button.clearFormAfterAction, button.action )}>
+                                            onClick={(event) => self.buttonClickHanlder(event, button )}>
                                         {button.name}
                                     </button>
                                 </div>
@@ -167,6 +177,30 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                     </div>
                 </form>
             );
+
+            if(!this.props.modal){
+                return form;
+            }
+
+            return (
+                <div>
+                    <button className="button success" onClick={() =>self.openModal('#createModal') }>{this.props.buttonText || 'Create new'}</button>
+
+                    <div className="reveal" id="createModal" data-reveal>
+                        {form}
+                        <button className="close-button" aria-label="Close reveal" type="button" onClick={() =>self.closeModal('#createModal')}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            );
+
+        },
+        openModal: function (id) {
+            $(id).foundation('open');
+        },
+        closeModal: function (id) {
+            $(id).foundation('close');
         }
     });
 

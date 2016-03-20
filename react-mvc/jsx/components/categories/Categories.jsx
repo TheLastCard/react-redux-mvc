@@ -11,6 +11,9 @@ function (React, Category, Create, CRUDRedux) {
     var Categories = React.createClass({
         getInitialState: function () {
             return {
+                modalOptions: {
+                    buttonText: 'Create new category'
+                },
                 inputs: [{
                     label: 'Name',
                     name: 'categoryName',
@@ -32,7 +35,7 @@ function (React, Category, Create, CRUDRedux) {
                     jsonName: 'audienceGroup',
                     type: 'radio',
                     options: ['Children', 'Young Adults', 'Adults', 'Seniors'],
-                    defaultValue: null,
+                    defaultValue: 'Adults',
                     value: null,
                     wrapperClassName: 'small-12 columns'
                 }],
@@ -40,6 +43,7 @@ function (React, Category, Create, CRUDRedux) {
                     name: 'Create',
                     action: (event, inputs) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs }),
                     clearFormAfterAction: true,
+                    closeModalAfterAction: true,
                     className: 'success button',
                     wrapperClassName: 'small-12 columns'
                 }]
@@ -47,8 +51,10 @@ function (React, Category, Create, CRUDRedux) {
         },
         componentDidMount: function () {
             CRUDRedux.dispatch({ type: 'INIT', list: this.props.categories });
+            $(document).foundation();
         },
         render: function () {
+            var self = this;
             return (
                 <div className="row">
                     <div className="small-12 columns">
@@ -56,12 +62,10 @@ function (React, Category, Create, CRUDRedux) {
 
                         <div className="row">
                             {CRUDRedux.getState().map(function (category) {
-                                return <Category key={category.id} category={category} />
+                                return <Category key={category.id} category={category}/>
                             })}
                         </div>
-                    </div>
-                    <div className="small-12 columns">
-                        <Create inputs={this.state.inputs} buttons={this.state.buttons} />
+                        <Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions}/>
                     </div>
                 </div>
             );
