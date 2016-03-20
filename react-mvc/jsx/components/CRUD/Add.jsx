@@ -7,6 +7,8 @@
 //    type: 'Type of input; number, text, url',
 //    className: 'Classes to add to the div surrounding the input',
 //    placeholder: 'Placeholder text if any'
+//    value: null
+//    onChange: 'Here you can for example define a redux dispatcher which will be called back with event and index of the field as paramters on input change'
 //}]
 
 //Buttons. Required structure for 'buttons'
