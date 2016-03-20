@@ -20,14 +20,18 @@ function (React, Category, Create, CRUDRedux) {
                     jsonName: 'name',
                     type: 'text',
                     placeholder: 'type a category name',
-                    wrapperClassName: 'small-12 columns'
+                    wrapperClassName: 'small-12 columns',
+                    required: true,
+                    errorMessage: 'Name is missing!'
                 },
                 {
                     label: 'Description',
                     name: 'categoryDescription',
                     jsonName: 'description',
                     type: 'textarea',
-                    wrapperClassName: 'small-12 columns'
+                    wrapperClassName: 'small-12 columns',
+                    required: true,
+                    errorMessage: 'Description is missing!'
                 },
                 {
                     label: 'Target Group',
@@ -35,10 +39,12 @@ function (React, Category, Create, CRUDRedux) {
                     jsonName: 'targetGroup',
                     type: 'checkbox',
                     alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
-                    defaultValue: ['Adults'],
+                    defaultValue: null,
                     value: null,
                     placeholder: 'Pick a target group',
-                    wrapperClassName: 'small-12 columns'
+                    wrapperClassName: 'small-12 columns',
+                    required: true,
+                    errorMessage: 'You must select a target group!'
                 }],
                 buttons: [{
                     name: 'Create',
