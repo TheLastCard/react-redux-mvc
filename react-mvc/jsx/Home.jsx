@@ -7,28 +7,27 @@ requirejs([
     'jsx!orbit/Orbit',
     'jsx!counter/CounterRedux',
     'jsx!counter/Counter',
-    'jsx!categories/CategoriesRedux',
     'jsx!categories/Categories',
-    'jsx!CRUD/AddRedux'
+    'jsx!CRUD/CreateRedux',
+    'jsx!CRUD/CRUDRedux'
 ],
-function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, CategoriesRedux, Categories, AddRedux) {
+function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Categories, CreateRedux, CRUDRedux) {
 
     //Mock categories instead of getting from store
-    var mockList = [{ id: 0, name: 'Cars' }];
-    CategoriesRedux.dispatch({ type: 'INIT', list: mockList });
+    var mockList = [{ id: 0, name: 'Cars', description: 'Stuff that you drive around with' }];
 
     var HomeContainer = React.createClass({
         render: function () {
             return (
                 <div>
-                    <Categories categories={CategoriesRedux.getState()}/>
+                    <Categories categories={mockList}/>
                 </div>
             );
         }
     });
 
     const render = () => {
-        console.log('render called');
+        //console.log('render called');
         ReactDOM.render(
                     <HomeContainer />,
                     document.getElementById('content')
@@ -40,7 +39,8 @@ function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Cate
     //onDecrement={() =>CounterRedux.dispatch({ type: 'DECREMENT' })} />
     //CounterRedux.subscribe(render);
 
-    CategoriesRedux.subscribe(render);
-    AddRedux.subscribe(render);
+    CreateRedux.subscribe(render);
+    CRUDRedux.subscribe(render);
+
     render();
 });

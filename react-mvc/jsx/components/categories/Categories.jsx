@@ -3,53 +3,55 @@
 define([
     'react',
     'jsx!categories/Category',
-    'jsx!categories/CategoriesRedux',
-    'jsx!CRUD/Add',
-    'jsx!CRUD/AddRedux'
+    'jsx!CRUD/Create',
+    'jsx!CRUD/CRUDRedux'
 ],
-function (React, Category, CategoriesRedux, Add, AddRedux) {
+function (React, Category, Create, CRUDRedux) {
 
     var Categories = React.createClass({
         getInitialState: function () {
             return {
-                categoryId: this.props.categories.length,
                 inputs: [{
                     label: 'Name',
                     name: 'categoryName',
+                    jsonName: 'name',
                     type: 'text',
-                    className: 'small-12 columns',
-                    placeholder: 'type a category name',
-                    value: null,
-                    onChange: (event, index) =>AddRedux.dispatch({ type: 'CHANGE', event: event, index: index })
+                    wrapperClassName: 'small-12 columns',
+                    placeholder: 'type a category name'
+                },
+                {
+                    label: 'Description',
+                    name: 'categoryDescription',
+                    jsonName: 'description',
+                    type: 'textarea',
+                    wrapperClassName: 'small-12 columns'
                 }],
                 buttons: [{
                     name: 'Create',
-                    action: () => this.state.addCategory(),
+                    action: (event, inputs) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs }),
+                    clearFormAfterAction: true,
                     className: 'success button',
                     wrapperClassName: 'small-12 columns'
-                }],
-                addCategory: () => {
-                    CategoriesRedux.dispatch({ type: 'ADD_CATEGORY', id: this.state.categoryId++, name: this.state.inputs[0].value });
-                    AddRedux.dispatch({ type: 'CLEAR', index: 0 });
-                }
+                }]
             };
         },
         componentDidMount: function () {
-            AddRedux.dispatch({ type: 'INIT', list: this.state.inputs });
+            CRUDRedux.dispatch({ type: 'INIT', list: this.props.categories });
         },
         render: function () {
             return (
                 <div className="row">
                     <div className="small-12 columns">
                         <h2>Categories</h2>
-                        <div>
-                            {this.props.categories.map(function (category) {
-                                return <Category key={category.id} id={category.id} name={category.name} />
+
+                        <div className="row">
+                            {CRUDRedux.getState().map(function (category) {
+                                return <Category key={category.id} category={category}/>
                             })}
                         </div>
                     </div>
                     <div className="small-12 columns">
-                        <Add inputs={this.state.inputs} buttons={this.state.buttons} />
+                        <Create inputs={this.state.inputs} buttons={this.state.buttons} />
                     </div>
                 </div>
             );
