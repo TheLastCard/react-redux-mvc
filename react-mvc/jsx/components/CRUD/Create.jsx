@@ -108,32 +108,8 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    
-                                    if (input.checked || Array.isArray(input.checked)) {
-                                        console.error(input.type + ' : ' + input.name + '-> Trying to make something checked by default? Default values can be set by using defaultValue, f.ex with an array of strings for checkbox or a single string for radio buttons');
+                                    if (!self.isSetupCorrect(input)) {
                                         return null;
-                                    }
-                                    if (input.type === 'radio' && input.defaultValue && typeof input.defaultValue !== "string") {
-                                        console.error(input.type + ' : ' + input.name + '-> Radio button defaultValue should be a string!');
-                                        return null;
-                                    }
-
-                                    if (!input.alternatives || !Array.isArray(input.alternatives)) {
-                                        console.error(input.type + ' : '+ input.name + '-> Alternatives is not set or is not an array!');
-                                        return null;
-                                    }
-
-                                    if ((input.type === 'checkbox') && input.defaultValue) {
-                                        if (!Array.isArray(input.defaultValue)) {
-                                            console.error(input.type + ' : ' + input.name + '-> "defaultValue" should be an array!');
-                                            return null;
-                                        }
-                                        for (var i = 0; i < input.defaultValue.length; i++) {
-                                            if (input.alternatives.indexOf(input.defaultValue[i]) === -1) {
-                                                console.error('Checkbox ' + input.name + '-> "defaultValue" does not exist in "alternatives"');
-                                                return null;
-                                            }
-                                        }
                                     }
 
                                     var multiInputs = [];
@@ -245,6 +221,35 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
         },
         closeModal: function (id) {
             $(id).foundation('close');
+        },
+        isSetupCorrect: function (input) {
+            if (input.checked || Array.isArray(input.checked)) {
+                console.error(input.type + ' : ' + input.name + '-> Trying to make something checked by default? Default values can be set by using defaultValue, f.ex with an array of strings for checkbox or a single string for radio buttons');
+                return false;
+            }
+            if (input.type === 'radio' && input.defaultValue && typeof input.defaultValue !== "string") {
+                console.error(input.type + ' : ' + input.name + '-> Radio button defaultValue should be a string!');
+                return false;
+            }
+
+            if (!input.alternatives || !Array.isArray(input.alternatives)) {
+                console.error(input.type + ' : ' + input.name + '-> Alternatives is not set or is not an array!');
+                return false;
+            }
+
+            if ((input.type === 'checkbox') && input.defaultValue) {
+                if (!Array.isArray(input.defaultValue)) {
+                    console.error(input.type + ' : ' + input.name + '-> "defaultValue" should be an array!');
+                    return false;
+                }
+                for (var i = 0; i < input.defaultValue.length; i++) {
+                    if (input.alternatives.indexOf(input.defaultValue[i]) === -1) {
+                        console.error('Checkbox ' + input.name + '-> "defaultValue" does not exist in "alternatives"');
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     });
 
