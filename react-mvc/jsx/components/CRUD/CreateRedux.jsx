@@ -9,7 +9,6 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return inputsCopy.map(function (input) {
                     return setErrorInitState(setDefaults(input));
                 });
-
             case 'CHANGE':
                 console.log('CHANGE CreateRedux');
                 var inputsCopy = state.slice();
@@ -71,7 +70,6 @@ define(['redux', 'expect'], function (Redux, expect) {
         if (input.type === 'select' && input.alternatives.indexOf(input.value) === -1) {
             input.hasError = true;
         }
-
 
         if (input.regex !== undefined && input.value) {
             var expression = new RegExp(input.regex);

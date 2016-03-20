@@ -91,7 +91,6 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
             }
         },
         formValidation: function () {
-            //Not all inputs can be testet onBlur, like checkboxes
             CreateRedux.dispatch({ type: 'VALIDATE' });
             var validation = true;
             for (var i = 0; i < this.state.inputs.length; i++) {
