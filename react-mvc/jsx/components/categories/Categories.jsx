@@ -38,10 +38,9 @@ function (React, Category, Create, CRUDRedux) {
                     label: 'Target Group',
                     name: 'targetGroup',
                     jsonName: 'targetGroup',
-                    type: 'select',
+                    type: 'checkbox',
                     alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
-                    defaultValue: null,
-                    value: null,
+                    defaultValue: null, //['Adults']
                     placeholder: 'Pick a target group',
                     wrapperClassName: 'small-12 columns',
                     required: true,

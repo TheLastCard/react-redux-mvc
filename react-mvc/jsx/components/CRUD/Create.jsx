@@ -117,8 +117,9 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                             var errorMessage = '';
                             if (input.required || input.regex) {
                                 var message = input.errorMessage ? input.errorMessage : input.label + ' is required';
+                                var radioCheckboxErrorClass = input.type === 'checkbox' || input.type === 'radio' ? 'errorMessageRadioCheckbox' : 'errorMessage';
                                 errorMessage = (
-                                    <div className={input.hasError ? 'errorMessage' : 'errorMessage hide' }>{message}</div>
+                                    <div className={input.hasError ? radioCheckboxErrorClass : radioCheckboxErrorClass + ' hide' }>{message}</div>
                                 );
                             }
 

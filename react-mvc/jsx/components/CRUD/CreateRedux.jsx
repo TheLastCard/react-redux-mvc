@@ -12,21 +12,25 @@ define(['redux', 'expect'], function (Redux, expect) {
             case 'CHANGE':
                 console.log('CHANGE CreateRedux');
                 var inputsCopy = state.slice();
+                var input = inputsCopy[action.index];
 
-                var inputType = action.event.target.type;
-                var inputValue = action.event.target.value;
+                var newValue = action.event.target.value;
 
-                if (inputType === 'checkbox') {
-                    var valueArray = [];
-                    if (inputsCopy[action.index].value) {
-                        valueArray = inputsCopy[action.index].value;
+                if (input.type === 'checkbox') {
+                    var alternatives = [];
+                    if (input.value) {
+                        alternatives = input.value;
                     }
-                    valueArray.indexOf(inputValue) > -1 ? valueArray.splice(valueArray.indexOf(inputValue), 1) : valueArray.push(inputValue);
-                    inputsCopy[action.index].value = valueArray;
+                    alternatives.indexOf(newValue) > -1 ? alternatives.splice(alternatives.indexOf(newValue), 1) : alternatives.push(newValue);
+                    input.value = alternatives;
                 }
                 else {
-                    inputsCopy[action.index].value = inputValue;
+                    input.value = newValue;
                 }
+                if (input.hasError) {
+                    validateInput(input);
+                }
+
                 return inputsCopy;
             case 'ONBLUR':
                 console.log('ONBLUR CreateRedux');
@@ -56,19 +60,21 @@ define(['redux', 'expect'], function (Redux, expect) {
         input.hasError = false;
 
         if (!input.required ) {
-            return inputsCopy;
+            return input.hasError;
         }
-
-        if (!input.value) {
+        
+        if (!input.value || input.value.length === 0) {
             input.hasError = true;
+            return input.hasError;
         }
 
         if ((input.type === 'radio' || input.type === 'checkbox')) {
-            return inputsCopy;
+            return input.hasError;
         }
 
         if (input.type === 'select' && input.alternatives.indexOf(input.value) === -1) {
             input.hasError = true;
+            return input.hasError;
         }
 
         if (input.regex !== undefined && input.value) {
