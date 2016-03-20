@@ -14,7 +14,7 @@
 //    //onChange : Here you can for example define an additional redux dispatcher which
 //    //           will be called back with event and index of the field as paramters on input change'.
 //    onChange: (event, index) =>MockRedux.dispatch({ type: 'CHANGE', event: event, index: index }),
-//    placeholder: 'Placeholder text if any. For textare this will ignored but you can use "value" if you want initiate a text in the textarea',
+//    placeholder: 'Placeholder text if any. Acts as default selected if using a select list. For textarea, radio and checkbox this will ignored but you can use "value" if you want initiate a text in the textarea',
 //    wrapperClassName: 'Classes to add to the div surrounding the input',
 //    labelClassName: 'Classes to add to the label',
 //    inputClassName: 'Classes to add to the input'
@@ -141,6 +141,31 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                             { multiInputs }
                                         </fieldset>
                                         );
+                                    break;
+                                case 'select':
+                                    var optionsHTML = input.options.map(function (selectOptions, selectIndex) {
+                                        return (
+                                            <option key={selectOptions + selectIndex} value={selectOptions}>{selectOptions}</option>
+                                        );
+                                    });
+
+                                    return (
+                                        <div key={input.name + 'classes'} className={input.wrapperClassName}>
+                                            {label}
+                                            <select key={input.name}
+                                                    id={input.name}
+                                                    type={input.type}
+                                                    name={input.name}
+                                                    value={input.value}
+                                                    disabled={input.disabled}
+                                                    className={input.labelClassName}
+                                                    onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                                    defaultValue={input.placeholder}>
+                                                <option disabled value={input.placeholder}>{input.placeholder}</option>
+                                                {optionsHTML}
+                                            </select>
+                                        </div>
+                                    );
                                     break;
                                 default:
                                     return (

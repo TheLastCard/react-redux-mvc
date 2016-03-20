@@ -199,10 +199,10 @@
     <Content Include="jsx\components\counter\Counter.jsx" />
     <Content Include="jsx\components\counter\CounterRedux.jsx" />
     <Content Include="jsx\components\categories\Categories.jsx" />
-    <Content Include="jsx\components\categories\CategoriesRedux.jsx" />
     <Content Include="jsx\components\categories\Category.jsx" />
-    <Content Include="jsx\components\CRUD\Add.jsx" />
-    <Content Include="jsx\components\CRUD\AddRedux.jsx" />
+    <Content Include="jsx\components\CRUD\Create.jsx" />
+    <Content Include="jsx\components\CRUD\CreateRedux.jsx" />
+    <Content Include="jsx\components\CRUD\CRUDRedux.jsx" />
     <None Include="jsx\Home.jsx" />
     <Content Include="node_modules\deep-freeze\index.js" />
     <Content Include="node_modules\expect\umd\expect.js" />

@@ -34,14 +34,27 @@ define(['redux', 'expect'], function (Redux, expect) {
                 console.log('CLEAR CreateRedux');
                 var inputsCopy = state.slice();
                 return inputsCopy.map(function (input) {
-                    input.value = input.type === 'textarea' ? '' : null;                  
-                    return setDefaults(input);
+                    return setDefaults(resetInput(input));
                 });
-
             default:
                 return [];
         }
     };
+
+    const resetInput = (input) => {
+        switch (input.type) {
+            case 'textarea':
+                input.value = '';
+                break;
+            case 'select':
+                input.value = input.placeholder;
+                break;
+            default:
+                input.value = null;
+                break;
+        }
+        return input;
+    }
 
     const setDefaults = (input) => {
         if (input.defaultValue) {
