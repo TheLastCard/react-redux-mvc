@@ -176,7 +176,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                                     max={input.maxValue}
                                                     min={input.minValue}
                                                     required={input.required}/>
-                                            <div className="errorMessage"
+                                            <div className="errorMessage">{input.errorMessage}</div>
                                         </div>
                                     );
                                     break;

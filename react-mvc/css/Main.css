@@ -9,6 +9,6 @@ html {
   box-sizing: inherit; }
 
 .errorMessage {
-  color: red; }
+  color: red !important; }
 
-/*# sourceMappingURL=Main.css.map */
+/*# sourceMappingURL=main.css.map */

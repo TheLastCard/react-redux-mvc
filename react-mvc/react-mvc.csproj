@@ -246,7 +246,6 @@
     <Content Include="scripts\requireConfig.js" />
     <Content Include="scripts\showdown.js" />
     <Content Include="scripts\showdown.min.js" />
-    <Content Include="jsx\Tutorial.jsx" />
     <Content Include="scripts\text.js" />
     <Content Include="Web.config" />
   </ItemGroup>

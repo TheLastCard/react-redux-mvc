@@ -1,3 +1,3 @@
 CD react-mvc
-START sass --watch sass/Main.scss:css/Main.css
+START sass --watch sass/main.scss:css/main.css
 CD..
