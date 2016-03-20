@@ -1,6 +1,7 @@
 ﻿
 
 //Generates input fields with label. Required structure for 'inputs':
+//Note that not all properties are required, but at least label, name, jsonName, type and alternatives(for checkbox and radio) is required
 //[{
 //    label: 'Label',
 //    name: 'Name of the input field. Also used in the id of the html element unless if type is radio or checkbox. If type is radio or checkbox, this should be an array',
@@ -19,7 +20,10 @@
 //    labelClassName: 'Classes to add to the label',
 //    inputClassName: 'Classes to add to the input',
 //    maxValue: 100, //Only used for range slider
-//    minValue: 0 //Only used for range slider
+//    minValue: 0, //Only used for range slider,
+//    required: true, //Set to true if input is required
+//    errorMessage: 'Type in an error message. (Has fallback to a more generic error message)',
+//    regex: '^[a-zA-Z]{3}$' //Regex string to test against. Ignored for radio or checkbox
 //}]
 
 //Buttons. Required structure for 'buttons'
@@ -29,6 +33,7 @@
 //    clearFormAfterAction: 'If you want to clear the form after action has been run',
 //    closeModalAfterAction: 'If you have spesified to use modal, set this to true in order to close modal after action',
 //    className: 'Classes to add to the div surrounding the input',
+//    skipValidation: false, //Use this if you want to skip validation on button click. For example if you add a button to clear form
 //    wrapperClassName: 'If you want to add a wrapper class to the div outside the button',
 //}]
 
@@ -37,8 +42,10 @@
 //    buttonText: 'Create new category'
 //}]
 
+//Debug. Set to true to enable console log and checks around problems with radio buttons and checkboxes
+
 //Example of element as writting in the parent container
-//<Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions}/>
+//<Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={true}/>
 
 
 define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
@@ -62,8 +69,16 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 callback(event, index);
             }
         },
+        onBlurHandler: function (event, index) {
+            CreateRedux.dispatch({ type: 'ONBLUR', event: event, index: index });
+        },
         buttonClickHanlder: function (event, button) {
             event.preventDefault();
+
+            if (!this.formValidation() && !button.skipValidation) {
+                return;
+            }
+
             if (button.action) {
                 var inputsCopy = this.state.inputs.slice();
                 button.action(event, inputsCopy);
@@ -75,8 +90,18 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 this.closeModal('#createModal');
             }
         },
+        formValidation: function () {
+            //Not all inputs can be testet onBlur, like checkboxes
+            CreateRedux.dispatch({ type: 'VALIDATE' });
+            var validation = true;
+            for (var i = 0; i < this.state.inputs.length; i++) {
+                validation = this.state.inputs[i].hasError ? false : validation;
+            }
+            return validation;
+        },
         componentDidMount: function () {
             CreateRedux.dispatch({ type: 'INIT', list: this.state.inputs });
+            $(document).foundation();
         },
         render: function () {
             var self = this;
@@ -86,43 +111,54 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                         {this.state.inputs.map(function (input, index) {
                             var label = (
                                 <label key={input.name + 'label' }
-                                        htmlFor={input.name}
-                                        className={input.labelClassName}>{input.label}</label>
+                                       htmlFor={input.name}
+                                       className={input.labelClassName}>{input.label}</label>
                             );
 
+                            var errorMessage = '';
+                            if (input.required || input.regex) {
+                                var message = input.errorMessage ? input.errorMessage : input.label + ' is required';
+                                errorMessage = (
+                                    <div className={input.hasError ? 'errorMessage' : 'errorMessage hide' }>{message}</div>
+                                );
+                            }
 
                             switch (input.type) {
                                 case 'textarea':
                                     return (
                                         <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                                            {label}
+                                            { label }
                                              <textarea key={input.name}
                                                        id={input.id}
                                                        name={input.name}
                                                        value={input.value}
                                                        disabled={input.disabled}
                                                        className={input.labelClassName}
-                                                       onChange={(event) => self.onChangeHandler(event, index, input.onChange)}></textarea>
+                                                       onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                                       onBlur={(event) => self.onBlurHandler(event, index)}></textarea>
+                                            { errorMessage }
                                         </div>
                                     );
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    if (!self.isSetupCorrect(input)) {
-                                        return null;
+                                    if (self.props.debug) {
+                                        if (!self.isSetupCorrect(input)) {
+                                            return null;
+                                        }
                                     }
 
                                     var multiInputs = [];
                                     input.alternatives.map(function (checkboxRadioOption, checkboxRadioIndex) {
                                         multiInputs.push(
                                             <input key={input.name + checkboxRadioIndex}
-                                                    type={input.type}
-                                                    id={checkboxRadioOption.trim()}
-                                                    name={checkboxRadioOption.trim()}
-                                                    value={checkboxRadioOption}
-                                                    checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === "checkbox") || (input.value === checkboxRadioOption && input.type === "radio")}
-                                                    className={input.labelClassName}
-                                                    onChange={(event) => self.onChangeHandler(event, index, input.onChange)} />
+                                                   type={input.type}
+                                                   id={checkboxRadioOption.trim()}
+                                                   name={checkboxRadioOption.trim()}
+                                                   value={checkboxRadioOption}
+                                                   checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === "checkbox") || (input.value === checkboxRadioOption && input.type === "radio")}
+                                                   className={input.labelClassName}
+                                                   onChange={(event) => self.onChangeHandler(event, index, input.onChange)}/>
                                             );
                                         multiInputs.push(
                                             <label key={checkboxRadioOption.trim()} htmlFor={checkboxRadioOption.trim() }>{checkboxRadioOption}</label>
@@ -132,6 +168,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                         <fieldset key={input.label+'fieldset'} className={input.wrapperClassName}>
                                             <legend key={input.label+'legend'}>{input.label}</legend>
                                             { multiInputs }
+                                            { errorMessage }
                                         </fieldset>
                                         );
                                     break;
@@ -144,7 +181,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
 
                                     return (
                                         <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                                            {label}
+                                            { label }
                                             <select key={input.name}
                                                     id={input.name}
                                                     type={input.type}
@@ -153,17 +190,19 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                                     disabled={input.disabled}
                                                     className={input.labelClassName}
                                                     onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                                    onBlur={(event) => self.onBlurHandler(event, index)}
                                                     defaultValue={input.placeholder}>
                                                 <option disabled value={input.placeholder}>{input.placeholder}</option>
                                                 {alternativesHTML}
                                             </select>
+                                            { errorMessage }
                                         </div>
                                     );
                                     break;
                                 default:
                                     return (
                                         <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                                            {label}
+                                            { label }
                                              <input key={input.name}
                                                     id={input.name}
                                                     type={input.type}
@@ -173,10 +212,11 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                                                     disabled={input.disabled}
                                                     className={input.labelClassName}
                                                     onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                                    onBlur={(event) => self.onBlurHandler(event, index)}
                                                     max={input.maxValue}
                                                     min={input.minValue}
-                                                    required={input.required}/>
-                                            <div className="errorMessage">{input.errorMessage}</div>
+                                                    required={input.required} />
+                                            { errorMessage }
                                         </div>
                                     );
                                     break;
@@ -200,7 +240,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 </form>
             );
 
-            if(!this.props.modal){
+            if (!this.props.modal) {
                 return form;
             }
 
@@ -223,6 +263,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
         },
         closeModal: function (id) {
             $(id).foundation('close');
+            CreateRedux.dispatch({ type: 'CLEAR' });
         },
         isSetupCorrect: function (input) {
             if (input.checked || Array.isArray(input.checked)) {

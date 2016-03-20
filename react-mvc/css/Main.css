@@ -9,6 +9,11 @@ html {
   box-sizing: inherit; }
 
 .errorMessage {
-  color: red !important; }
+  color: red !important;
+  margin-bottom: 10px;
+  border: 1px solid #cacaca;
+  padding: 10px;
+  margin-top: -16px;
+  background-color: #cacaca; }
 
 /*# sourceMappingURL=main.css.map */

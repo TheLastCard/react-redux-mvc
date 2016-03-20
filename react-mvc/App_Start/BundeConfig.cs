@@ -6,7 +6,7 @@ namespace react_mvc.App_Start
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new StyleBundle("~/bundles/main.css").Include(
+            bundles.Add(new StyleBundle("~/bundles/general.css").Include(
                         "~/css/foundation.css",
                         "~/css/main.css"
                         ));

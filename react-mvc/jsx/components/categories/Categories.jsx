@@ -22,7 +22,8 @@ function (React, Category, Create, CRUDRedux) {
                     placeholder: 'type a category name',
                     wrapperClassName: 'small-12 columns',
                     required: true,
-                    errorMessage: 'Name is missing!'
+                    errorMessage: 'Name is missing or to short!',
+                    regex: '[a-zA-Z]{4}'
                 },
                 {
                     label: 'Description',
@@ -37,7 +38,7 @@ function (React, Category, Create, CRUDRedux) {
                     label: 'Target Group',
                     name: 'targetGroup',
                     jsonName: 'targetGroup',
-                    type: 'checkbox',
+                    type: 'select',
                     alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
                     defaultValue: null,
                     value: null,
@@ -58,7 +59,6 @@ function (React, Category, Create, CRUDRedux) {
         },
         componentDidMount: function () {
             CRUDRedux.dispatch({ type: 'INIT', list: this.props.categories });
-            $(document).foundation();
         },
         render: function () {
             var self = this;
@@ -72,7 +72,8 @@ function (React, Category, Create, CRUDRedux) {
                                 return <Category key={category.id} category={category}/>
                             })}
                         </div>
-                        <Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions}/>
+
+                        <Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={true}/>
                     </div>
                 </div>
             );

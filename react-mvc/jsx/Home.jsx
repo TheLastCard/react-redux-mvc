@@ -22,28 +22,14 @@ function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Cate
             targetGroup: ['Young Adults', 'Adults']
         }];
 
-    var HomeContainer = React.createClass({
-        render: function () {
-            return (
-                <div>
-                    <Categories categories={mockList}/>
-                </div>
-            );
-        }
-    });
 
     const render = () => {
         //console.log('render called');
         ReactDOM.render(
-                    <HomeContainer />,
+                    <Categories categories={mockList}/>,
                     document.getElementById('content')
                 );
     }
-
-    //<Counter value={CounterRedux.getState()}
-    //onIncrement={() =>CounterRedux.dispatch({ type: 'INCREMENT' })}
-    //onDecrement={() =>CounterRedux.dispatch({ type: 'DECREMENT' })} />
-    //CounterRedux.subscribe(render);
 
     CreateRedux.subscribe(render);
     CRUDRedux.subscribe(render);

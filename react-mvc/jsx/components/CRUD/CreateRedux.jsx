@@ -7,7 +7,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 console.log('INIT CreateRedux');
                 var inputsCopy = action.list.slice();
                 return inputsCopy.map(function (input) {
-                    return setDefaults(input);
+                    return setErrorInitState(setDefaults(input));
                 });
 
             case 'CHANGE':
@@ -29,17 +29,52 @@ define(['redux', 'expect'], function (Redux, expect) {
                     inputsCopy[action.index].value = inputValue;
                 }
                 return inputsCopy;
-
+            case 'ONBLUR':
+                console.log('ONBLUR CreateRedux');
+                var inputsCopy = state.slice();
+                var input = inputsCopy[action.index];
+                validateInput(input);
+                return inputsCopy;
+            case 'VALIDATE':
+                console.log('VALIDATE CreateRedux');
+                var inputsCopy = state.slice();
+                inputsCopy.map(function (input) {
+                    validateInput(input, true);
+                });
+                return inputsCopy;
             case 'CLEAR':
                 console.log('CLEAR CreateRedux');
                 var inputsCopy = state.slice();
                 return inputsCopy.map(function (input) {
-                    return setDefaults(resetInput(input));
+                    return setErrorInitState(setDefaults(resetInput(input)));
                 });
             default:
                 return [];
         }
     };
+
+    const validateInput =(input, all) =>{
+        input.hasError = false;
+
+        if (!input.required || (!all && input.type === 'radio' || input.type === 'checkbox')) {
+            return inputsCopy;
+        }
+
+        if (!input.value) {
+            input.hasError = true;
+        }
+
+        if (input.regex !== undefined && input.value) {
+            var expression = new RegExp(input.regex);
+            input.hasError = !expression.test(input.value);
+        }
+        return input.hasError;
+    }
+
+    const setErrorInitState = (input) => {
+        input.hasError = false;
+        return input;
+    }
 
     const resetInput = (input) => {
         switch (input.type) {

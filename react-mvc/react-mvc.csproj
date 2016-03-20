@@ -194,6 +194,7 @@
     <Content Include="css\foundation-flex.css" />
     <Content Include="css\foundation.css" />
     <Content Include="css\foundation.min.css" />
+    <Content Include="css\main.css" />
     <Content Include="favicon.png" />
     <Content Include="Global.asax" />
     <Content Include="jsx\components\counter\Counter.jsx" />
