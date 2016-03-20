@@ -73,7 +73,7 @@ function (React, Category, Create, CRUDRedux) {
                             })}
                         </div>
 
-                        <Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={true}/>
+                        <Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={false}/>
                     </div>
                 </div>
             );

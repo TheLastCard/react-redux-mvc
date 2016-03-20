@@ -39,7 +39,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 console.log('VALIDATE CreateRedux');
                 var inputsCopy = state.slice();
                 inputsCopy.map(function (input) {
-                    validateInput(input, true);
+                    validateInput(input);
                 });
                 return inputsCopy;
             case 'CLEAR':
@@ -53,10 +53,10 @@ define(['redux', 'expect'], function (Redux, expect) {
         }
     };
 
-    const validateInput =(input, all) =>{
+    const validateInput =(input) =>{
         input.hasError = false;
 
-        if (!input.required || (!all && input.type === 'radio' || input.type === 'checkbox')) {
+        if (!input.required ) {
             return inputsCopy;
         }
 
@@ -64,10 +64,20 @@ define(['redux', 'expect'], function (Redux, expect) {
             input.hasError = true;
         }
 
+        if ((input.type === 'radio' || input.type === 'checkbox')) {
+            return inputsCopy;
+        }
+
+        if (input.type === 'select' && input.alternatives.indexOf(input.value) === -1) {
+            input.hasError = true;
+        }
+
+
         if (input.regex !== undefined && input.value) {
             var expression = new RegExp(input.regex);
             input.hasError = !expression.test(input.value);
         }
+
         return input.hasError;
     }
 
