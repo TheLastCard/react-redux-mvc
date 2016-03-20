@@ -30,12 +30,12 @@ function (React, Category, Create, CRUDRedux) {
                     wrapperClassName: 'small-12 columns'
                 },
                 {
-                    label: 'Audience Group',
-                    name: 'audience',
-                    jsonName: 'audienceGroup',
-                    type: 'radio',
+                    label: 'Target Group',
+                    name: 'targetGroup',
+                    jsonName: 'targetGroup',
+                    type: 'checkbox',
                     options: ['Children', 'Young Adults', 'Adults', 'Seniors'],
-                    defaultValue: 'Adults',
+                    defaultValue: ['Adults'],
                     value: null,
                     wrapperClassName: 'small-12 columns'
                 }],

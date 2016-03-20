@@ -10,10 +10,12 @@ define(['react'], function (React) {
                         <small>Id: {this.props.category.id}</small>
                         <p>{this.props.category.description}</p>
                         <p>
-                            Audience:
-                            {this.props.category.audienceGroup && Array.isArray(this.props.category.audienceGroup) ? this.props.category.audienceGroup.map(function (item, index) {
+                            <span>Target group:  </span>
+                            <span>
+                            {this.props.category.targetGroup && Array.isArray(this.props.category.targetGroup) ? this.props.category.targetGroup.map(function (item, index) {
                                 return index === 0 ? item : ', '+ item;
-                            }) : this.props.category.audienceGroup}
+                            }) : this.props.category.targetGroup}
+                            </span>
                         </p>
                     </div>
                 </div>

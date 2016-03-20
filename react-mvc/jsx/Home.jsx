@@ -19,7 +19,7 @@ function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Cate
             id: 0,
             name: 'Cars',
             description: 'Stuff that you drive around with',
-            audienceGroup: ['Young Adults', 'Adults']
+            targetGroup: ['Young Adults', 'Adults']
         }];
 
     var HomeContainer = React.createClass({
