@@ -1,11 +1,11 @@
 ﻿
 
 //Generates input fields with label. Required structure for 'inputs':
-//Note that not all properties are required, but at least label, name, jsonName, type and alternatives(for checkbox and radio) is required
+//Note that not all properties are required, but at least label, name, type and alternatives(for checkbox and radio) is required
 //[{
 //    label: 'Label',
 //    name: 'Name of the input field. Also used in the id of the html element unless if type is radio or checkbox. If type is radio or checkbox, this should be an array',
-//    jsonName: 'Map name -> for CRUDRedux witch maps all input values to a json object',
+//    jsonName: 'Map name -> for CRUDRedux witch maps all input values to a json object. If this is null, "name" is used for fallback',
 //    type: 'Type of input; number, text, url',
 //    value: null, //'Initial value of the input field'
 //    defaultValue: null, //Used for checkboxes and radio buttons. Checkboxes takes an array [] and radio buttons takes a string as defaultValue
@@ -102,140 +102,160 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
             CreateRedux.dispatch({ type: 'INIT', list: this.state.inputs });
             $(document).foundation();
         },
+        createLabel: function (input) {
+            return (
+                <label key={input.name + 'label' } htmlFor={input.name} className={input.labelClassName}>{input.label}</label>
+            );
+        },
+        createErrorMessage: function (input) {
+            var errorMessage = '';
+            if (input.required || input.regex) {
+                var message = input.errorMessage ? input.errorMessage : input.label + ' is required';
+                var radioCheckboxErrorClass = input.type === 'checkbox' || input.type === 'radio' ? 'errorMessageRadioCheckbox' : 'errorMessage';
+                errorMessage = (
+                    <div className={input.hasError ? radioCheckboxErrorClass : radioCheckboxErrorClass + ' hide' }>{message}</div>
+                );
+            }
+            return errorMessage;
+        },
+        createTextArea: function (input, index) {
+            var self = this;
+            return (
+                <div key={input.name + 'classes'} className={input.wrapperClassName }>
+                    {self.createLabel(input)}
+                        <textarea key={input.name}
+                                  id={input.id}
+                                  name={input.name}
+                                  value={input.value}
+                                  disabled={input.disabled}
+                                  className={input.labelClassName}
+                                  onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                  onBlur={(event) => self.onBlurHandler(event, index)
+                        }></textarea>
+                    {self.createErrorMessage(input)}
+                </div>
+            );
+        },
+        createCheckboxOrRadiobutton: function (input, index) {
+            var self = this;
+            if (self.props.debug) {
+                if (!self.isSetupCorrect(input)) {
+                    return null;
+                }
+            }
+
+            var multipleChoices = [];
+            input.alternatives.map(function (checkboxRadioOption, checkboxRadioIndex) {
+                multipleChoices.push(
+                    <input key={input.name + checkboxRadioIndex}
+                           type={input.type}
+                           id={checkboxRadioOption.trim()}
+                           name={checkboxRadioOption.trim()}
+                           value={checkboxRadioOption}
+                           checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === "checkbox") || (input.value === checkboxRadioOption && input.type === "radio")}
+                           className={input.labelClassName}
+                           onChange={(event) => self.onChangeHandler(event, index, input.onChange)} />
+                );
+                multipleChoices.push(
+                    <label key={checkboxRadioOption.trim()} htmlFor={checkboxRadioOption.trim() }>{checkboxRadioOption}</label>
+                );
+            });
+
+            return (
+                <fieldset key={input.label+'fieldset'} className={input.wrapperClassName}>
+                    <legend key={input.label+'legend'}>{input.label}</legend>
+                    { multipleChoices }
+                    { self.createErrorMessage(input) }
+                </fieldset>
+            );
+        },
+        createSelectlist: function (input, index) {
+            var self = this;
+            var optionList = input.alternatives.map(function (selectAlternatives, selectIndex) {
+                return (<option key={selectAlternatives + selectIndex} value={selectAlternatives }>{selectAlternatives}</option>);
+            });
+
+            return (
+                <div key={input.name + 'classes'} className={input.wrapperClassName}>
+                    { self.createLabel(input) }
+                    <select key={input.name}
+                            id={input.name}
+                            type={input.type}
+                            name={input.name}
+                            value={input.value}
+                            disabled={input.disabled}
+                            className={input.labelClassName}
+                            onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                            onBlur={(event) => self.onBlurHandler(event, index)}
+                            defaultValue={input.placeholder}>
+                        <option disabled value={input.placeholder}>{input.placeholder}</option>
+                        {optionList}
+                    </select>
+                    { self.createErrorMessage(input) }
+                </div>
+            );
+        },
+        createSimpleInputfield: function (input, index) {
+            var self = this;
+            return (
+                <div key={input.name + 'classes'} className={input.wrapperClassName}>
+                    { self.createLabel(input) }
+                        <input key={input.name}
+                               id={input.name}
+                               type={input.type}
+                               name={input.name}
+                               placeholder={input.placeholder}
+                               value={input.value}
+                               disabled={input.disabled}
+                               className={input.labelClassName}
+                               onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                               onBlur={(event) => self.onBlurHandler(event, index)}
+                               max={input.maxValue}
+                               min={input.minValue}
+                               required={input.required} />
+                    { self.createErrorMessage(input) }
+                </div>
+            );
+        },
+        createButtons: function () {
+            var self = this;
+            return this.state.buttons.map(function (button) {
+                return (
+                    <div key={button.name + 'wrapper'} className={button.wrapperClassName }>
+                        <button key={button.name} id={button.name} className={button.className}
+                                onClick={(event) => self.buttonClickHanlder(event, button)}>
+                            {button.name}
+                        </button>
+                    </div>
+                );
+            });
+        },
         render: function () {
             var self = this;
             var form = (
                 <form>
                     <div className="row">
                         {this.state.inputs.map(function (input, index) {
-                            var label = (
-                                <label key={input.name + 'label' }
-                                       htmlFor={input.name}
-                                       className={input.labelClassName}>{input.label}</label>
-                            );
-
-                            var errorMessage = '';
-                            if (input.required || input.regex) {
-                                var message = input.errorMessage ? input.errorMessage : input.label + ' is required';
-                                var radioCheckboxErrorClass = input.type === 'checkbox' || input.type === 'radio' ? 'errorMessageRadioCheckbox' : 'errorMessage';
-                                errorMessage = (
-                                    <div className={input.hasError ? radioCheckboxErrorClass : radioCheckboxErrorClass + ' hide' }>{message}</div>
-                                );
-                            }
 
                             switch (input.type) {
                                 case 'textarea':
-                                    return (
-                                        <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                                            { label }
-                                             <textarea key={input.name}
-                                                       id={input.id}
-                                                       name={input.name}
-                                                       value={input.value}
-                                                       disabled={input.disabled}
-                                                       className={input.labelClassName}
-                                                       onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
-                                                       onBlur={(event) => self.onBlurHandler(event, index)}></textarea>
-                                            { errorMessage }
-                                        </div>
-                                    );
+                                    return self.createTextArea(input, index);
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    if (self.props.debug) {
-                                        if (!self.isSetupCorrect(input)) {
-                                            return null;
-                                        }
-                                    }
-
-                                    var multiInputs = [];
-                                    input.alternatives.map(function (checkboxRadioOption, checkboxRadioIndex) {
-                                        multiInputs.push(
-                                            <input key={input.name + checkboxRadioIndex}
-                                                   type={input.type}
-                                                   id={checkboxRadioOption.trim()}
-                                                   name={checkboxRadioOption.trim()}
-                                                   value={checkboxRadioOption}
-                                                   checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === "checkbox") || (input.value === checkboxRadioOption && input.type === "radio")}
-                                                   className={input.labelClassName}
-                                                   onChange={(event) => self.onChangeHandler(event, index, input.onChange)}/>
-                                            );
-                                        multiInputs.push(
-                                            <label key={checkboxRadioOption.trim()} htmlFor={checkboxRadioOption.trim() }>{checkboxRadioOption}</label>
-                                            );
-                                    });
-                                    return (
-                                        <fieldset key={input.label+'fieldset'} className={input.wrapperClassName}>
-                                            <legend key={input.label+'legend'}>{input.label}</legend>
-                                            { multiInputs }
-                                            { errorMessage }
-                                        </fieldset>
-                                        );
+                                    return self.createCheckboxOrRadiobutton(input, index);
                                     break;
                                 case 'select':
-                                    var alternativesHTML = input.alternatives.map(function (selectAlternatives, selectIndex) {
-                                        return (
-                                            <option key={selectAlternatives + selectIndex} value={selectAlternatives }>{selectAlternatives}</option>
-                                        );
-                                    });
-
-                                    return (
-                                        <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                                            { label }
-                                            <select key={input.name}
-                                                    id={input.name}
-                                                    type={input.type}
-                                                    name={input.name}
-                                                    value={input.value}
-                                                    disabled={input.disabled}
-                                                    className={input.labelClassName}
-                                                    onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
-                                                    onBlur={(event) => self.onBlurHandler(event, index)}
-                                                    defaultValue={input.placeholder}>
-                                                <option disabled value={input.placeholder}>{input.placeholder}</option>
-                                                {alternativesHTML}
-                                            </select>
-                                            { errorMessage }
-                                        </div>
-                                    );
+                                    return self.createSelectlist(input, index);
                                     break;
                                 default:
-                                    return (
-                                        <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                                            { label }
-                                             <input key={input.name}
-                                                    id={input.name}
-                                                    type={input.type}
-                                                    name={input.name}
-                                                    placeholder={input.placeholder}
-                                                    value={input.value}
-                                                    disabled={input.disabled}
-                                                    className={input.labelClassName}
-                                                    onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
-                                                    onBlur={(event) => self.onBlurHandler(event, index)}
-                                                    max={input.maxValue}
-                                                    min={input.minValue}
-                                                    required={input.required} />
-                                            { errorMessage }
-                                        </div>
-                                    );
+                                    return self.createSimpleInputfield(input, index);
                                     break;
                             }
                         })}
                     </div>
                     <div className="row">
-                        {this.state.buttons.map(function (button) {
-                            return (
-                                <div key={button.name+'wrapper'} className={button.wrapperClassName}>
-                                    <button key={button.name}
-                                            id={button.name}
-                                            className={button.className}
-                                            onClick={(event) => self.buttonClickHanlder(event, button )}>
-                                        {button.name}
-                                    </button>
-                                </div>
-                            );
-                        })}
+                        {self.createButtons()}
                     </div>
                 </form>
             );
@@ -244,6 +264,11 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 return form;
             }
 
+            return self.createModal(form);
+
+        },
+        createModal: function (form) {
+            var self = this;
             return (
                 <div>
                     <button className="button success" onClick={() =>self.openModal('#createModal') }>{this.props.buttonText || 'Create new'}</button>
@@ -256,7 +281,6 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                     </div>
                 </div>
             );
-
         },
         openModal: function (id) {
             $(id).foundation('open');

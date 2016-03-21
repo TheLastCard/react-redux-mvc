@@ -8,10 +8,16 @@ define(['redux', 'expect'], function (Redux, expect) {
             case 'CREATE':
                 var result = { id: action.index };
                 action.inputs.map(function (input) {
-                    result[input.jsonName] = input.value;
+                    if (!input.jsonName) {
+                        result[input.name] = input.value;
+                    }
+                    else {
+                        result[input.jsonName] = input.value;
+                    }
                 });
                 return result;
             case 'UPDATE':
+                console.warn('UPDATE -> not implemented yet');
                 //if (state.id !== action.id) {
                 //    return state;
                 //}

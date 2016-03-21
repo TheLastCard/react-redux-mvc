@@ -30,7 +30,6 @@ define(['redux', 'expect'], function (Redux, expect) {
                 if (input.hasError) {
                     validateInput(input);
                 }
-
                 return inputsCopy;
             case 'ONBLUR':
                 console.log('ONBLUR CreateRedux');

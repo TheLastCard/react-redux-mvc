@@ -27,8 +27,7 @@ function (React, Category, Create, CRUDRedux) {
                 },
                 {
                     label: 'Description',
-                    name: 'categoryDescription',
-                    jsonName: 'description',
+                    name: 'description',
                     type: 'textarea',
                     wrapperClassName: 'small-12 columns',
                     required: true,
@@ -37,7 +36,6 @@ function (React, Category, Create, CRUDRedux) {
                 {
                     label: 'Target Group',
                     name: 'targetGroup',
-                    jsonName: 'targetGroup',
                     type: 'checkbox',
                     alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
                     defaultValue: null, //['Adults']
