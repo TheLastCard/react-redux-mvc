@@ -50,6 +50,7 @@
 
 define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
     var Create = React.createClass({
+        modalId: '#createModal' + Math.floor((Math.random() * 10000) + 1).toString(),
         getInitialState: function () {
             if (!this.props.inputs) {
                 console.error('"inputs" is not defined. Did you forget to add it to the <Create /> component?');
@@ -87,7 +88,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 CreateRedux.dispatch({ type: 'CLEAR' });
             }
             if (button.closeModalAfterAction) {
-                this.closeModal('#createModal');
+                this.closeModal(this.modalId);
             }
         },
         formValidation: function () {
@@ -271,11 +272,11 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
             var self = this;
             return (
                 <div>
-                    <button className="button success" onClick={() =>self.openModal('#createModal') }>{this.props.buttonText || 'Create new'}</button>
+                    <button className="button success" onClick={() =>self.openModal(self.modalId) }>{self.props.buttonText || 'Create new'}</button>
 
-                    <div className="reveal" id="createModal" data-reveal>
+                    <div className="reveal" id={self.modalId.replace('#', '')} data-reveal>
                         {form}
-                        <button className="close-button" aria-label="Close reveal" type="button" onClick={() =>self.closeModal('#createModal')}>
+                        <button className="close-button" aria-label="Close reveal" type="button" onClick={() =>self.closeModal(self.modalId)}>
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
