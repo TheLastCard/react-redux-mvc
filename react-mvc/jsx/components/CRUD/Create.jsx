@@ -217,6 +217,26 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 </div>
             );
         },
+        createInputs: function () {
+            var self = this;
+            return this.state.inputs.map(function (input, index) {
+                switch (input.type) {
+                    case 'textarea':
+                        return self.createTextArea(input, index);
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        return self.createCheckboxOrRadiobutton(input, index);
+                        break;
+                    case 'select':
+                        return self.createSelectlist(input, index);
+                        break;
+                    default:
+                        return self.createSimpleInputfield(input, index);
+                        break;
+                }
+            })
+        },
         createButtons: function () {
             var self = this;
             return this.state.buttons.map(function (button) {
@@ -235,37 +255,17 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
             var form = (
                 <form>
                     <div className="row">
-                        {this.state.inputs.map(function (input, index) {
-
-                            switch (input.type) {
-                                case 'textarea':
-                                    return self.createTextArea(input, index);
-                                    break;
-                                case 'radio':
-                                case 'checkbox':
-                                    return self.createCheckboxOrRadiobutton(input, index);
-                                    break;
-                                case 'select':
-                                    return self.createSelectlist(input, index);
-                                    break;
-                                default:
-                                    return self.createSimpleInputfield(input, index);
-                                    break;
-                            }
-                        })}
+                        {self.createInputs()}
                     </div>
                     <div className="row">
                         {self.createButtons()}
                     </div>
                 </form>
             );
-
             if (!this.props.modal) {
                 return form;
             }
-
             return self.createModal(form);
-
         },
         createModal: function (form) {
             var self = this;
