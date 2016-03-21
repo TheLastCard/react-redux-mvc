@@ -72,7 +72,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
         onBlurHandler: function (event, index) {
             CreateRedux.dispatch({ type: 'ONBLUR', event: event, index: index });
         },
-        buttonClickHanlder: function (event, button) {
+        buttonClickHandler: function (event, button) {
             event.preventDefault();
 
             if (!this.formValidation() && !button.skipValidation) {
@@ -223,7 +223,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
                 return (
                     <div key={button.name + 'wrapper'} className={button.wrapperClassName }>
                         <button key={button.name} id={button.name} className={button.className}
-                                onClick={(event) => self.buttonClickHanlder(event, button)}>
+                                onClick={(event) => self.buttonClickHandler(event, button)}>
                             {button.name}
                         </button>
                     </div>
