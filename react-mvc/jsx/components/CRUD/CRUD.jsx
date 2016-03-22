@@ -8,24 +8,29 @@ define([
     'CRUD/ReadOptions'
 ],
 function (React, Read, Create, CRUDRedux, ReadOptions) {
-    
+
     var CRUD = React.createClass({
         getInitialState: function () {
             return {
-                readOptions: [{
-                    variableName: 'name',
-                    style: ReadOptions.Heading1
+                readOptions: {
+                    isTable: true,
+                    modal: false,
+                    variables : [
+                        {
+                            variableName: 'name',
+                            style: ReadOptions.Tablecell
+                        },
+                        {
+                            variableName: 'description',
+                            style: ReadOptions.Tablecell
+                        },
+                        {
+                            variableName: 'targetGroup',
+                            style: ReadOptions.Tablecell,
+                            format: (value) => { return value.toString().replace(',', ', '); }
+                        }
+                    ]
                 },
-                {
-                    variableName: 'description',
-                    style: ReadOptions.Paragraph
-                },
-                {
-                    variableName: 'targetGroup',
-                    style: ReadOptions.Paragraph,
-                    label: 'Target group:',
-                    format: (value) => { return value.toString().replace(',', ', ');}
-                }],
                 formInputs: [{
                     label: 'Name',
                     name: 'name',
@@ -78,17 +83,22 @@ function (React, Read, Create, CRUDRedux, ReadOptions) {
                     <div className="small-12 columns">
                         <h2>Categories</h2>
 
-                        <div className="row">
-                            {CRUDRedux.getState().map(function (item, index) {
-                                return (
-                                    <div key={'calloutWrapper'+index} className="small-12 medium-6 large-4 columns float-left">
-                                        <div key={'callout'+index} className="callout">
-                                            <Read key={'read' + index + 'id' + item.id} item={item} options={self.state.readOptions} debug={false} />
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        <table key={'categoryTable'}>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Target group</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {CRUDRedux.getState().map(function (item, index) {
+                                    return (
+                                        <Read key={'read' + index + 'id' + item.id} item={item} options={self.state.readOptions} debug={true} />
+                                    );
+                                })}
+                            </tbody>
+                        </table>
 
                         <Create inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={true} />
                     </div>

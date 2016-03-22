@@ -6,7 +6,9 @@ define([], function () {
         Heading2: 'heading2',
         Heading3: 'heading3',
         Heading4: 'heading4',
-        Paragraph: 'paragraph'
+        Paragraph: 'paragraph',
+        Tablecell: 'tablecell',
+        Tablerow: 'tablerow'
     }
 
     return ReadOptions;
