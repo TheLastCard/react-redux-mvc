@@ -5,9 +5,10 @@ define([
     'jsx!CRUD/Read',
     'jsx!CRUD/Create',
     'jsx!CRUD/CRUDRedux',
-    'CRUD/ReadOptions'
+    'CRUD/ReadOptions',
+    'CRUD/InputOptions'
 ],
-function (React, Read, Create, CRUDRedux, ReadOptions) {
+function (React, Read, Create, CRUDRedux, ReadOptions, InputOptions) {
 
     var CRUD = React.createClass({
         getInitialState: function () {
@@ -34,7 +35,7 @@ function (React, Read, Create, CRUDRedux, ReadOptions) {
                 formInputs: [{
                     label: 'Name',
                     name: 'name',
-                    type: 'text',
+                    type: InputOptions.Type.Text,
                     placeholder: 'type a category name',
                     wrapperClassName: 'small-12 columns',
                     required: true,
@@ -44,7 +45,7 @@ function (React, Read, Create, CRUDRedux, ReadOptions) {
                 {
                     label: 'Description',
                     name: 'description',
-                    type: 'textarea',
+                    type: InputOptions.Type.TextArea,
                     wrapperClassName: 'small-12 columns',
                     required: true,
                     errorMessage: 'Description is missing!'
@@ -52,7 +53,7 @@ function (React, Read, Create, CRUDRedux, ReadOptions) {
                 {
                     label: 'Target Group',
                     name: 'targetGroup',
-                    type: 'checkbox',
+                    type: InputOptions.Type.Checkbox,
                     alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
                     defaultValue: null, //['Adults']
                     placeholder: 'Pick a target group',
