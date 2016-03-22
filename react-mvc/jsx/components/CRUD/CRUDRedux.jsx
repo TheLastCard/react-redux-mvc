@@ -17,13 +17,12 @@ define(['redux', 'expect'], function (Redux, expect) {
                 });
                 return result;
             case 'UPDATE':
-                console.warn('UPDATE -> not implemented yet');
-                //if (state.id !== action.id) {
-                //    return state;
-                //}
-                //var copy = Object.assign({}, state);
-                //copy.name = action.name;
-                //return copy;
+                console.log('UPDATE -> item');
+                return state.map(function (item) {
+                    if (item.id !== action.id) {
+                        return item;
+                    }
+                });
             default:
                 return state;
         }
@@ -36,13 +35,15 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return action.list.slice();
             case 'CREATE':
                 console.log('CREATE CRUDRedux');
+                var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
                 actionCopy.index = state.length;
-                return state.concat(item(undefined, actionCopy));
+                return stateCopy.concat(item(undefined, actionCopy));
             case 'UPDATE':
-                console.warn('UPDATE CRUDRedux -> Not implemented yet!');
-                //console.log('UPDATE CRUDRedux', action);
-                //return state.map(c => item(c, action));
+                console.warn('UPDATE CRUDRedux -> ');
+                var stateCopy = state.slice();
+                var actionCopy = Object.assign({}, action);
+                return stateCopy.concat(item(stateCopy, actionCopy));
             default:
                 return [];
         }

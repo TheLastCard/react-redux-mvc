@@ -205,6 +205,7 @@
     <Content Include="jsx\components\CRUD\CreateRedux.jsx" />
     <Content Include="jsx\components\CRUD\CRUDRedux.jsx" />
     <Content Include="jsx\components\CRUD\CRUD.jsx" />
+    <Content Include="jsx\components\CRUD\InputOptions.js" />
     <Content Include="jsx\components\CRUD\Read.jsx" />
     <None Include="jsx\Home.jsx" />
     <Content Include="jsx\components\CRUD\ReadOptions.js" />

@@ -5,10 +5,10 @@ requirejs([
     'reactRedux',
     'redux',
     'jsx!CRUD/CRUD',
-    'jsx!CRUD/CreateRedux',
-    'jsx!CRUD/CRUDRedux'
+    'jsx!CRUD/CRUDRedux',
+    'jsx!CRUD/CRUDFormRedux'
 ],
-function (React, ReactDOM, ReactRedux, Redux, CRUD, CreateRedux, CRUDRedux) {
+function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux) {
 
     //Mock categories instead of getting from store
     var mockList = [
@@ -28,7 +28,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CreateRedux, CRUDRedux) {
                 );
     }
 
-    CreateRedux.subscribe(render);
+    CRUDFormRedux.subscribe(render);
     CRUDRedux.subscribe(render);
 
     render();

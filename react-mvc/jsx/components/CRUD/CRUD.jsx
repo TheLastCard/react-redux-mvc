@@ -3,20 +3,19 @@
 define([
     'react',
     'jsx!CRUD/Read',
-    'jsx!CRUD/Create',
+    'jsx!CRUD/CRUDForm',
     'jsx!CRUD/CRUDRedux',
     'CRUD/ReadOptions',
     'CRUD/InputOptions'
 ],
-function (React, Read, Create, CRUDRedux, ReadOptions, InputOptions) {
-
+function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
     var CRUD = React.createClass({
         getInitialState: function () {
             return {
                 readOptions: {
                     isTable: true,
                     modal: false,
-                    variables : [
+                    variables: [
                         {
                             variableName: 'name',
                             style: ReadOptions.Tablecell
@@ -63,15 +62,28 @@ function (React, Read, Create, CRUDRedux, ReadOptions, InputOptions) {
                 }],
                 createButtons: [{
                     name: 'Create',
-                    action: (event, inputs) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs }),
+                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id:id }),
                     clearFormAfterAction: true,
                     closeModalAfterAction: true,
                     className: 'success button',
                     wrapperClassName: 'small-12 columns'
                 }],
                 createModalOptions: {
-                    buttonText: 'Create new category'
-                }
+                    openModalButtonText: 'Create new category',
+                    openModalButtonClass: 'button success'
+                },
+                updateButtons: [{
+                    name: 'Update',
+                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id:id }),
+                    clearFormAfterAction: true,
+                    closeModalAfterAction: true,
+                    className: 'success button',
+                    wrapperClassName: 'small-12 columns'
+                }],
+                updateModalOptions: {
+                    openModalButtonText: 'Edit category',
+                    openModalButtonClass: 'button'
+                },
             };
         },
         componentDidMount: function () {
@@ -92,16 +104,21 @@ function (React, Read, Create, CRUDRedux, ReadOptions, InputOptions) {
                                     <th>Target group</th>
                                 </tr>
                             </thead>
-                            <tbody>
                                 {CRUDRedux.getState().map(function (item, index) {
                                     return (
-                                        <Read key={'read' + index + 'id' + item.id} item={item} options={self.state.readOptions} debug={true} />
+                                        <tbody key={'tbody'+item.id+index}>
+                                            <Read key={'read' + index + 'id' + item.id} item={item} options={self.state.readOptions} debug={true } />
+                                            <tr>
+                                                <td colSpan="3">
+                                                    <CRUDForm key={'CRUDFormUpdate'+item.id+index} inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     );
                                 })}
-                            </tbody>
                         </table>
 
-                        <Create inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={true} />
+                        <CRUDForm key={'CRUDCreateForm'} inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={true} />
                     </div>
                 </div>
             );

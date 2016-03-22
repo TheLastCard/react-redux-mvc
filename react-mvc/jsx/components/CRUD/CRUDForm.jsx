@@ -39,7 +39,8 @@
 
 //Modal. If you want the create form inside a modal, you need to specify the modal object aswell
 //[{
-//    buttonText: 'Create new category'
+//    openModalButtonText: 'Create new category',
+//    openModalButtonClass : 'button success'
 //}]
 
 //Debug. Set to true to enable console log and checks around problems with radio buttons and checkboxes
@@ -48,32 +49,40 @@
 //<Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={true}/>
 
 
-define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
-    var Create = React.createClass({
-        modalId: '#createModal' + Math.floor((Math.random() * 10000) + 1).toString(),
+define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
+    var CRUDForm = React.createClass({
+        modalId: '',
         getInitialState: function () {
             if (!this.props.inputs) {
-                console.error('"inputs" is not defined. Did you forget to add it to the <Create /> component?');
+                console.error('"inputs" is not defined. Did you forget to add it to the <CRUDForm /> component?');
             }
             if (!this.props.buttons) {
-                console.error('"buttons" is not defined. Did you forget to add it to the <Create /> component?');
+                console.error('"buttons" is not defined. Did you forget to add it to the <CRUDForm /> component?');
             }
 
             return {
                 inputs: this.props.inputs,
-                buttons: this.props.buttons
+                buttons: this.props.buttons,
+                item: this.props.item
             }
         },
+        componentWillMount: function () {
+            this.modalId = '#CRUDFormModal' + Math.floor((Math.random() * 10000) + 1).toString();
+        },
+        componentDidMount: function () {
+            CRUDFormRedux.dispatch({ type: 'INIT', list: this.state.inputs });
+            $(document).foundation();
+        },
         onChangeHandler: function (event, index, callback) {
-            CreateRedux.dispatch({ type: 'CHANGE', event: event, index: index });
+            CRUDFormRedux.dispatch({ type: 'CHANGE', event: event, index: index });
             if (callback) {
                 callback(event, index);
             }
         },
         onBlurHandler: function (event, index) {
-            CreateRedux.dispatch({ type: 'ONBLUR', event: event, index: index });
+            CRUDFormRedux.dispatch({ type: 'ONBLUR', event: event, index: index });
         },
-        buttonClickHandler: function (event, button) {
+        buttonClickHandler: function (event, button, id) {
             event.preventDefault();
 
             if (!this.formValidation() && !button.skipValidation) {
@@ -82,26 +91,22 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
 
             if (button.action) {
                 var inputsCopy = this.state.inputs.slice();
-                button.action(event, inputsCopy);
+                button.action(event, inputsCopy, id);
             }
             if (button.clearFormAfterAction) {
-                CreateRedux.dispatch({ type: 'CLEAR' });
+                CRUDFormRedux.dispatch({ type: 'CLEAR' });
             }
             if (button.closeModalAfterAction) {
                 this.closeModal(this.modalId);
             }
         },
         formValidation: function () {
-            CreateRedux.dispatch({ type: 'VALIDATE' });
+            CRUDFormRedux.dispatch({ type: 'VALIDATE' });
             var validation = true;
             for (var i = 0; i < this.state.inputs.length; i++) {
                 validation = this.state.inputs[i].hasError ? false : validation;
             }
             return validation;
-        },
-        componentDidMount: function () {
-            CreateRedux.dispatch({ type: 'INIT', list: this.state.inputs });
-            $(document).foundation();
         },
         createLabel: function (input) {
             return (
@@ -240,11 +245,13 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
         },
         createButtons: function () {
             var self = this;
+            var id = this.state.item ? this.state.item.id : null;
             return this.state.buttons.map(function (button) {
                 return (
                     <div key={button.name + 'wrapper'} className={button.wrapperClassName }>
+                        
                         <button key={button.name} id={button.name} className={button.className}
-                                onClick={(event) => self.buttonClickHandler(event, button)}>
+                                onClick={(event) => self.buttonClickHandler(event, button, id)}>
                             {button.name}
                         </button>
                     </div>
@@ -272,7 +279,7 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
             var self = this;
             return (
                 <div>
-                    <button className="button success" onClick={() =>self.openModal(self.modalId) }>{self.props.buttonText || 'Create new'}</button>
+                    <button className={self.props.modal.openModalButtonClass} onClick={() =>self.openModal(self.modalId) }>{self.props.modal.openModalButtonText || 'New/Edit'}</button>
 
                     <div className="reveal" id={self.modalId.replace('#', '')} data-reveal>
                         {form}
@@ -284,11 +291,20 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
             );
         },
         openModal: function (id) {
+            console.log(id);
             $(id).foundation('open');
+            if (!this.state.item) {
+                return;
+            }
+            CRUDFormRedux.dispatch({ type: 'INIT_UPDATE', event: event, item: this.state.item });
         },
         closeModal: function (id) {
             $(id).foundation('close');
-            CreateRedux.dispatch({ type: 'CLEAR' });
+            CRUDFormRedux.dispatch({ type: 'CLEAR' });
+            if (!this.state.item) {
+                return;
+            }
+            CRUDFormRedux.dispatch({ type: 'CLEAR'});
         },
         isSetupCorrect: function (input) {
             if (input.checked || Array.isArray(input.checked)) {
@@ -321,5 +337,5 @@ define(['react', 'jsx!CRUD/CreateRedux'], function (React, CreateRedux) {
         }
     });
 
-    return Create;
+    return CRUDForm;
 });

@@ -1,7 +1,7 @@
 ﻿
 define(['redux', 'expect'], function (Redux, expect) {
 
-    const create = (state, action) => {
+    const CRUDFormRedux = (state, action) => {
         switch (action.type) {
             case 'INIT':
                 console.log('INIT CreateRedux');
@@ -9,8 +9,17 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return inputsCopy.map(function (input) {
                     return setErrorInitState(setDefaults(input));
                 });
+            case 'INIT_UPDATE':
+                console.log('INIT_UPDATE ');
+                var itemCopy = Object.assign({}, action.item);
+                var inputsCopy = state.slice();
+                return inputsCopy.map(function (input) {
+                    input.value = itemCopy[input.name];
+                    return input;
+                });
+                break;
             case 'CHANGE':
-                console.log('CHANGE CreateRedux');
+                console.log('CHANGE CreateRedux', state);
                 var inputsCopy = state.slice();
                 var input = inputsCopy[action.index];
 
@@ -116,5 +125,5 @@ define(['redux', 'expect'], function (Redux, expect) {
         return input;
     }
 
-    return Redux.createStore(create);
+    return Redux.createStore(CRUDFormRedux);
 });
