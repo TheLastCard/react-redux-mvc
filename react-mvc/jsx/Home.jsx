@@ -4,14 +4,11 @@ requirejs([
     'reactDOM',
     'reactRedux',
     'redux',
-    'jsx!orbit/Orbit',
-    'jsx!counter/CounterRedux',
-    'jsx!counter/Counter',
-    'jsx!categories/Categories',
+    'jsx!CRUD/CRUD',
     'jsx!CRUD/CreateRedux',
     'jsx!CRUD/CRUDRedux'
 ],
-function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Categories, CreateRedux, CRUDRedux) {
+function (React, ReactDOM, ReactRedux, Redux, CRUD, CreateRedux, CRUDRedux) {
 
     //Mock categories instead of getting from store
     var mockList = [
@@ -26,7 +23,7 @@ function (React, ReactDOM, ReactRedux, Redux, Orbit, CounterRedux, Counter, Cate
     const render = () => {
         //console.log('render called');
         ReactDOM.render(
-                    <Categories categories={mockList}/>,
+                    <CRUD data={mockList}/>,
                     document.getElementById('content')
                 );
     }
