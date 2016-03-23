@@ -11,17 +11,10 @@ requirejs([
 function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux) {
 
     //Mock categories instead of getting from store
-    var mockList = [
-        {
-            id: 0,
-            name: 'Cars',
-            description: 'Stuff that you drive around with',
-            targetGroup: ['Young Adults', 'Adults']
-        }];
+    var mockList = [];
 
 
     const render = () => {
-        //console.log('render called');
         ReactDOM.render(
                     <CRUD data={mockList}/>,
                     document.getElementById('content')

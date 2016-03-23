@@ -3,7 +3,7 @@
 
 define(['redux', 'expect'], function (Redux, expect) {
 
-    const item = (state, action) => {
+    const single = (state, action) => {
         switch (action.type) {
             case 'CREATE':
                 var result = { id: action.index };
@@ -17,12 +17,16 @@ define(['redux', 'expect'], function (Redux, expect) {
                 });
                 return result;
             case 'UPDATE':
-                console.log('UPDATE -> item');
-                return state.map(function (item) {
-                    if (item.id !== action.id) {
-                        return item;
+                var result = { id: action.id };
+                action.inputs.map(function (input) {
+                    if (!input.jsonName) {
+                        result[input.name] = input.value;
+                    }
+                    else {
+                        result[input.jsonName] = input.value;
                     }
                 });
+                return result;
             default:
                 return state;
         }
@@ -38,12 +42,19 @@ define(['redux', 'expect'], function (Redux, expect) {
                 var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
                 actionCopy.index = state.length;
-                return stateCopy.concat(item(undefined, actionCopy));
+                return stateCopy.concat(single(undefined, actionCopy));
             case 'UPDATE':
-                console.warn('UPDATE CRUDRedux -> ');
+                console.log('UPDATE CRUDRedux');
                 var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
-                return stateCopy.concat(item(stateCopy, actionCopy));
+
+                var result = stateCopy.map(function (item) {
+                    if (item.id !== actionCopy.id) {
+                        return item;
+                    }
+                    return single(undefined, actionCopy);
+                });
+                return result;
             default:
                 return [];
         }

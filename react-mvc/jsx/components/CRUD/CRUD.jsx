@@ -62,8 +62,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 }],
                 createButtons: [{
                     name: 'Create',
-                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id:id }),
-                    clearFormAfterAction: true,
+                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id: id }),
                     closeModalAfterAction: true,
                     className: 'success button',
                     wrapperClassName: 'small-12 columns'
@@ -74,8 +73,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 },
                 updateButtons: [{
                     name: 'Update',
-                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id:id }),
-                    clearFormAfterAction: true,
+                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id: id }),
                     closeModalAfterAction: true,
                     className: 'success button',
                     wrapperClassName: 'small-12 columns'
@@ -89,6 +87,21 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
         componentDidMount: function () {
             CRUDRedux.dispatch({ type: 'INIT', list: this.props.data });
         },
+        renderItems: function () {
+            var self = this;
+            return CRUDRedux.getState().map(function (item, index) {
+                return (
+                    <tbody key={'read-tbody'+index+'itemId'+item.id }>
+                        <Read item={item} options={self.state.readOptions} debug={true } />
+                        <tr>
+                            <td colSpan="3">
+                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true } />
+                            </td>
+                        </tr>
+                    </tbody>
+                );
+            });
+        },
         render: function () {
             var self = this;
             return (
@@ -96,7 +109,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                     <div className="small-12 columns">
                         <h2>Categories</h2>
 
-                        <table key={'categoryTable'}>
+                        <table key={'read-table'}>
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -104,18 +117,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                                     <th>Target group</th>
                                 </tr>
                             </thead>
-                                {CRUDRedux.getState().map(function (item, index) {
-                                    return (
-                                        <tbody key={'tbody'+item.id+index}>
-                                            <Read key={'read' + index + 'id' + item.id} item={item} options={self.state.readOptions} debug={true } />
-                                            <tr>
-                                                <td colSpan="3">
-                                                    <CRUDForm key={'CRUDFormUpdate'+item.id+index} inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    );
-                                })}
+                            {self.renderItems()}
                         </table>
 
                         <CRUDForm key={'CRUDCreateForm'} inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={true} />
@@ -124,6 +126,5 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
             );
         }
     });
-
     return CRUD;
 });

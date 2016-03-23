@@ -31,7 +31,7 @@
 //    name: 'For example: Submit. Will be the label of the button',
 //    action: 'Action. Can be null',
 //    clearFormAfterAction: 'If you want to clear the form after action has been run',
-//    closeModalAfterAction: 'If you have spesified to use modal, set this to true in order to close modal after action',
+//    closeModalAfterAction: 'If you have spesified to use modal, set this to true in order to close modal after action. Closing modal triggers CLEAR on the form',
 //    className: 'Classes to add to the div surrounding the input',
 //    skipValidation: false, //Use this if you want to skip validation on button click. For example if you add a button to clear form
 //    wrapperClassName: 'If you want to add a wrapper class to the div outside the button',
@@ -62,8 +62,7 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
 
             return {
                 inputs: this.props.inputs,
-                buttons: this.props.buttons,
-                item: this.props.item
+                buttons: this.props.buttons
             }
         },
         componentWillMount: function () {
@@ -71,7 +70,8 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
         },
         componentDidMount: function () {
             CRUDFormRedux.dispatch({ type: 'INIT', list: this.state.inputs });
-            $(document).foundation();
+            $(this.modalId).foundation();
+            
         },
         onChangeHandler: function (event, index, callback) {
             CRUDFormRedux.dispatch({ type: 'CHANGE', event: event, index: index });
@@ -93,7 +93,7 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
                 var inputsCopy = this.state.inputs.slice();
                 button.action(event, inputsCopy, id);
             }
-            if (button.clearFormAfterAction) {
+            if (button.clearFormAfterAction && !button.closeModalAfterAction) {
                 CRUDFormRedux.dispatch({ type: 'CLEAR' });
             }
             if (button.closeModalAfterAction) {
@@ -245,7 +245,7 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
         },
         createButtons: function () {
             var self = this;
-            var id = this.state.item ? this.state.item.id : null;
+            var id = this.props.item ? this.props.item.id : null;
             return this.state.buttons.map(function (button) {
                 return (
                     <div key={button.name + 'wrapper'} className={button.wrapperClassName }>
@@ -291,20 +291,15 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
             );
         },
         openModal: function (id) {
-            console.log(id);
             $(id).foundation('open');
-            if (!this.state.item) {
+            if (!this.props.item) {
                 return;
             }
-            CRUDFormRedux.dispatch({ type: 'INIT_UPDATE', event: event, item: this.state.item });
+            CRUDFormRedux.dispatch({ type: 'INIT_UPDATE', event: event, item: this.props.item });
         },
         closeModal: function (id) {
             $(id).foundation('close');
             CRUDFormRedux.dispatch({ type: 'CLEAR' });
-            if (!this.state.item) {
-                return;
-            }
-            CRUDFormRedux.dispatch({ type: 'CLEAR'});
         },
         isSetupCorrect: function (input) {
             if (input.checked || Array.isArray(input.checked)) {

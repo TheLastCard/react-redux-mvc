@@ -10,7 +10,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                     return setErrorInitState(setDefaults(input));
                 });
             case 'INIT_UPDATE':
-                console.log('INIT_UPDATE ');
+                console.log('INIT_UPDATE');
                 var itemCopy = Object.assign({}, action.item);
                 var inputsCopy = state.slice();
                 return inputsCopy.map(function (input) {
@@ -19,7 +19,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 });
                 break;
             case 'CHANGE':
-                console.log('CHANGE CreateRedux', state);
+                console.log('CHANGE CreateRedux');
                 var inputsCopy = state.slice();
                 var input = inputsCopy[action.index];
 
@@ -28,7 +28,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 if (input.type === 'checkbox') {
                     var alternatives = [];
                     if (input.value) {
-                        alternatives = input.value;
+                        alternatives = input.value.slice();
                     }
                     alternatives.indexOf(newValue) > -1 ? alternatives.splice(alternatives.indexOf(newValue), 1) : alternatives.push(newValue);
                     input.value = alternatives;

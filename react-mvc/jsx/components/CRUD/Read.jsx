@@ -15,9 +15,8 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
                 console.error("options.variables is not defined on the Read component! : <Read options={missing options.variables[] here}>");
                 return null;
             }
-
+            
             return {
-                item: this.props.item,
                 options: this.props.options,
                 hasTableCells: false,
                 hasTableRows: false
@@ -32,8 +31,7 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
                         return null;
                     }
                 }
-                var value = option.format ? option.format(self.state.item[option.variableName]) : self.state.item[option.variableName];
-
+                var value = option.format ? option.format(self.props.item[option.variableName]) : self.props.item[option.variableName];
                 elements.push(self.createElement(option, value));
             });
             return elements;
@@ -74,7 +72,7 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
                 console.error('variableName is not defined! You need to include that in options for the read component <Read options={myOptions} />: myOptions = {variables:[{variableName: \'someVariableName\'}]}');
                 return false;
             }
-            if (!this.state.item[option.variableName]) {
+            if (!this.props.item[option.variableName]) {
                 console.error('variableName, ' + option.variableName + ' cannot be found in the dataset you have supplied to the read element!');
                 return false;
             }
