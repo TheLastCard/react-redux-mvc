@@ -255,7 +255,6 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             return this.state.buttons.map(function (button) {
                 return (
                     <div key={button.name + 'wrapper'} className={button.wrapperClassName }>
-                        
                         <button key={button.name} id={button.name} className={button.className}
                                 onClick={(event) => self.buttonClickHandler(event, button, id)}>
                             {button.name}
@@ -284,8 +283,8 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         createModal: function (form) {
             var self = this;
             return (
-                <div>
-                    <button className={self.props.modal.openModalButtonClass} onClick={() =>self.openModal(self.modalId) }>{self.props.modal.openModalButtonText || 'New/Edit'}</button>
+                <div className={this.props.className}>
+                    <button className={self.props.modal.openModalButtonClass} onClick={() =>self.openModal(self.modalId) }>{!self.props.item ? (self.props.modal.openModalButtonText || 'New/Edit') : (self.props.modal.openModalButtonText || '')}</button>
 
                     <div className="reveal" id={self.modalId.replace('#', '')} data-reveal>
                         {form}

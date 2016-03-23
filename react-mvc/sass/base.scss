@@ -31,5 +31,10 @@ html {
 }
 
 .shrinkRow{
-
+    height: 0;
+    width: 0;
+    position: relative;
+    td{
+        padding: 0;
+    }
 }

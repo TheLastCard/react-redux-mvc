@@ -5,7 +5,6 @@
 //var options = {
 //    isTable: true,
 //    modal: false,
-//    wrapperClass:nul,
 //    variables: [
 //        {
 //            variableName: 'name',
@@ -103,13 +102,13 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
             return true;
         },
         returnDefaultLayout: function (returnStructure) {
-            return (<div className={this.props.options.wrapperClass }>{returnStructure}</div>);
+            return (<div className={this.props.className}>{returnStructure}</div>);
         },
         returnTableCells: function (returnStructure) {
-            return (<tr className={this.props.options.wrapperClass }>{returnStructure}</tr>);
+            return (<tr className={this.props.className}>{returnStructure}</tr>);
         },
         returnTableRows: function (returnStructure) {
-            return (<tbody className={this.props.options.wrapperClass}>{returnStructure}</tbody>);
+            return (<tbody className={this.props.className}>{returnStructure}</tbody>);
         },
         render: function () {
             var self = this;

@@ -1,6 +1,40 @@
 ﻿@import "variables.scss";
 @import "base.scss";
 
-.CRUDUpdateRow{
+.CRUDUpdateButton{
+    margin-top: -1rem;
+    margin-right: -2rem;
+    float: right;
+    &:before{
+        content: "\f040";
+        background-color: white;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        font-size: 2rem;
+        line-height: 0;
+        margin: 0;
+    }
+}
 
+.CRUDDeleteButton{
+    margin-top: -1rem;
+    margin-right: -4rem;
+    float: right;
+    &:before{
+        content: "\f014";
+        background-color: white;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        font-size: 2rem;
+        line-height: 0;
+        margin: 0;
+    }
+}
+
+.CRUDUpdateTable{
+    margin-right: 40px;
 }

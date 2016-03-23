@@ -15,7 +15,6 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 readOptions: {
                     isTable: true,
                     modal: false,
-                    wrapperClass:null,
                     variables: [
                         {
                             variableName: 'name',
@@ -80,8 +79,12 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                     wrapperClassName: 'small-12 columns'
                 }],
                 updateModalOptions: {
-                    openModalButtonText: 'Edit category',
-                    openModalButtonClass: 'button'
+                    openModalButtonText: null,
+                    openModalButtonClass: 'CRUDUpdateButton'
+                },
+                deleteModalOptions: {
+                    openModalButtonText: null,
+                    openModalButtonClass: 'CRUDDeleteButton'
                 },
             };
         },
@@ -96,7 +99,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                         <Read item={item} options={self.state.readOptions} debug={true} />
                         <tr className="shrinkRow">
                             <td colSpan="3">
-                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />                                
+                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
                             </td>
                         </tr>
                     </tbody>
@@ -110,16 +113,18 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                     <div className="small-12 columns">
                         <h2>Categories</h2>
 
-                        <table key={'read-table'}>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Target group</th>
-                                </tr>
-                            </thead>
-                            {self.renderItems()}
-                        </table>
+                        <div className={'CRUDUpdateTable'}>
+                            <table key={'read-table'}>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Target group</th>
+                                    </tr>
+                                </thead>
+                                {self.renderItems()}
+                            </table>
+                        </div>
 
                         <CRUDForm key={'CRUDCreateForm'} inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={true} />
                     </div>
