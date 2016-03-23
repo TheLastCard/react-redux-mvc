@@ -76,8 +76,13 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         },
         componentDidMount: function () {
             CRUDFormRedux.dispatch({ type: 'INIT', list: this.state.inputs });
-            $(this.modalId).foundation();
-            
+            if (this.props.modal) {
+                $(this.modalId).foundation();
+                return;
+            }
+            if (this.props.item) {
+                CRUDFormRedux.dispatch({ type: 'INIT_UPDATE', event: event, item: this.props.item });
+            }
         },
         onChangeHandler: function (event, index, callback) {
             CRUDFormRedux.dispatch({ type: 'CHANGE', event: event, index: index });
@@ -102,7 +107,7 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             if (button.clearFormAfterAction && !button.closeModalAfterAction) {
                 CRUDFormRedux.dispatch({ type: 'CLEAR' });
             }
-            if (button.closeModalAfterAction) {
+            if (button.closeModalAfterAction && this.props.modal) {
                 this.closeModal(this.modalId);
             }
         },
@@ -287,6 +292,7 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                     <button className={self.props.modal.openModalButtonClass} onClick={() =>self.openModal(self.modalId) }>{!self.props.item ? (self.props.modal.openModalButtonText || 'New/Edit') : (self.props.modal.openModalButtonText || '')}</button>
 
                     <div className="reveal" id={self.modalId.replace('#', '')} data-reveal>
+                        {self.createModalHeading()}
                         {form}
                         <button className="close-button" aria-label="Close reveal" type="button" onClick={() =>self.closeModal(self.modalId)}>
                             <span aria-hidden="true">&times;</span>
@@ -294,6 +300,13 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                     </div>
                 </div>
             );
+        },
+        createModalHeading: function(){
+            var self = this;
+            if (self.props.modal && self.props.modal.modalHeading) {
+                return (<h2 className={self.props.modal.modalHeadingClass}>{self.props.modal.modalHeading}</h2>);
+            }
+            return null;
         },
         openModal: function (id) {
             $(id).foundation('open');

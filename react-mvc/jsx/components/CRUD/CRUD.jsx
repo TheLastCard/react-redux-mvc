@@ -3,12 +3,13 @@
 define([
     'react',
     'jsx!CRUD/Read',
+    'jsx!CRUD/Delete',
     'jsx!CRUD/CRUDForm',
     'jsx!CRUD/CRUDRedux',
     'CRUD/ReadOptions',
     'CRUD/InputOptions'
 ],
-function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
+function (React, Read, Delete, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
     var CRUD = React.createClass({
         getInitialState: function () {
             return {
@@ -82,7 +83,24 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                     openModalButtonText: null,
                     openModalButtonClass: 'CRUDUpdateButton'
                 },
+                deleteButtons: [
+                    {
+                        name: 'Cancel',
+                        closeModalAfterAction: true,
+                        className: 'button secondary float-right',
+                        wrapperClassName: 'small-6 columns'
+                    },
+                    {
+                        name: 'Delete',
+                        action: (event, id) => CRUDRedux.dispatch({ type: 'DELETE', event: event, id: id}),
+                        closeModalAfterAction: true,
+                        className: 'button warning  float-left',
+                        wrapperClassName: 'small-6 columns'
+                    }
+                ],
                 deleteModalOptions: {
+                    modalHeading: 'Delete item?',
+                    modalHeadingClass: 'centered',
                     openModalButtonText: null,
                     openModalButtonClass: 'CRUDDeleteButton'
                 },
@@ -94,12 +112,16 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
         renderItems: function () {
             var self = this;
             return CRUDRedux.getState().map(function (item, index) {
+                if (!item) {
+                    return null;
+                }
                 return (
                     <tbody key={'read-tbody'+index+'itemId'+item.id }>
                         <Read item={item} options={self.state.readOptions} debug={true} />
                         <tr className="shrinkRow">
                             <td colSpan="3">
                                 <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
+                                <Delete item={item} buttons={self.state.deleteButtons} modal={self.state.deleteModalOptions} />
                             </td>
                         </tr>
                     </tbody>

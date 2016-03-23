@@ -1,6 +1,15 @@
 ﻿@import "variables.scss";
 @import "base.scss";
 
+.shrinkRow{
+    height: 0;
+    width: 0;
+    position: relative;
+    td{
+        padding: 0;
+    }
+}
+
 .CRUDUpdateButton{
     margin-top: -1rem;
     margin-right: -2rem;

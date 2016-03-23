@@ -45,16 +45,32 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return stateCopy.concat(single(undefined, actionCopy));
             case 'UPDATE':
                 console.log('UPDATE CRUDRedux');
+                console.log(action);
                 var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
 
-                var result = stateCopy.map(function (item) {
+                return stateCopy.map(function (item) {
+                    if (!item) {
+                        return null;
+                    }
                     if (item.id !== actionCopy.id) {
                         return item;
                     }
                     return single(undefined, actionCopy);
                 });
-                return result;
+            case 'DELETE':
+                console.log('DELETE');
+                if (state.length === 1) {
+                    return [];
+                }
+                return state.map(function (item) {
+                    if (!item) {
+                        return null;
+                    }
+                    if (item.id !== action.id) {
+                        return item;
+                    }
+                });
             default:
                 return [];
         }
