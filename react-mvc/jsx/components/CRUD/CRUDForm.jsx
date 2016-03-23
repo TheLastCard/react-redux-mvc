@@ -49,7 +49,7 @@
 //<Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={true}/>
 
 
-define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
+define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React,InputOptions, CRUDFormRedux) {
     var CRUDForm = React.createClass({
         modalId: '',
         getInitialState: function () {
@@ -117,7 +117,7 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
             var errorMessage = '';
             if (input.required || input.regex) {
                 var message = input.errorMessage ? input.errorMessage : input.label + ' is required';
-                var radioCheckboxErrorClass = input.type === 'checkbox' || input.type === 'radio' ? 'errorMessageRadioCheckbox' : 'errorMessage';
+                var radioCheckboxErrorClass = input.type === InputOptions.Checkbox || input.type === InputOptions.Radio ? 'errorMessageRadioCheckbox' : 'errorMessage';
                 errorMessage = (
                     <div className={input.hasError ? radioCheckboxErrorClass : radioCheckboxErrorClass + ' hide' }>{message}</div>
                 );
@@ -158,7 +158,7 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
                            id={checkboxRadioOption.trim()}
                            name={checkboxRadioOption.trim()}
                            value={checkboxRadioOption}
-                           checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === "checkbox") || (input.value === checkboxRadioOption && input.type === "radio")}
+                           checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === InputOptions.Checkbox) || (input.value === checkboxRadioOption && input.type === InputOptions.Radio)}
                            className={input.labelClassName}
                            onChange={(event) => self.onChangeHandler(event, index, input.onChange)} />
                 );
@@ -227,14 +227,14 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
             var self = this;
             return this.state.inputs.map(function (input, index) {
                 switch (input.type) {
-                    case 'textarea':
+                    case InputOptions.TextArea:
                         return self.createTextArea(input, index);
                         break;
-                    case 'radio':
-                    case 'checkbox':
+                    case InputOptions.Radio:
+                    case InputOptions.Checkbox:
                         return self.createCheckboxOrRadiobutton(input, index);
                         break;
-                    case 'select':
+                    case InputOptions.Select:
                         return self.createSelectlist(input, index);
                         break;
                     default:
@@ -316,7 +316,7 @@ define(['react', 'jsx!CRUD/CRUDFormRedux'], function (React, CRUDFormRedux) {
                 return false;
             }
 
-            if ((input.type === 'checkbox') && input.defaultValue) {
+            if ((input.type === InputOptions.Checkbox) && input.defaultValue) {
                 if (!Array.isArray(input.defaultValue)) {
                     console.error(input.type + ' : ' + input.name + '-> "defaultValue" should be an array!');
                     return false;

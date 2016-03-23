@@ -1,5 +1,5 @@
 ﻿
-define(['redux', 'expect'], function (Redux, expect) {
+define(['redux', 'expect', 'CRUD/InputOptions'], function (Redux, expect, InputOptions) {
 
     const CRUDFormRedux = (state, action) => {
         switch (action.type) {
@@ -25,7 +25,7 @@ define(['redux', 'expect'], function (Redux, expect) {
 
                 var newValue = action.event.target.value;
 
-                if (input.type === 'checkbox') {
+                if (input.type === InputOptions.Checkbox) {
                     var alternatives = [];
                     if (input.value) {
                         alternatives = input.value.slice();
@@ -76,11 +76,11 @@ define(['redux', 'expect'], function (Redux, expect) {
             return input.hasError;
         }
 
-        if ((input.type === 'radio' || input.type === 'checkbox')) {
+        if ((input.type === InputOptions.Radio || input.type === InputOptions.Checkbox)) {
             return input.hasError;
         }
 
-        if (input.type === 'select' && input.alternatives.indexOf(input.value) === -1) {
+        if (input.type === InputOptions.Select && input.alternatives.indexOf(input.value) === -1) {
             input.hasError = true;
             return input.hasError;
         }
@@ -100,10 +100,10 @@ define(['redux', 'expect'], function (Redux, expect) {
 
     const resetInput = (input) => {
         switch (input.type) {
-            case 'textarea':
+            case InputOptions.TextArea:
                 input.value = '';
                 break;
-            case 'select':
+            case InputOptions.Select:
                 input.value = input.placeholder;
                 break;
             default:

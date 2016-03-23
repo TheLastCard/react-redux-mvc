@@ -34,7 +34,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 formInputs: [{
                     label: 'Name',
                     name: 'name',
-                    type: InputOptions.Type.Text,
+                    type: InputOptions.Text,
                     placeholder: 'type a category name',
                     wrapperClassName: 'small-12 columns',
                     required: true,
@@ -44,7 +44,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 {
                     label: 'Description',
                     name: 'description',
-                    type: InputOptions.Type.TextArea,
+                    type: InputOptions.TextArea,
                     wrapperClassName: 'small-12 columns',
                     required: true,
                     errorMessage: 'Description is missing!'
@@ -52,7 +52,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 {
                     label: 'Target Group',
                     name: 'targetGroup',
-                    type: InputOptions.Type.Checkbox,
+                    type: InputOptions.Checkbox,
                     alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
                     defaultValue: null, //['Adults']
                     placeholder: 'Pick a target group',
