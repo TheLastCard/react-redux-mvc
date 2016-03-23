@@ -191,22 +191,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
+    <Content Include="css\font-awesome.css" />
     <Content Include="css\foundation-flex.css" />
     <Content Include="css\foundation.css" />
     <Content Include="css\foundation.min.css" />
     <Content Include="css\main.css" />
     <Content Include="favicon.png" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="jsx\components\counter\Counter.jsx" />
     <Content Include="jsx\components\counter\CounterRedux.jsx" />
     <Content Include="jsx\components\categories\Categories.jsx" />
     <Content Include="jsx\components\categories\Category.jsx" />
-    <Content Include="jsx\components\CRUD\Create.jsx" />
-    <Content Include="jsx\components\CRUD\CreateRedux.jsx" />
+    <Content Include="jsx\components\CRUD\CRUDForm.jsx" />
+    <Content Include="jsx\components\CRUD\CRUDFormRedux.jsx" />
     <Content Include="jsx\components\CRUD\CRUDRedux.jsx" />
     <Content Include="jsx\components\CRUD\CRUD.jsx" />
     <Content Include="jsx\components\CRUD\InputOptions.js" />
     <Content Include="jsx\components\CRUD\Read.jsx" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="jsx\Home.jsx" />
     <Content Include="jsx\components\CRUD\ReadOptions.js" />
     <Content Include="node_modules\deep-freeze\index.js" />

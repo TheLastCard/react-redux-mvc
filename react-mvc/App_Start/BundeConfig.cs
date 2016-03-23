@@ -8,7 +8,8 @@ namespace react_mvc.App_Start
         {
             bundles.Add(new StyleBundle("~/bundles/general.css").Include(
                         "~/css/foundation.css",
-                        "~/css/main.css"
+                        "~/css/main.css",
+                        "~/css/font-awesome.css"
                         ));
 
 

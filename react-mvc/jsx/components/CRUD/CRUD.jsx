@@ -15,6 +15,7 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 readOptions: {
                     isTable: true,
                     modal: false,
+                    wrapperClass:null,
                     variables: [
                         {
                             variableName: 'name',
@@ -92,10 +93,10 @@ function (React, Read, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
             return CRUDRedux.getState().map(function (item, index) {
                 return (
                     <tbody key={'read-tbody'+index+'itemId'+item.id }>
-                        <Read item={item} options={self.state.readOptions} debug={true } />
-                        <tr>
+                        <Read item={item} options={self.state.readOptions} debug={true} />
+                        <tr className="shrinkRow">
                             <td colSpan="3">
-                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true } />
+                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />                                
                             </td>
                         </tr>
                     </tbody>

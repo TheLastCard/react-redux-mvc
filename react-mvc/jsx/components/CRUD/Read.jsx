@@ -1,4 +1,28 @@
 ﻿
+//1#: You must define an item at the Read component: <Read item={<inset item here>}/>
+//2#: Define options and add it to the Read component: <Read options={<insert here>}/>
+//Example options under:
+//var options = {
+//    isTable: true,
+//    modal: false,
+//    wrapperClass:nul,
+//    variables: [
+//        {
+//            variableName: 'name',
+//            style: ReadOptions.Tablecell
+//        },
+//        {
+//            variableName: 'description',
+//            style: ReadOptions.Tablecell
+//        },
+//        {
+//            variableName: 'targetGroup',
+//            style: ReadOptions.Tablecell,
+//            format: (value) => { return value.toString().replace(',', ', '); }
+//        }
+//    ]
+//}
+//3#: If you want debug to be activated you need to specify this on the Read component: <Read debug={true] />
 
 define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
     var Read = React.createClass({
@@ -79,13 +103,13 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
             return true;
         },
         returnDefaultLayout: function (returnStructure) {
-            return (<div>{returnStructure}</div>);
+            return (<div className={this.props.options.wrapperClass }>{returnStructure}</div>);
         },
         returnTableCells: function (returnStructure) {
-            return (<tr>{returnStructure}</tr>);
+            return (<tr className={this.props.options.wrapperClass }>{returnStructure}</tr>);
         },
         returnTableRows: function (returnStructure) {
-            return (<tbody>{returnStructure}</tbody>);
+            return (<tbody className={this.props.options.wrapperClass}>{returnStructure}</tbody>);
         },
         render: function () {
             var self = this;

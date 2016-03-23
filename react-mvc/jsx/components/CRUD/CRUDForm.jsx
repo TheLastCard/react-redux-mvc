@@ -1,5 +1,5 @@
 ﻿
-
+//1#: Define inputs and add it to the CRUDForm component: <CRUDForm inputs={<inputs here>} />
 //Generates input fields with label. Required structure for 'inputs':
 //Note that not all properties are required, but at least label, name, type and alternatives(for checkbox and radio) is required
 //[{
@@ -26,10 +26,11 @@
 //    regex: '^[a-zA-Z]{3}$' //Regex string to test against. Ignored for radio or checkbox
 //}]
 
+//2#: Define buttons and add it to the CRUDForm component: <CRUDForm buttons={<buttons here>} />
 //Buttons. Required structure for 'buttons'
 //[{
 //    name: 'For example: Submit. Will be the label of the button',
-//    action: 'Action. Can be null',
+//    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id: id }), //Or 'CREATE' for create
 //    clearFormAfterAction: 'If you want to clear the form after action has been run',
 //    closeModalAfterAction: 'If you have spesified to use modal, set this to true in order to close modal after action. Closing modal triggers CLEAR on the form',
 //    className: 'Classes to add to the div surrounding the input',
@@ -37,16 +38,21 @@
 //    wrapperClassName: 'If you want to add a wrapper class to the div outside the button',
 //}]
 
-//Modal. If you want the create form inside a modal, you need to specify the modal object aswell
+//3#: If you want the CRUDForm comoponent to act as an UPDATE form instead of CREATE, you need to specity an item like this:
+//    <CRUDForm item={<item to edit here>} /> (dont worry, the system makes a copy of the item you supply so there is no direct editing)
+
+//4#: If you want to have the create/update-form to appear inside a modal instead of just a form, you need to add a modal object
+//    <CRUDForm modal={<modal options here>} />
+//Example object:
 //[{
 //    openModalButtonText: 'Create new category',
 //    openModalButtonClass : 'button success'
 //}]
 
-//Debug. Set to true to enable console log and checks around problems with radio buttons and checkboxes
+//5#: If you want debug to be activated you need to specify this on the Read component: <Read debug={true] />
 
-//Example of element as writting in the parent container
-//<Create inputs={this.state.inputs} buttons={this.state.buttons} modal={this.state.modalOptions} debug={true}/>
+//Example of how a <CRUDForm /> element could look like in the CRUD.jsx file. (CRUD.jsx acts as a parent to the other CRUD components)
+//<CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
 
 
 define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React,InputOptions, CRUDFormRedux) {
