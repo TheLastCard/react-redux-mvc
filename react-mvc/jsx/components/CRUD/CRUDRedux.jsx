@@ -63,7 +63,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 if (state.length === 1) {
                     return [];
                 }
-                return state.map(function (item) {
+                return state.x(function (item) {
                     if (!item) {
                         return null;
                     }

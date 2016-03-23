@@ -214,6 +214,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="jsx\components\CRUD\Delete.jsx" />
     <None Include="jsx\Home.jsx" />
     <Content Include="jsx\components\CRUD\ReadOptions.js" />
     <Content Include="node_modules\deep-freeze\index.js" />
