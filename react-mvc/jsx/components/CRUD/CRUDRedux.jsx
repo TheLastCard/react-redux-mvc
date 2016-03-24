@@ -17,7 +17,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return result;
             case 'UPDATE':
                 var result = { id: action.id };
-                action.inputs.map(function (input) {
+                return action.inputs.map(function (input) {
                     if (!input.jsonName) {
                         result[input.name] = input.value;
                     }
@@ -48,7 +48,6 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return stateCopy.concat(single(undefined, actionCopy));
             case 'UPDATE':
                 console.log('UPDATE CRUDRedux');
-                console.log(action);
                 var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
 
@@ -62,7 +61,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                     return single(undefined, actionCopy);
                 });
             case 'DELETE':
-                console.log('DELETE');
+                console.log('DELETE CRUDRedux');
                 if (state.length === 1) {
                     return [];
                 }
