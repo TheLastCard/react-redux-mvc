@@ -2,7 +2,6 @@
 
 
 define(['redux', 'expect'], function (Redux, expect) {
-
     const single = (state, action) => {
         switch (action.type) {
             case 'CREATE':
@@ -36,6 +35,10 @@ define(['redux', 'expect'], function (Redux, expect) {
         switch (action.type) {
             case 'INIT':
                 console.log('INIT CRUDRedux');
+                if (!Array.isArray(action.list)) {
+                    console.error('The data you have supplied to the CRUDRedux componenet does not seem to be an array of objects! Action.list = ' + action.list + '. Returning empty array instead');
+                    return [];
+                }
                 return action.list.slice();
             case 'CREATE':
                 console.log('CREATE CRUDRedux');

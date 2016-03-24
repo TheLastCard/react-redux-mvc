@@ -277,6 +277,8 @@
     </Compile>
     <Compile Include="Helpers\CRUD.cs" />
     <Compile Include="Helpers\ICRUD.cs" />
+    <Compile Include="Helpers\TargetGroupEnum.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,13 +4,13 @@ define(['redux', 'expect', 'CRUD/InputOptions'], function (Redux, expect, InputO
     const CRUDFormRedux = (state, action) => {
         switch (action.type) {
             case 'INIT':
-                console.log('INIT CreateRedux');
+                console.log('INIT CRUDFormRedux');
                 var inputsCopy = action.list.slice();
                 return inputsCopy.map(function (input) {
                     return setErrorInitState(setDefaults(input));
                 });
             case 'INIT_UPDATE':
-                console.log('INIT_UPDATE');
+                console.log('INIT_UPDATE CRUDFormRedux');
                 var itemCopy = Object.assign({}, action.item);
                 var inputsCopy = state.slice();
                 return inputsCopy.map(function (input) {
@@ -19,7 +19,7 @@ define(['redux', 'expect', 'CRUD/InputOptions'], function (Redux, expect, InputO
                 });
                 break;
             case 'CHANGE':
-                console.log('CHANGE CreateRedux');
+                console.log('CHANGE CRUDFormRedux');
                 var inputsCopy = state.slice();
                 var input = inputsCopy[action.index];
 
@@ -41,20 +41,20 @@ define(['redux', 'expect', 'CRUD/InputOptions'], function (Redux, expect, InputO
                 }
                 return inputsCopy;
             case 'ONBLUR':
-                console.log('ONBLUR CreateRedux');
+                console.log('ONBLUR CRUDFormRedux');
                 var inputsCopy = state.slice();
                 var input = inputsCopy[action.index];
                 validateInput(input);
                 return inputsCopy;
             case 'VALIDATE':
-                console.log('VALIDATE CreateRedux');
+                console.log('VALIDATE CRUDFormRedux');
                 var inputsCopy = state.slice();
                 inputsCopy.map(function (input) {
                     validateInput(input);
                 });
                 return inputsCopy;
             case 'CLEAR':
-                console.log('CLEAR CreateRedux');
+                console.log('CLEAR CRUDFormRedux');
                 var inputsCopy = state.slice();
                 return inputsCopy.map(function (input) {
                     return setErrorInitState(setDefaults(resetInput(input)));

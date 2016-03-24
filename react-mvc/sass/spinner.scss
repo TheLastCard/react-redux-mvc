@@ -1,0 +1,90 @@
+﻿@import "variables.scss";
+/*''''''''''''''THROBBER. DO NOT TOUCH'''''''''''''''''''''''*/
+@-moz-keyframes spinner {
+    to {
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinner {
+    to {
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spinner {
+    to {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    min-width: 60px;
+    min-height: 60px;
+    z-index: 1007;
+    &:before {
+        content: 'Loading…';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        margin-top: -25px;
+        margin-left: -25px;
+    }
+
+    &:not(:required):before {
+        content: '';
+        border-radius: 50%;
+        border: 8px solid #ccc;
+        border-top-color: $knowitGreen;
+        -webkit-animation: spinner 1.6s linear infinite;
+        -moz-animation: spinner 1.6s linear infinite;
+        -o-animation: spinner 1.6s linear infinite;
+        animation: spinner 1.6s linear infinite;
+    }
+}
+
+.SpinPos {
+    z-index: 1007;
+    position: fixed;
+    min-height: 100% !important;
+    min-width: 100% !important;
+    background-color: rgba(180, 180, 180, 0.498039);
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.schemaLoadSpinner {
+    &:before {
+        position: relative;
+        margin: 0px;
+        display: inline-block;
+        left: 0;
+        vertical-align: sub;
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+
+    &:not(:required):before{
+        border-width: 5px;
+    }
+}

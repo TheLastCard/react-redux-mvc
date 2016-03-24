@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using react_mvc.DBModels;
+using react_mvc.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,8 +14,16 @@ namespace react_mvc.Controllers
         [HttpGet]
         public JsonResult GetCategories()
         {
-            string output = "okay";
-            return Json(output, JsonRequestBehavior.AllowGet);
+            List<CategoryModel> returnList = new List<CategoryModel>();
+            CategoryModel mockData = new CategoryModel()
+            {
+                Id = 0,
+                Name= "Cars",
+                Description= "Stuff that you drive around with",
+                TargetGroup = new string[] { "Young Adults", "Adults" }
+            };
+            returnList.Add(mockData);
+            return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AddCategory(string name)

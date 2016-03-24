@@ -107,7 +107,19 @@ function (React, Read, Delete, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
             };
         },
         componentDidMount: function () {
-            CRUDRedux.dispatch({ type: 'INIT', list: this.props.data });
+            var self = this;
+            if (!this.props.dataUrl) {
+                console.error('dataUrl for fetching data is not defined on the CRUD component: <CRUD dataurl={undefined} />');
+            }
+            $.ajax({
+                url: this.props.dataUrl
+            }).done(function (result) {
+                CRUDRedux.dispatch({ type: 'INIT', list: JSON.parse(result) });
+            }).fail(function (error) {
+                console.error('dataUrl for fetching data was called, but failed fetching data! ',error);
+            }).always(function () {
+                self.toggleLoader(false);
+            });
         },
         renderItems: function () {
             var self = this;
@@ -152,6 +164,9 @@ function (React, Read, Delete, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                     </div>
                 </div>
             );
+        },
+        toggleLoader: function (toggle) {
+            !toggle ? $("#loader").hide() : $("#loader").show();
         }
     });
     return CRUD;
