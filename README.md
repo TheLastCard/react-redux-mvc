@@ -1,7 +1,7 @@
 # react-redux-mvc
 Generic CRUD - .NET MVC5 solution created with React and Redux. 
 
-Frontend is built with ZURB Foundation 6 and uses SASS for css compilation
+Frontend is built with ZURB Foundation 6 and Font-Awesome as icon set in addition to SASS for simpler CSS.
 
 This soultion requires Visual Studio 2015 or higher to compile
 
