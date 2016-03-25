@@ -22,7 +22,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     var actions = CRUDActions(urls);
 
     const CRUDOptions = {
-        debug:true,
+        debug: true,
         data: actions.READ,
         readOptions: {
             showAsTable: true,
@@ -64,8 +64,25 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             label: 'Target Group',
             name: 'targetGroup',
             type: InputOptions.Checkbox,
-            alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
-            defaultValue: null, //['Adults']
+            alternatives: [
+                {
+                    name: 'Children',
+                    value: 'Children'
+                },
+                {
+                    name: 'Young Adults',
+                    value: 'Young Adults'
+                },
+                {
+                    name: 'Adults',
+                    value: 'Adults'
+                },
+                {
+                    name: 'Seniors',
+                    value: 'Seniors'
+                }
+            ],
+            defaultValue: ['Adults'],
             placeholder: 'Pick a target group',
             wrapperClassName: 'small-12 columns',
             required: true,

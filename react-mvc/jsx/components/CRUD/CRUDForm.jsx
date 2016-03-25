@@ -9,7 +9,16 @@
 //    type: 'Type of input; number, text, url',
 //    value: null, //'Initial value of the input field'
 //    defaultValue: null, //Used for checkboxes and radio buttons. Checkboxes takes an array [] and radio buttons takes a string as defaultValue
-//    alternatives: null, //Array of alternatives for select, radio and checkbox
+//    alternatives: [  //Array of alternatives for select, radio and checkbox. If value is not defined, name is used as value instead
+//                {
+//                    name: 'Children',
+//                    value: 'Value1'
+//                },
+//                {
+//                    name: 'Young Adults',
+//                    value: 'Value2'
+//                }
+//    ],
 //    checked: null,
 //    disabled: null,
 //    //onChange : Here you can for example define an additional redux dispatcher which
@@ -168,18 +177,19 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
 
             var multipleChoices = [];
             input.alternatives.map(function (checkboxRadioOption, checkboxRadioIndex) {
+                var value = checkboxRadioOption.value !== undefined && checkboxRadioOption.value !== null ? checkboxRadioOption.value : checkboxRadioOption.name;
                 multipleChoices.push(
                     <input key={input.name + checkboxRadioIndex}
                            type={input.type}
-                           id={checkboxRadioOption.trim()}
-                           name={checkboxRadioOption.trim()}
-                           value={checkboxRadioOption}
-                           checked={input.value && (input.value.indexOf(checkboxRadioOption) !== -1 && input.type === InputOptions.Checkbox) || (input.value === checkboxRadioOption && input.type === InputOptions.Radio)}
+                           id={checkboxRadioOption.name.trim()}
+                           name={checkboxRadioOption.name.trim()}
+                           value={value}
+                           checked={input.value && (input.value.indexOf(value) !== -1 && input.type === InputOptions.Checkbox) || (input.value === value && input.type === InputOptions.Radio)}
                            className={input.labelClassName}
                            onChange={(event) => self.onChangeHandler(event, index, input.onChange)} />
                 );
                 multipleChoices.push(
-                    <label key={checkboxRadioOption.trim()} htmlFor={checkboxRadioOption.trim() }>{checkboxRadioOption}</label>
+                    <label key={checkboxRadioOption.name.trim()} htmlFor={checkboxRadioOption.name.trim() }>{checkboxRadioOption.name}</label>
                 );
             });
 
@@ -194,7 +204,8 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         createSelectlist: function (input, index) {
             var self = this;
             var optionList = input.alternatives.map(function (selectAlternatives, selectIndex) {
-                return (<option key={selectAlternatives + selectIndex} value={selectAlternatives }>{selectAlternatives}</option>);
+                var value = selectAlternatives.value !== undefined && selectAlternatives.value !== null ? selectAlternatives.value : selectAlternatives.name;
+                return (<option key={selectAlternatives + selectIndex} value={value }>{selectAlternatives.name}</option>);
             });
 
             return (
@@ -338,6 +349,10 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                 console.error(input.type + ' : ' + input.name + '-> Alternatives is not set or is not an array!');
                 return false;
             }
+            if (!input.alternatives[0].name) {
+                console.error(input.type + ' : ' + input.name + '-> Alternatives is not defined correctly! Should be an array of objects like this:');
+                console.error('alternatives: [{name: "somename", value: "this one is optional with name as fallback"}]');
+            }
 
             if ((input.type === InputOptions.Checkbox) && input.defaultValue) {
                 if (!Array.isArray(input.defaultValue)) {
@@ -345,7 +360,13 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                     return false;
                 }
                 for (var i = 0; i < input.defaultValue.length; i++) {
-                    if (input.alternatives.indexOf(input.defaultValue[i]) === -1) {
+                    var found = false;
+                    input.alternatives.map(function (alternative) {
+                        if(alternative.name === input.defaultValue[i] || alternative.value === input.defaultValue[i]){
+                            found = true;
+                        }
+                    });
+                    if (!found) {
                         console.error('Checkbox ' + input.name + '-> "defaultValue" does not exist in "alternatives"');
                         return false;
                     }
