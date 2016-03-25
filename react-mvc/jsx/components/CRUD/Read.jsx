@@ -3,7 +3,7 @@
 //2#: Define options and add it to the Read component: <Read options={<insert here>}/>
 //Example options under:
 //var options = {
-//    isTable: true,
+//    showAsTable: true,
 //    modal: false,
 //    variables: [
 //        {
@@ -114,7 +114,7 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
             var self = this;
             var returnStructure = self.createContent();
 
-            if (!this.state.options.isTable) {
+            if (!this.state.options.showAsTable) {
                 return self.returnDefaultLayout(returnStructure);
             }
 

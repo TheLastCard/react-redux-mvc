@@ -26,10 +26,10 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AddCategory(string name)
+        public JsonResult CreateCategory(string model)
         {
-            string output = string.IsNullOrEmpty(name) ? "okay" : name;
-            return Json(output, JsonRequestBehavior.AllowGet);
+            CategoryModel cat = JsonConvert.DeserializeObject<CategoryModel>(model);
+            return Json(cat, JsonRequestBehavior.AllowGet);
         }
     }
 }

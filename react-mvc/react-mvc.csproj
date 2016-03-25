@@ -203,6 +203,7 @@
     <Content Include="jsx\components\counter\CounterRedux.jsx" />
     <Content Include="jsx\components\categories\Categories.jsx" />
     <Content Include="jsx\components\categories\Category.jsx" />
+    <Content Include="jsx\components\CRUD\CRUDActions.js" />
     <Content Include="jsx\components\CRUD\CRUDForm.jsx" />
     <Content Include="jsx\components\CRUD\CRUDFormRedux.jsx" />
     <Content Include="jsx\components\CRUD\CRUDRedux.jsx" />
@@ -241,6 +242,7 @@
     <Content Include="sass\base.scss" />
     <Content Include="sass\variables.scss" />
     <Content Include="package.json" />
+    <Content Include="sass\spinner.scss" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\foundation\app.js" />
     <Content Include="scripts\foundation\foundation.js" />

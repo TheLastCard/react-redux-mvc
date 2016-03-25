@@ -5,121 +5,34 @@ define([
     'jsx!CRUD/Read',
     'jsx!CRUD/Delete',
     'jsx!CRUD/CRUDForm',
-    'jsx!CRUD/CRUDRedux',
-    'CRUD/ReadOptions',
-    'CRUD/InputOptions'
+    'jsx!CRUD/CRUDRedux'
 ],
-function (React, Read, Delete, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
+function (React, Read, Delete, CRUDForm, CRUDRedux) {
     var CRUD = React.createClass({
         getInitialState: function () {
+            if (!this.props.options) {
+                console.error("options is not defined on the crud element: <CRUD options={undefined} /> !");
+            }
             return {
-                readOptions: {
-                    isTable: true,
-                    modal: false,
-                    variables: [
-                        {
-                            variableName: 'name',
-                            style: ReadOptions.Tablecell
-                        },
-                        {
-                            variableName: 'description',
-                            style: ReadOptions.Tablecell
-                        },
-                        {
-                            variableName: 'targetGroup',
-                            style: ReadOptions.Tablecell,
-                            format: (value) => { return value.toString().replace(',', ', '); }
-                        }
-                    ]
-                },
-                formInputs: [{
-                    label: 'Name',
-                    name: 'name',
-                    type: InputOptions.Text,
-                    placeholder: 'type a category name',
-                    wrapperClassName: 'small-12 columns',
-                    required: true,
-                    errorMessage: 'Name is missing or to short!',
-                    regex: '[a-zA-Z]{4}'
-                },
-                {
-                    label: 'Description',
-                    name: 'description',
-                    type: InputOptions.TextArea,
-                    wrapperClassName: 'small-12 columns',
-                    required: true,
-                    errorMessage: 'Description is missing!'
-                },
-                {
-                    label: 'Target Group',
-                    name: 'targetGroup',
-                    type: InputOptions.Checkbox,
-                    alternatives: ['Children', 'Young Adults', 'Adults', 'Seniors'],
-                    defaultValue: null, //['Adults']
-                    placeholder: 'Pick a target group',
-                    wrapperClassName: 'small-12 columns',
-                    required: true,
-                    errorMessage: 'You must select a target group!'
-                }],
-                createButtons: [{
-                    name: 'Create',
-                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id: id }),
-                    closeModalAfterAction: true,
-                    className: 'success button',
-                    wrapperClassName: 'small-12 columns'
-                }],
-                createModalOptions: {
-                    openModalButtonText: 'Create new category',
-                    openModalButtonClass: 'button success'
-                },
-                updateButtons: [{
-                    name: 'Update',
-                    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id: id }),
-                    closeModalAfterAction: true,
-                    className: 'success button',
-                    wrapperClassName: 'small-12 columns'
-                }],
-                updateModalOptions: {
-                    openModalButtonText: null,
-                    openModalButtonClass: 'CRUDUpdateButton'
-                },
-                deleteButtons: [
-                    {
-                        name: 'Cancel',
-                        closeModalAfterAction: true,
-                        className: 'button secondary float-right',
-                        wrapperClassName: 'small-6 columns'
-                    },
-                    {
-                        name: 'Delete',
-                        action: (event, id) => CRUDRedux.dispatch({ type: 'DELETE', event: event, id: id}),
-                        closeModalAfterAction: true,
-                        className: 'button warning  float-left',
-                        wrapperClassName: 'small-6 columns'
-                    }
-                ],
-                deleteModalOptions: {
-                    modalHeading: 'Delete item?',
-                    modalHeadingClass: 'centered',
-                    openModalButtonText: null,
-                    openModalButtonClass: 'CRUDDeleteButton'
-                },
+                readOptions: this.props.options.readOptions,
+                formInputs: this.props.options.formInputs,
+                createButtons: this.props.options.createButtons,
+                createModalOptions: this.props.options.createModalOptions,
+                updateButtons: this.props.options.updateButtons,
+                updateModalOptions: this.props.options.updateModalOptions,
+                deleteButtons: this.props.options.deleteButtons,
+                deleteModalOptions: this.props.options.deleteModalOptions
             };
         },
         componentDidMount: function () {
             var self = this;
-            if (!this.props.dataUrl) {
-                console.error('dataUrl for fetching data is not defined on the CRUD component: <CRUD dataurl={undefined} />');
+            if (!this.props.options.data) {
+                console.error('data is not defined on the options object: options :{data : undefined}')
             }
-            $.ajax({
-                url: this.props.dataUrl
-            }).done(function (result) {
-                CRUDRedux.dispatch({ type: 'INIT', list: JSON.parse(result) });
-            }).fail(function (error) {
-                console.error('dataUrl for fetching data was called, but failed fetching data! ',error);
-            }).always(function () {
-                self.toggleLoader(false);
-            });
+            if (typeof this.props.options.data !== 'function') {
+                CRUDRedux.dispatch({ type: 'INIT', list: this.props.options.data });
+            }
+            this.props.options.data();
         },
         renderItems: function () {
             var self = this;
@@ -129,10 +42,10 @@ function (React, Read, Delete, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                 }
                 return (
                     <tbody key={'read-tbody'+index+'itemId'+item.id }>
-                        <Read item={item} options={self.state.readOptions} debug={true} />
+                        <Read item={item} options={self.state.readOptions} debug={self.props.debug} />
                         <tr className="shrinkRow">
                             <td colSpan="3">
-                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
+                                <CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={self.props.debug} />
                                 <Delete item={item} buttons={self.state.deleteButtons} modal={self.state.deleteModalOptions} />
                             </td>
                         </tr>
@@ -160,13 +73,10 @@ function (React, Read, Delete, CRUDForm, CRUDRedux, ReadOptions, InputOptions) {
                             </table>
                         </div>
 
-                        <CRUDForm key={'CRUDCreateForm'} inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={true} />
+                        <CRUDForm key={'CRUDCreateForm'} inputs={this.state.formInputs} buttons={this.state.createButtons} modal={this.state.createModalOptions} debug={this.props.debug} />
                     </div>
                 </div>
             );
-        },
-        toggleLoader: function (toggle) {
-            !toggle ? $("#loader").hide() : $("#loader").show();
         }
     });
     return CRUD;

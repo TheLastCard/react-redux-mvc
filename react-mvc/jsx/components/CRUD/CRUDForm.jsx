@@ -95,20 +95,25 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         },
         buttonClickHandler: function (event, button, id) {
             event.preventDefault();
-
+            var self = this;
             if (!this.formValidation() && !button.skipValidation) {
                 return;
             }
 
-            if (button.action) {
-                var inputsCopy = this.state.inputs.slice();
-                button.action(event, inputsCopy, id);
+            if (!button.action) {
+                self.buttonDefaultActions(button);
             }
+
+            var inputsCopy = this.state.inputs.slice();
+            button.action(event, inputsCopy, id, () => { self.buttonDefaultActions(button) });
+        },
+        buttonDefaultActions: function (button) {
+            var self = this;
             if (button.clearFormAfterAction && !button.closeModalAfterAction) {
                 CRUDFormRedux.dispatch({ type: 'CLEAR' });
             }
-            if (button.closeModalAfterAction && this.props.modal) {
-                this.closeModal(this.modalId);
+            if (button.closeModalAfterAction && self.props.modal) {
+                self.closeModal(self.modalId);
             }
         },
         formValidation: function () {

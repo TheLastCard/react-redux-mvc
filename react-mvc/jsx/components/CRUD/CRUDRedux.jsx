@@ -5,7 +5,7 @@ define(['redux', 'expect'], function (Redux, expect) {
     const single = (state, action) => {
         switch (action.type) {
             case 'CREATE':
-                var result = { id: action.index };
+                var result = { id: action.id };
                 action.inputs.map(function (input) {
                     if (!input.jsonName) {
                         result[input.name] = input.value;
@@ -17,7 +17,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 return result;
             case 'UPDATE':
                 var result = { id: action.id };
-                return action.inputs.map(function (input) {
+                action.inputs.map(function (input) {
                     if (!input.jsonName) {
                         result[input.name] = input.value;
                     }
@@ -50,7 +50,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 console.log('UPDATE CRUDRedux');
                 var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
-
+                
                 return stateCopy.map(function (item) {
                     if (!item) {
                         return null;
