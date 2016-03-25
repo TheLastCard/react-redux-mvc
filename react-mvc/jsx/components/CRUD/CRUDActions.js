@@ -11,7 +11,7 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
         };
 
         const mapObjectValuesToJSONString = (inputs, id) => {
-            var result = { id: 1 };
+            var result = { id: id };
             inputs.map(function (input) {
                 if (!input.jsonName) {
                     result[input.name] = input.value;
@@ -29,6 +29,9 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
                 console.log('CRUDActions CREATE');
                 if (!urls.createUrl) {
                     console.error("CRUDActions CREATE-> createUrl is not set! Should be a string inside the urls object like this urls:{createUrl: <createUrl>.");
+                }
+                if (id === undefined || id === null) {
+                    id = CRUDRedux.getState().length;
                 }
 
                 toggleLoader(true);
@@ -69,6 +72,9 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
                 if (!urls.updateUrl) {
                     console.error("CRUDActions UPDATE-> updateUrl is not set! Should be a string inside the urls object like this urls:{updateUrl: <updateUrl>.");
                 }
+                if (id === undefined || id === null) {
+                    console.error("CRUDActions UPDATE-> id of element to update is not defined!");
+                }
 
                 toggleLoader(true);
                 var JSONStringOfCreatedObject = mapObjectValuesToJSONString(inputs, id);
@@ -89,10 +95,13 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
                 //    toggleLoader(false);
                 //});
             },
-            DELETE: (event, inputs, id, callback) => {
+            DELETE: (event, id, callback) => {
                 console.log('CRUDActions DELETE');
                 if (!urls.deleteUrl) {
                     console.error("CRUDActions DELETE-> deleteUrl is not set! Should be a string inside the urls object like this urls:{deleteUrl: <deleteUrl>.");
+                }
+                if (id === undefined || id === null) {
+                    console.error("CRUDActions DELETE-> id of element to delete is not defined!");
                 }
 
                 toggleLoader(true);

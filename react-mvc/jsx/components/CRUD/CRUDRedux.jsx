@@ -44,7 +44,7 @@ define(['redux', 'expect'], function (Redux, expect) {
                 console.log('CREATE CRUDRedux');
                 var stateCopy = state.slice();
                 var actionCopy = Object.assign({}, action);
-                actionCopy.index = state.length;
+                actionCopy.id = state.length;
                 return stateCopy.concat(single(undefined, actionCopy));
             case 'UPDATE':
                 console.log('UPDATE CRUDRedux');
