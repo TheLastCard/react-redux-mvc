@@ -56,7 +56,7 @@ define(['react'], function (React) {
         buttonClickHandler: function (event, button, id) {
             event.preventDefault();
             if (button.action) {
-                button.action(event, id);
+                button.action(event, null, id);
             }
 
             if(this.props.modal){

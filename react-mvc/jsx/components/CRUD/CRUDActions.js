@@ -21,106 +21,105 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
                 }
             });
             return JSON.stringify(result);
+        };
+
+        const doneSwitch = (type, result, event, inputs, id) => {
+            switch (type) {
+                case 'CREATE':
+                    CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id: id });
+                    break;
+                case 'READ':
+                    CRUDRedux.dispatch({ type: 'INIT', list: JSON.parse(result) });
+                    break;
+                case 'UPDATE':
+                    CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id: id });
+                    break;
+                case 'DELETE':
+                    CRUDRedux.dispatch({ type: 'DELETE', event: event, id: id });
+                    break;
+                default:
+                    console.warn('Invalid call to doneSwitch() inside CRUDActions');
+                    break;
+            }
+        };
+
+        const ajaxOptions = (type, event, inputs, id) => {
+            switch (type) {
+                case 'CREATE':
+                    return {
+                        url: urls.createUrl,
+                        type: 'POST',
+                        data: { model: mapObjectValuesToJSONString(inputs, id) }
+                    };
+                    break;
+                case 'READ':
+                    return {
+                        url: urls.readUrl,
+                        type: 'GET'
+                    };
+                    break;
+                case 'UPDATE':
+                    return {
+                        url: urls.updateUrl,
+                        type: 'POST',
+                        data: { model: mapObjectValuesToJSONString(inputs, id) }
+                    };
+                    break;
+                case 'DELETE':
+                    return {
+                        url: urls.deleteUrl,
+                        type: 'POST',
+                        data: { id: id }
+                    };
+                    break;
+                default:
+                    console.warn('Invalid call to ajaxOptions() inside CRUDActions');
+                    break;
+            }
         }
 
+        const ajaxCall = (type, event, inputs, id, callback, skip) => {
+            console.log('CRUDActions', type);
+            if (!urls.createUrl) {
+                console.error('CRUDActions' + type + '-> ' + type.toLowerCase() + 'Url is not set! Should be a string inside the urls object like this urls:{' + type.toLowerCase() + 'Url: <' + type.toLowerCase() + 'Url>.');
+            }
+            if (type === 'CREATE') {
+                id = CRUDRedux.getState().length;
+            }
+            if (type !== 'READ' && (id === undefined || id === null)) {
+                console.error('CRUDActions' + type + '-> id is undefined!');
+            }
+            toggleLoader(true);
+
+            if (skip) {//For debug only
+                doneSwitch(type, null, event, inputs, id);
+                callback ? callback() : null;
+                toggleLoader(false);
+                return;
+            }
+            $.ajax(ajaxOptions(type, event, inputs, id)).done(function (result) {
+                console.log(result);
+                doneSwitch(type, result, event, inputs, id);
+                callback ? callback() : null;
+            }).fail(function (error) {
+                console.error('CRUDActions ' + type + ' failed! ', error);
+            }).always(function () {
+                toggleLoader(false);
+            });
+        };
 
         return {
             CREATE: (event, inputs, id, callback) => {
-                console.log('CRUDActions CREATE');
-                if (!urls.createUrl) {
-                    console.error("CRUDActions CREATE-> createUrl is not set! Should be a string inside the urls object like this urls:{createUrl: <createUrl>.");
-                }
-                if (id === undefined || id === null) {
-                    id = CRUDRedux.getState().length;
-                }
-
-                toggleLoader(true);
-                var JSONStringOfCreatedObject = mapObjectValuesToJSONString(inputs, id);
-            
-                $.ajax({
-                    url: urls.createUrl,
-                    type: 'POST',
-                    data: { model: JSONStringOfCreatedObject }
-                }).done(function (result) {
-                    //console.log(result);
-                    CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id: id });
-                    callback ? callback() : null;
-                }).fail(function (error) {
-                    console.error('CRUDActions CREATE failed! ', error);
-                }).always(function () {
-                    toggleLoader(false);
-                });
+                ajaxCall('CREATE', event, inputs, id, callback);
             },
-            READ: () =>{
-                console.log('CRUDActions READ');
-                if (!urls.readUrl) {
-                    console.error("CRUDActions READ-> readUrl is not set! Should be a string inside the urls object like this urls:{readUrl: <readUrl>.");
-                }
-                $.ajax({
-                    url: urls.readUrl,
-                    type: 'GET'
-                }).done(function (result) {
-                    CRUDRedux.dispatch({ type: 'INIT', list: JSON.parse(result) });
-                }).fail(function (error) {
-                    console.error('urls.readUrl for fetching data was called, but failed fetching data! ', error);
-                }).always(function () {
-                    toggleLoader(false);
-                });
+            READ: () => {
+                ajaxCall('READ');
             },
             UPDATE: (event, inputs, id, callback) => {
-                console.log('CRUDActions UPDATE');
-                if (!urls.updateUrl) {
-                    console.error("CRUDActions UPDATE-> updateUrl is not set! Should be a string inside the urls object like this urls:{updateUrl: <updateUrl>.");
-                }
-                if (id === undefined || id === null) {
-                    console.error("CRUDActions UPDATE-> id of element to update is not defined!");
-                }
-
-                toggleLoader(true);
-                var JSONStringOfCreatedObject = mapObjectValuesToJSONString(inputs, id);
-
-                CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id: id });
-                callback ? callback() : null;
-                toggleLoader(false);
-
-                //$.ajax({
-                //    url: urls.updateUrl,
-                //    type: 'POST',//TODO: Should be PUT
-                //    data: { model: JSONStringOfCreatedObject }
-                //}).done(function (result) {
-                //    //console.log(result);
-                //}).fail(function (error) {
-                //    console.error('CRUDActions UPDATE failed! ', error);
-                //}).always(function () {
-                //    toggleLoader(false);
-                //});
+                ajaxCall('UPDATE', event, inputs, id, callback, true);
             },
-            DELETE: (event, id, callback) => {
-                console.log('CRUDActions DELETE');
-                if (!urls.deleteUrl) {
-                    console.error("CRUDActions DELETE-> deleteUrl is not set! Should be a string inside the urls object like this urls:{deleteUrl: <deleteUrl>.");
-                }
-                if (id === undefined || id === null) {
-                    console.error("CRUDActions DELETE-> id of element to delete is not defined!");
-                }
-
-                toggleLoader(true);
-
-                CRUDRedux.dispatch({ type: 'DELETE', event: event, id: id });
-                callback ? callback() : null;
-                toggleLoader(false);
-
-                //$.ajax({
-                //    url: urls.deleteUrl,
-                //    type: 'POST',
-                //    data: { id: id }
-                //}).done(function (result) {
-                //    //console.log(result);
-                //}).fail(function (error) {
-                //    console.error('CRUDActions UPDATE failed! ', error);
-                //}).always(function () {
-                //    toggleLoader(false);
-                //});
+            DELETE: (event, inputs, id, callback) => {
+                ajaxCall('DELETE', event, inputs, id, callback, true);
             }
         }
     };

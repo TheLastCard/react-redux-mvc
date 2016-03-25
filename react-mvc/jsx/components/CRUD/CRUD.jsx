@@ -13,11 +13,12 @@ function (React, Read, Delete, CRUDForm, CRUDRedux) {
         if (!options) {
             console.error("options is not supplied to the CRUD constructor. Example on how to initiate: var crud = CRUD(options);");
         }
+        if (!options.data) {
+            console.error('data is not defined on the options object: options :{data : undefined}')
+        }
+
         function init() {
             console.log('CRUD INIT');
-            if (!options.data) {
-                console.error('data is not defined on the options object: options :{data : undefined}')
-            }
             if (typeof options.data !== 'function') {
                 CRUDRedux.dispatch({ type: 'INIT', list: options.data });
             }
