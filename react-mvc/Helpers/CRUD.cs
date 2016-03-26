@@ -14,6 +14,7 @@ namespace react_mvc.Helpers
         public CRUD(DbContext db)
         {
             _db = db;
+            _set = _db.Set<T>();
         }
 
         public void Add(T newEntity)

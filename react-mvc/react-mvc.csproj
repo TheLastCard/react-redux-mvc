@@ -120,6 +120,10 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="React.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=9aed67b161f7db78, processorArchitecture=MSIL">
       <HintPath>..\packages\React.Core.2.2.1\lib\net40\React.Core.dll</HintPath>
       <Private>True</Private>
@@ -243,6 +247,12 @@
     <Content Include="sass\variables.scss" />
     <Content Include="package.json" />
     <Content Include="sass\spinner.scss" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\foundation\app.js" />
     <Content Include="scripts\foundation\foundation.js" />
@@ -271,7 +281,7 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OldHomeController.cs" />
-    <Compile Include="DBContexts\WebshopDB.cs" />
+    <Compile Include="DBContexts\CRUDDB.cs" />
     <Compile Include="DBModels\CategoryDBModel.cs" />
     <Compile Include="DBModels\ProductDBModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -302,7 +312,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Logs\" />
     <Folder Include="Views\Categories\" />
   </ItemGroup>
   <ItemGroup>

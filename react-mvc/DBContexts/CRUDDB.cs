@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace react_mvc.DBContexts
 {
-    public class WebshopDB : DbContext
+    public class CRUDDB : DbContext
     {
         public DbSet<ProductDBModel> Products { get; set; }
         public DbSet<CategoryDBModel> Categories { get; set; }
