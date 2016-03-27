@@ -26,7 +26,7 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
         const doneSwitch = (type, result, event, inputs, id) => {
             switch (type) {
                 case 'CREATE':
-                    CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id: id });
+                    CRUDRedux.dispatch({ type: 'CREATE', event: event, inputs: inputs, id: result.id });
                     break;
                 case 'READ':
                     CRUDRedux.dispatch({ type: 'INIT', list: JSON.parse(result) });
@@ -116,10 +116,10 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
                 ajaxCall('READ');
             },
             UPDATE: (event, inputs, id, callback) => {
-                ajaxCall('UPDATE', event, inputs, id, callback, true);
+                ajaxCall('UPDATE', event, inputs, id, callback);
             },
             DELETE: (event, inputs, id, callback) => {
-                ajaxCall('DELETE', event, inputs, id, callback, true);
+                ajaxCall('DELETE', event, inputs, id, callback);
             }
         }
     };

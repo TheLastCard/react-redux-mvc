@@ -1,0 +1,18 @@
+namespace react_mvc.DBContexts.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class TargetGroups : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.CategoryDBModels", "TargetGroup", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.CategoryDBModels", "TargetGroup");
+        }
+    }
+}

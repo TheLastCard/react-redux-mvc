@@ -11,12 +11,13 @@ namespace react_mvc.Models
 {
     public class CategoryModel
     {
-        public CategoryModel(CategoryDBModel model)
+        public CategoryModel Populate(CategoryDBModel model)
         {
             this.Id = model.Id;
             this.Name = model.Name;
             this.Description = model.Description;
-            this.TargetGroup = model.TargetGroup.Select(x => x.ToDescriptionString()).ToArray();
+            this.TargetGroup = model.TargetGroup.Split(',').ToList();
+            return this;
         }
 
         [JsonProperty(PropertyName = "id")]
@@ -29,7 +30,7 @@ namespace react_mvc.Models
         public string Description { get; set; }
 
         [JsonProperty(PropertyName = "targetGroup")]
-        public string[] TargetGroup { get; set; }
+        public List<string> TargetGroup = new List<string>();
 
 
     }

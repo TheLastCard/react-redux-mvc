@@ -220,6 +220,7 @@
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="jsx\components\CRUD\Delete.jsx" />
+    <Content Include="App_Data\Logs\Development.log" />
     <None Include="jsx\Home.jsx" />
     <Content Include="jsx\components\CRUD\ReadOptions.js" />
     <Content Include="node_modules\deep-freeze\index.js" />
@@ -282,12 +283,22 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OldHomeController.cs" />
     <Compile Include="DBContexts\CRUDDB.cs" />
+    <Compile Include="DBContexts\Migrations\201603271221399_InitialCreate.cs" />
+    <Compile Include="DBContexts\Migrations\201603271221399_InitialCreate.Designer.cs">
+      <DependentUpon>201603271221399_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DBContexts\Migrations\201603271302484_TargetGroups.cs" />
+    <Compile Include="DBContexts\Migrations\201603271302484_TargetGroups.Designer.cs">
+      <DependentUpon>201603271302484_TargetGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DBContexts\Migrations\Configuration.cs" />
     <Compile Include="DBModels\CategoryDBModel.cs" />
     <Compile Include="DBModels\ProductDBModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CRUD.cs" />
+    <Compile Include="Helpers\EnumExtension.cs" />
     <Compile Include="Helpers\ICRUD.cs" />
     <Compile Include="Helpers\TargetGroupEnum.cs" />
     <Compile Include="Models\CategoryModel.cs" />
@@ -312,7 +323,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Logs\" />
     <Folder Include="Views\Categories\" />
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +333,14 @@
     <None Include="jsx\components\orbit\Orbit.jsx" />
     <TypeScriptCompile Include="scripts\typings\redux-action-utils\redux-action-utils.d.ts" />
     <TypeScriptCompile Include="scripts\typings\redux-actions\redux-actions.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DBContexts\Migrations\201603271221399_InitialCreate.resx">
+      <DependentUpon>201603271221399_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DBContexts\Migrations\201603271302484_TargetGroups.resx">
+      <DependentUpon>201603271302484_TargetGroups.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
