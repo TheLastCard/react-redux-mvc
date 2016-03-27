@@ -194,6 +194,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\CRUDDB.mdf" />
+    <Content Include="App_Data\CRUDDB_log.ldf">
+      <DependentUpon>CRUDDB.mdf</DependentUpon>
+    </Content>
     <Content Include="css\app.css" />
     <Content Include="css\font-awesome.css" />
     <Content Include="css\foundation-flex.css" />
