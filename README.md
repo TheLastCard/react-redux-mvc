@@ -9,4 +9,7 @@ To get started, clone this git respository
 
 When done, go to the folder "react-mvc" and run 'npm install'
 
+You must also add a valid database connection string to the web.config file
+
 SASS-compilation with Ruby: in the main directory there is already a file, scss.bat that automaticly starts up SASS-compilation for you when run if you have Ruby installed and the SASS gem
+
