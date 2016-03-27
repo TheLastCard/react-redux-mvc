@@ -40,6 +40,7 @@
 //[{
 //    name: 'For example: Submit. Will be the label of the button',
 //    action: (event, inputs, id) => CRUDRedux.dispatch({ type: 'UPDATE', event: event, inputs: inputs, id: id }), //Or 'CREATE' for create
+//    callback: null, //Optional callback funtion
 //    clearFormAfterAction: 'If you want to clear the form after action has been run',
 //    closeModalAfterAction: 'If you have spesified to use modal, set this to true in order to close modal after action. Closing modal triggers CLEAR on the form',
 //    className: 'Classes to add to the div surrounding the input',
@@ -123,6 +124,9 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             }
             if (button.closeModalAfterAction && self.props.modal) {
                 self.closeModal(self.modalId);
+            }
+            if (button.callback) {
+                button.callback();
             }
         },
         formValidation: function () {

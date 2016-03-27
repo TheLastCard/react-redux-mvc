@@ -225,7 +225,7 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="jsx\components\CRUD\Delete.jsx" />
     <Content Include="App_Data\Logs\Development.log" />
-    <None Include="jsx\Home.jsx" />
+    <None Include="jsx\Categories.jsx" />
     <Content Include="jsx\components\CRUD\ReadOptions.js" />
     <Content Include="node_modules\deep-freeze\index.js" />
     <Content Include="node_modules\expect\umd\expect.js" />
@@ -319,6 +319,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Partials\_CategoriesCRUD.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

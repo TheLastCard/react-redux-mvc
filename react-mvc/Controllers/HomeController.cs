@@ -13,5 +13,11 @@ namespace react_mvc.Controllers
         {
             return View();
         }
+
+        [ChildActionOnly]
+        public PartialViewResult Categories()
+        {
+            return PartialView("~/Views/Partials/_CategoriesCRUD.cshtml");
+        }
     }
 }

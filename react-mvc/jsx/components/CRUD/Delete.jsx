@@ -62,6 +62,10 @@ define(['react'], function (React) {
             if(this.props.modal){
                 this.closeModal(this.modalId);
             }
+
+            if (button.callback) {
+                button.callback();
+            }
         },
         createButtons: function () {
             var self = this;

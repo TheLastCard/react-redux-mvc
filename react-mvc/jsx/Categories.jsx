@@ -134,7 +134,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     };
     var Crud = CRUD(CRUDOptions);
 
-    var Home = React.createClass({
+    var Categories = React.createClass({
         renderItems: function () {
             return CRUDRedux.getState().map(function (item, index) {
                 if (!item) {
@@ -181,8 +181,8 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
 
     const render = () => {
         ReactDOM.render(
-            <Home />,
-            document.getElementById('content')
+            <Categories />,
+            document.getElementById('categoriesCRUD')
         );
     }
 
