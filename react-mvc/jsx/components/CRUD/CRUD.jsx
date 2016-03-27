@@ -22,7 +22,9 @@ function (React, Read, Delete, CRUDForm, CRUDRedux) {
             if (typeof options.data !== 'function') {
                 CRUDRedux.dispatch({ type: 'INIT', list: options.data });
             }
-            options.data();
+            else {
+                options.data();
+            }
         }
         init();
 

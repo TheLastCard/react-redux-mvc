@@ -14,10 +14,16 @@ namespace react_mvc.Controllers
             return View();
         }
 
-        [ChildActionOnly]
+        [HttpGet]
         public PartialViewResult Categories()
         {
             return PartialView("~/Views/Partials/_CategoriesCRUD.cshtml");
+        }
+
+        [HttpGet]
+        public PartialViewResult TargetGroups()
+        {
+            return PartialView("~/Views/Partials/_TargetGroupsCRUD.cshtml");
         }
     }
 }

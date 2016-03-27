@@ -14,16 +14,17 @@ requirejs([
 function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, ReadOptions, InputOptions, CRUDActions) {
 
     const urls = {
-        readUrl: 'Categories/Read',
-        createUrl: 'Categories/Create',
-        updateUrl: 'Categories/Update',
-        deleteUrl: 'Categories/Delete'
+        readUrl: 'TargetGroups/Read',
+        createUrl: 'TargetGroups/Create',
+        updateUrl: 'TargetGroups/Update',
+        deleteUrl: 'TargetGroups/Delete'
     };
     var actions = CRUDActions(urls);
 
+    var thisData = [];
     const CRUDOptions = {
         debug: true,
-        data: actions.READ,
+        data: thisData,
         readOptions: {
             showAsTable: true,
             variables: [
@@ -32,62 +33,32 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
                     style: ReadOptions.Tablecell
                 },
                 {
-                    variableName: 'description',
+                    variableName: 'age',
                     style: ReadOptions.Tablecell
-                },
-                {
-                    variableName: 'targetGroup',
-                    style: ReadOptions.Tablecell,
-                    format: (value) => { return value.toString().replace(',', ', '); }
                 }
             ]
         },
-        formInputs: [{
-            label: 'Name',
-            name: 'name',
-            type: InputOptions.Text,
-            placeholder: 'type a category name',
-            wrapperClassName: 'small-12 columns',
-            required: true,
-            errorMessage: 'Name is missing or to short!',
-            regex: '[a-zA-Z]{4}'
-        },
-        {
-            label: 'Description',
-            name: 'description',
-            type: InputOptions.TextArea,
-            wrapperClassName: 'small-12 columns',
-            required: true,
-            errorMessage: 'Description is missing!'
-        },
-        {
-            label: 'Target Group',
-            name: 'targetGroup',
-            type: InputOptions.Checkbox,
-            alternatives: [
-                {
-                    name: 'Children',
-                    value: 'Children'
-                },
-                {
-                    name: 'Young Adults',
-                    value: 'Young Adults'
-                },
-                {
-                    name: 'Adults',
-                    value: 'Adults'
-                },
-                {
-                    name: 'Seniors',
-                    value: 'Seniors'
-                }
-            ],
-            defaultValue: ['Adults'],
-            placeholder: 'Pick a target group',
-            wrapperClassName: 'small-12 columns',
-            required: true,
-            errorMessage: 'You must select a target group!'
-        }],
+        formInputs: [
+            {
+                label: 'Name',
+                name: 'name',
+                type: InputOptions.Text,
+                placeholder: 'type a name for the target group',
+                wrapperClassName: 'small-12 columns',
+                required: true,
+                errorMessage: 'Name is missing or to short!',
+                regex: '[a-zA-Z]{4}'
+            },
+            {
+                label: 'Age',
+                name: 'age',
+                type: InputOptions.Range,
+                stepValue: 1,
+                wrapperClassName: 'small-12 columns',
+                required: true,
+                errorMessage: 'Age is not defined!'
+            }
+        ],
         createButtons: [{
             name: 'Create',
             action: actions.CREATE,
@@ -96,7 +67,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             wrapperClassName: 'small-12 columns'
         }],
         createModalOptions: {
-            openModalButtonText: 'Create new category',
+            openModalButtonText: 'Create new target group',
             openModalButtonClass: 'button success'
         },
         updateButtons: [{
@@ -126,7 +97,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             }
         ],
         deleteModalOptions: {
-            modalHeading: 'Delete category?',
+            modalHeading: 'Delete target group?',
             modalHeadingClass: 'centered',
             openModalButtonText: null,
             openModalButtonClass: 'CRUDDeleteButton'
@@ -134,14 +105,14 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     };
     var Crud = CRUD(CRUDOptions);
 
-    var Categories = React.createClass({
+    var TargetGroups = React.createClass({
         renderItems: function () {
             return CRUDRedux.getState().map(function (item, index) {
                 if (!item) {
                     return null;
                 }
                 return (
-                    <tbody key={'read-tbody'+index+'itemId'+item.id }>
+                    <tbody key={'read-tbody-tg'+index+'itemId'+item.id }>
                         {Crud.READ(item)}
                         <tr className="shrinkRow">
                             <td colSpan="3">
@@ -159,14 +130,13 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             return (
                 <div className="row">
                     <div className="small-12 columns">
-                        <h2>Categories</h2>
+                        <h2>Target Groups</h2>
                         <div className={'CRUDUpdateTable'}>
-                            <table key={'read-table'}>
+                            <table key={'read-table-2'}>
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Target group</th>
+                                        <th>Age</th>
                                     </tr>
                                 </thead>
                                 {self.renderItems()}
@@ -178,11 +148,10 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             );
         }
     });
-    
-    
+
     const render = () => {
         ReactDOM.render(
-            <Categories />,
+            <TargetGroups />,
             document.getElementById('content')
         );
     }

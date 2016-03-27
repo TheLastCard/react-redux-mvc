@@ -225,6 +225,7 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="jsx\components\CRUD\Delete.jsx" />
     <Content Include="App_Data\Logs\Development.log" />
+    <Content Include="jsx\TargetGroups.jsx" />
     <None Include="jsx\Categories.jsx" />
     <Content Include="jsx\components\CRUD\ReadOptions.js" />
     <Content Include="node_modules\deep-freeze\index.js" />
@@ -285,7 +286,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OldHomeController.cs" />
     <Compile Include="DBContexts\CRUDDB.cs" />
     <Compile Include="DBContexts\Migrations\201603271221399_InitialCreate.cs" />
     <Compile Include="DBContexts\Migrations\201603271221399_InitialCreate.Designer.cs">
@@ -315,11 +315,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Partials\_CategoriesCRUD.cshtml" />
+    <Content Include="Views\Partials\_TargetGroupsCRUD.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

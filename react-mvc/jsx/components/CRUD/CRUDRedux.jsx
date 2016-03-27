@@ -105,6 +105,5 @@ define(['redux', 'expect'], function (Redux, expect) {
     //testInitCrud();
     //console.log('testInitCategory() passed');
 
-
     return Redux.createStore(crud);
 });

@@ -39,10 +39,11 @@
     </script>
 </head>
 <body>
-    <header></header>
+    <header>
+        @RenderSection("Header", false)
+    </header>
 
     <div class="container" role="main">
-        <div id="content"></div>
         @RenderBody()
     </div>
 
@@ -54,6 +55,6 @@
         </div>
     </footer>
 
-    <div id="loader" class='spinner SpinPos'></div>
+    <div id="loader" class='spinner SpinPos' style="display: none"></div>
 </body>
 </html>

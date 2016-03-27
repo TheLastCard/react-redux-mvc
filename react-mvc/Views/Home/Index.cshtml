@@ -1,5 +1,43 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Html.Action("Categories")
+
+@section Header{
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <ul class="dropdown menu" data-dropdown-menu>
+                <li class="menu-text">.NET and React generic CRUD</li>
+                <li><a href="@Url.Action("Categories")" class="menuPartial">Categories</a></li>
+                <li><a href="@Url.Action("TargetGroups")" class="menuPartial">TargetGroups</a></li>
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    var unmountComponent = null;
+</script>
+
+<div id="content"></div>
+<div id="crudContainer"></div>
+
+    
+<script>
+    $(function () {
+        $('.menuPartial').each(function () {
+            var currentElement = $(this);
+            currentElement.on('click', function (e) {
+                e.preventDefault();
+                $.ajax(currentElement.attr('href'), 'GET')
+                .done(function (result) {
+                    if (unmountComponent) {
+                        unmountComponent();
+                    }
+                    $("#crudContainer").html(result);
+                });
+            });
+        });
+    });
+</script>

@@ -18,7 +18,7 @@ namespace react_mvc.Controllers
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
-        public JsonResult GetCategories()
+        public JsonResult Read()
         {
             List<CategoryModel> returnList = new List<CategoryModel>();
             foreach (var category in CategoriesCRUD.FindAll())
@@ -29,7 +29,7 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
     
-        public JsonResult CreateCategory(string model)
+        public JsonResult Create(string model)
         {
             CategoryModel newCategory = JsonConvert.DeserializeObject<CategoryModel>(model);
             var newDBCategory = new CategoryDBModel().Populate(newCategory);
@@ -37,7 +37,7 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject( new { id=newDBCategory.Id}), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult UpdateCategory(string model)
+        public JsonResult Update(string model)
         {
             CategoryModel updateCategory = JsonConvert.DeserializeObject<CategoryModel>(model);
             int id = updateCategory.Id == null ? -1 : (int)updateCategory.Id;
@@ -59,7 +59,7 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DeleteCategory(int id)
+        public JsonResult Delete(int id)
         {
             CategoriesCRUD.Delete(CategoriesCRUD.FindById(id), true);
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);

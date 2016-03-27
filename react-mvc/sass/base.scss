@@ -13,7 +13,7 @@ html {
     box-sizing: inherit;
 }
 
-.errorMessage, .errorMessageRadioCheckbox{
+.errorMessage, .errorMessageRadioCheckbox, .errorMessageRangeSelect {
     color: red !important;
     margin-bottom: 10px;
     border: 1px solid #cacaca;
@@ -25,11 +25,23 @@ html {
     margin-top: -16px;
 }
 
-.errorMessageRadioCheckbox{
+.errorMessageRadioCheckbox {
     margin-top: -40px;
     padding-top: 40px;
 }
 
-.centered{
+.errorMessageRangeSelect {
+    clear: both;
+}
+
+.hasErrorRangeSlider {
+    width: 100%;
+    display: block;
+    min-height: 85px;
+    padding-top: 20px;
+    border: 1px solid #cacaca;
+}
+
+.centered {
     text-align: center;
 }

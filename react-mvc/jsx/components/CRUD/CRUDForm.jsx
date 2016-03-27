@@ -30,6 +30,7 @@
 //    inputClassName: 'Classes to add to the input',
 //    maxValue: 100, //Only used for range slider
 //    minValue: 0, //Only used for range slider,
+//    stepValue: 1, //stepvalue for slider
 //    required: true, //Set to true if input is required
 //    errorMessage: 'Type in an error message. (Has fallback to a more generic error message)',
 //    regex: '^[a-zA-Z]{3}$' //Regex string to test against. Ignored for radio or checkbox
@@ -65,7 +66,7 @@
 //<CRUDForm inputs={self.state.formInputs} buttons={self.state.updateButtons} modal={self.state.updateModalOptions} item={item} debug={true} />
 
 
-define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React,InputOptions, CRUDFormRedux) {
+define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React, InputOptions, CRUDFormRedux) {
     var CRUDForm = React.createClass({
         modalId: '',
         getInitialState: function () {
@@ -85,7 +86,22 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             this.modalId = '#CRUDFormModal' + Math.floor((Math.random() * 10000) + 1).toString();
         },
         componentDidMount: function () {
+            var self = this;
             CRUDFormRedux.dispatch({ type: 'INIT', list: this.state.inputs });
+
+            this.state.inputs.map(function (input, index) {
+                if (input.type === InputOptions.Range) {
+                    $('#' + input.name).on('change', function (event) {
+                        self.onChangeHandler(event, index, input.onChange)
+                    });
+                    $('#' + input.name + 'Slider').on('mouseup ondragend', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        $('#' + input.name).trigger('change');
+                    });
+                }
+            });
+
             if (this.props.modal) {
                 $(this.modalId).foundation();
                 return;
@@ -139,16 +155,17 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         },
         createLabel: function (input) {
             return (
-                <label key={input.name + 'label' } htmlFor={input.name} className={input.labelClassName}>{input.label}</label>
+                <label key={input.name + 'label'} htmlFor={input.name} className={input.labelClassName }>{input.label}</label>
             );
         },
         createErrorMessage: function (input) {
             var errorMessage = '';
             if (input.required || input.regex) {
                 var message = input.errorMessage ? input.errorMessage : input.label + ' is required';
-                var radioCheckboxErrorClass = input.type === InputOptions.Checkbox || input.type === InputOptions.Radio ? 'errorMessageRadioCheckbox' : 'errorMessage';
+                var errorClass = input.type === InputOptions.Checkbox || input.type === InputOptions.Radio ? 'errorMessageRadioCheckbox' : 'errorMessage';
+                errorClass = input.type === InputOptions.Range ? 'errorMessageRangeSelect' : errorClass;
                 errorMessage = (
-                    <div className={input.hasError ? radioCheckboxErrorClass : radioCheckboxErrorClass + ' hide' }>{message}</div>
+                    <div className={input.hasError ? errorClass : errorClass + ' hide' }>{message}</div>
                 );
             }
             return errorMessage;
@@ -156,18 +173,17 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         createTextArea: function (input, index) {
             var self = this;
             return (
-                <div key={input.name + 'classes'} className={input.wrapperClassName }>
-                    {self.createLabel(input)}
+                <div key={input.name + 'classes'} className={input.hasError ? input.wrapperClassName +' hasErrorTextArea' : input.wrapperClassName }>{self.createLabel(input)}
                         <textarea key={input.name}
                                   id={input.id}
                                   name={input.name}
                                   value={input.value}
                                   disabled={input.disabled}
-                                  className={input.labelClassName}
+                                  className={input.inputClassName}
+                                  tabIndex={index}
                                   onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
                                   onBlur={(event) => self.onBlurHandler(event, index)
-                        }></textarea>
-                    {self.createErrorMessage(input)}
+                        }></textarea>{self.createErrorMessage(input)}
                 </div>
             );
         },
@@ -189,8 +205,9 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                            name={checkboxRadioOption.name.trim()}
                            value={value}
                            checked={input.value && (input.value.indexOf(value) !== -1 && input.type === InputOptions.Checkbox) || (input.value === value && input.type === InputOptions.Radio)}
-                           className={input.labelClassName}
-                           onChange={(event) => self.onChangeHandler(event, index, input.onChange)} />
+                           className={input.inputClassName}
+                           onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                           tabIndex={index} />
                 );
                 multipleChoices.push(
                     <label key={checkboxRadioOption.name.trim()} htmlFor={checkboxRadioOption.name.trim() }>{checkboxRadioOption.name}</label>
@@ -198,10 +215,8 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             });
 
             return (
-                <fieldset key={input.label+'fieldset'} className={input.wrapperClassName}>
-                    <legend key={input.label+'legend'}>{input.label}</legend>
-                    { multipleChoices }
-                    { self.createErrorMessage(input) }
+                <fieldset key={input.label+'fieldset'} className={input.hasError ? input.wrapperClassName +' hasErrorFieldset' : input.wrapperClassName }>
+                    <legend key={input.label+'legend'}>{input.label}</legend>{ multipleChoices }{ self.createErrorMessage(input) }
                 </fieldset>
             );
         },
@@ -213,21 +228,46 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             });
 
             return (
-                <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                    { self.createLabel(input) }
+                <div key={input.name + 'classes'} className={input.hasError ? input.wrapperClassName +' hasErrorSelectList' : input.wrapperClassName }>{ self.createLabel(input) }
                     <select key={input.name}
                             id={input.name}
                             type={input.type}
                             name={input.name}
                             value={input.value}
                             disabled={input.disabled}
-                            className={input.labelClassName}
+                            className={input.inputClassName}
                             onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
                             onBlur={(event) => self.onBlurHandler(event, index)}
-                            defaultValue={input.placeholder}>
-                        <option disabled value={input.placeholder}>{input.placeholder}</option>
-                        {optionList}
-                    </select>
+                            defaultValue={input.placeholder}
+                            tabIndex={index}>
+                        <option disabled value={input.placeholder}>{input.placeholder}</option>{optionList}
+                    </select>{ self.createErrorMessage(input) }
+                </div>
+            );
+        },
+        createRangeSlider: function(input, index){
+            var self = this;
+            var disabled = input.disabled ? 'disabled ' : '';
+            //(event) => self.onChangeHandler(event, index, input.onChange);
+            return (
+                <div key={input.name + 'classes'} className={input.wrapperClassName}>{ self.createLabel(input) }
+                    <div className={input.hasError ? 'hasErrorRangeSlider' : ''}>
+                        <div className="small-10 columns">
+                            <div id={input.name+'Slider'} className={'slider ' + disabled + input.inputClassName} data-slider data-initial-start={input.minValue ? input.minValue: 0} data-end={input.maxValue ? input.maxValue: 100} data-step={input.stepValue}>
+                                <span className="slider-handle" data-slider-handle role="slider" tabIndex={index} aria-controls={input.name}></span>
+                                <span className="slider-fill" data-slider-fill></span>
+                            </div>
+                        </div>
+                        <div className="small-2 columns">
+                            <input key={input.name}
+                                   id={input.name}
+                                   type="number"
+                                   name={input.name}
+                                   value={input.value}
+                                   onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
+                                   required={input.required} />
+                        </div>
+                    </div>
                     { self.createErrorMessage(input) }
                 </div>
             );
@@ -235,8 +275,7 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         createSimpleInputfield: function (input, index) {
             var self = this;
             return (
-                <div key={input.name + 'classes'} className={input.wrapperClassName}>
-                    { self.createLabel(input) }
+                <div key={input.name + 'classes'} className={input.hasError ? input.wrapperClassName +' hasError' : input.wrapperClassName }>{ self.createLabel(input) }
                         <input key={input.name}
                                id={input.name}
                                type={input.type}
@@ -244,13 +283,11 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                                placeholder={input.placeholder}
                                value={input.value}
                                disabled={input.disabled}
-                               className={input.labelClassName}
+                               className={input.inputClassName}
                                onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
                                onBlur={(event) => self.onBlurHandler(event, index)}
-                               max={input.maxValue}
-                               min={input.minValue}
-                               required={input.required} />
-                    { self.createErrorMessage(input) }
+                               tabIndex={index}
+                               required={input.required} />{ self.createErrorMessage(input) }
                 </div>
             );
         },
@@ -268,6 +305,9 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                     case InputOptions.Select:
                         return self.createSelectlist(input, index);
                         break;
+                    case InputOptions.Range:
+                        return self.createRangeSlider(input, index);
+                        break;
                     default:
                         return self.createSimpleInputfield(input, index);
                         break;
@@ -279,10 +319,9 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             var id = this.props.item ? this.props.item.id : null;
             return this.state.buttons.map(function (button) {
                 return (
-                    <div key={button.name + 'wrapper'} className={button.wrapperClassName }>
+                    <div key={button.name + 'wrapper'} className={button.wrapperClassName}>
                         <button key={button.name} id={button.name} className={button.className}
-                                onClick={(event) => self.buttonClickHandler(event, button, id)}>
-                            {button.name}
+                                onClick={(event) => self.buttonClickHandler(event, button, id)}>{button.name}
                         </button>
                     </div>
                 );
@@ -292,11 +331,9 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             var self = this;
             var form = (
                 <form>
-                    <div className="row">
-                        {self.createInputs()}
+                    <div className="row">{self.createInputs()}
                     </div>
-                    <div className="row">
-                        {self.createButtons()}
+                    <div className="row">{self.createButtons()}
                     </div>
                 </form>
             );
@@ -311,9 +348,7 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                 <div className={this.props.className}>
                     <button className={self.props.modal.openModalButtonClass} onClick={() =>self.openModal(self.modalId) }>{!self.props.item ? (self.props.modal.openModalButtonText || 'New/Edit') : (self.props.modal.openModalButtonText || '')}</button>
 
-                    <div className="reveal" id={self.modalId.replace('#', '')} data-reveal>
-                        {self.createModalHeading()}
-                        {form}
+                    <div className="reveal" id={self.modalId.replace('#', '')} data-reveal>{self.createModalHeading()}{form}
                         <button className="close-button" aria-label="Close reveal" type="button" onClick={() =>self.closeModal(self.modalId)}>
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -381,4 +416,4 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
     });
 
     return CRUDForm;
-});
+})

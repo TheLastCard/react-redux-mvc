@@ -78,7 +78,7 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
             }
         }
 
-        const ajaxCall = (type, event, inputs, id, callback, skip) => {
+        const ajaxCall = (type, event, inputs, id, callback) => {
             console.log('CRUDActions', type);
             if (!urls.createUrl) {
                 console.error('CRUDActions' + type + '-> ' + type.toLowerCase() + 'Url is not set! Should be a string inside the urls object like this urls:{' + type.toLowerCase() + 'Url: <' + type.toLowerCase() + 'Url>.');
@@ -91,16 +91,13 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
             }
             toggleLoader(true);
 
-            if (skip) {//For debug only
-                doneSwitch(type, null, event, inputs, id);
-                callback ? callback() : null;
-                toggleLoader(false);
-                return;
-            }
             $.ajax(ajaxOptions(type, event, inputs, id)).done(function (result) {
                 console.log(result);
                 doneSwitch(type, result, event, inputs, id);
-                callback ? callback() : null;
+                if (callback && typeof (callback) === 'function') {
+                    console.log('running callback');
+                    callback();
+                }
             }).fail(function (error) {
                 console.error('CRUDActions ' + type + ' failed! ', error);
             }).always(function () {
