@@ -8,8 +8,8 @@ namespace react_mvc.Helpers
 {
     public interface ICRUD<T> : IDisposable
     {
-        void Add(T newEntity);
-        void Delete(T entity);
+        void Add(T newEntity, bool save);
+        void Delete(T entity, bool save);
         T FindById(int id);
         IQueryable<T> FindAll();
         int Commit();

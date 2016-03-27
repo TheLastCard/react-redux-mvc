@@ -33,8 +33,7 @@ namespace react_mvc.Controllers
         {
             CategoryModel newCategory = JsonConvert.DeserializeObject<CategoryModel>(model);
             var newDBCategory = new CategoryDBModel().Populate(newCategory);
-            CategoriesCRUD.Add(newDBCategory);
-            CategoriesCRUD.Commit();
+            CategoriesCRUD.Add(newDBCategory, true);
             return Json(JsonConvert.SerializeObject( new { id=newDBCategory.Id}), JsonRequestBehavior.AllowGet);
         }
 
@@ -62,8 +61,7 @@ namespace react_mvc.Controllers
 
         public JsonResult DeleteCategory(int id)
         {
-            CategoriesCRUD.Delete(CategoriesCRUD.FindById(id));
-            CategoriesCRUD.Commit();
+            CategoriesCRUD.Delete(CategoriesCRUD.FindById(id), true);
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
     }

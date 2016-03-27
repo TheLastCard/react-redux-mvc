@@ -17,14 +17,16 @@ namespace react_mvc.Helpers
             _set = _db.Set<T>();
         }
 
-        public void Add(T newEntity)
+        public void Add(T newEntity, bool save = false)
         {
             _set.Add(newEntity);
+            if (save) { Commit(); }
         }
 
-        public void Delete(T entity)
+        public void Delete(T entity, bool save = false)
         {
             _set.Remove(entity);
+            if (save) { Commit(); }
         }
 
         public IQueryable<T> FindAll()
