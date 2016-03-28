@@ -5,11 +5,14 @@ Frontend is built with ZURB Foundation 6 and Font-Awesome as icon set in additio
 
 This soultion requires Visual Studio 2015 or higher to compile
 
-To get started, clone this git respository
+1#: To get started, clone this git respository
 
-When done, go to the folder "react-mvc" and run 'npm install'
+2#: When done cloning, go to the folder "react-mvc" and run 'npm install'
 
-You must also add a valid database connection string to the web.config file
+3#: Add a valid database connection string to the web.config
+
+4#: Open up the "Package Manager Console" and run "Update-Database -ConfigurationTypeName react_mvc.DBContexts.Migrations.Configuration"
+
 
 SASS-compilation with Ruby: in the main directory there is already a file, scss.bat that automaticly starts up SASS-compilation for you when run if you have Ruby installed and the SASS gem
 
