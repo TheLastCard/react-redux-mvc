@@ -248,7 +248,7 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         createRangeSlider: function(input, index){
             var self = this;
             var disabled = input.disabled ? 'disabled ' : '';
-            //(event) => self.onChangeHandler(event, index, input.onChange);
+
             return (
                 <div key={input.name + 'classes'} className={input.wrapperClassName}>{ self.createLabel(input) }
                     <div className={input.hasError ? 'hasErrorRangeSlider' : ''}>

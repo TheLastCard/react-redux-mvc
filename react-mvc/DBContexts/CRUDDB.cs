@@ -12,5 +12,6 @@ namespace react_mvc.DBContexts
     {
         public DbSet<ProductDBModel> Products { get; set; }
         public DbSet<CategoryDBModel> Categories { get; set; }
+        public DbSet<TargetGroupsDBModel> TargetGroups { get; set; }
     }
 }

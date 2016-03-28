@@ -38,7 +38,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
                 {
                     variableName: 'targetGroup',
                     style: ReadOptions.Tablecell,
-                    format: (value) => { return value.toString().replace(',', ', '); }
+                    format: (value) => { return value ? value.toString().replace(',', ', '): ''; }
                 }
             ]
         },

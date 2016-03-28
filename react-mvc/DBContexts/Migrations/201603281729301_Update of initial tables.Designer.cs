@@ -7,13 +7,13 @@ namespace react_mvc.DBContexts.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class TargetGroups : IMigrationMetadata
+    public sealed partial class Updateofinitialtables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(TargetGroups));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Updateofinitialtables));
         
         string IMigrationMetadata.Id
         {
-            get { return "201603271302484_TargetGroups"; }
+            get { return "201603281729301_Update of initial tables"; }
         }
         
         string IMigrationMetadata.Source

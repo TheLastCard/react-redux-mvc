@@ -13,7 +13,7 @@ namespace react_mvc.DBContexts.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        Description = c.String(),
+                        Description = c.String()
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -29,7 +29,6 @@ namespace react_mvc.DBContexts.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.CategoryDBModels", t => t.Category_Id)
                 .Index(t => t.Category_Id);
-            
         }
         
         public override void Down()

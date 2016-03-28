@@ -278,12 +278,15 @@
     <Content Include="scripts\showdown.js" />
     <Content Include="scripts\showdown.min.js" />
     <Content Include="scripts\text.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundeConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\TargetGroupsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DBContexts\CRUDDB.cs" />
@@ -291,13 +294,14 @@
     <Compile Include="DBContexts\Migrations\201603271221399_InitialCreate.Designer.cs">
       <DependentUpon>201603271221399_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="DBContexts\Migrations\201603271302484_TargetGroups.cs" />
-    <Compile Include="DBContexts\Migrations\201603271302484_TargetGroups.Designer.cs">
-      <DependentUpon>201603271302484_TargetGroups.cs</DependentUpon>
+    <Compile Include="DBContexts\Migrations\201603281729301_Update of initial tables.cs" />
+    <Compile Include="DBContexts\Migrations\201603281729301_Update of initial tables.Designer.cs">
+      <DependentUpon>201603281729301_Update of initial tables.cs</DependentUpon>
     </Compile>
     <Compile Include="DBContexts\Migrations\Configuration.cs" />
     <Compile Include="DBModels\CategoryDBModel.cs" />
     <Compile Include="DBModels\ProductDBModel.cs" />
+    <Compile Include="DBModels\TargetGroupsDBModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -307,6 +311,7 @@
     <Compile Include="Helpers\TargetGroupEnum.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
+    <Compile Include="Models\TargetGroupsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -343,8 +348,8 @@
     <EmbeddedResource Include="DBContexts\Migrations\201603271221399_InitialCreate.resx">
       <DependentUpon>201603271221399_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DBContexts\Migrations\201603271302484_TargetGroups.resx">
-      <DependentUpon>201603271302484_TargetGroups.cs</DependentUpon>
+    <EmbeddedResource Include="DBContexts\Migrations\201603281729301_Update of initial tables.resx">
+      <DependentUpon>201603281729301_Update of initial tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

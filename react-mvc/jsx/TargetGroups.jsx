@@ -21,10 +21,9 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     };
     var actions = CRUDActions(urls);
 
-    var thisData = [];
     const CRUDOptions = {
         debug: true,
-        data: thisData,
+        data: actions.READ,
         readOptions: {
             showAsTable: true,
             variables: [
@@ -33,7 +32,11 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
                     style: ReadOptions.Tablecell
                 },
                 {
-                    variableName: 'age',
+                    variableName: 'minAge',
+                    style: ReadOptions.Tablecell
+                },
+                {
+                    variableName: 'maxAge',
                     style: ReadOptions.Tablecell
                 }
             ]
@@ -50,8 +53,17 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
                 regex: '[a-zA-Z]{4}'
             },
             {
-                label: 'Age',
-                name: 'age',
+                label: 'From Age',
+                name: 'minAge',
+                type: InputOptions.Range,
+                stepValue: 1,
+                wrapperClassName: 'small-12 columns',
+                required: true,
+                errorMessage: 'Age is not defined!'
+            },
+            {
+                label: 'To Age',
+                name: 'maxAge',
                 type: InputOptions.Range,
                 stepValue: 1,
                 wrapperClassName: 'small-12 columns',
@@ -136,7 +148,8 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Age</th>
+                                        <th>Age From</th>
+                                        <th>Age To</th>
                                     </tr>
                                 </thead>
                                 {self.renderItems()}

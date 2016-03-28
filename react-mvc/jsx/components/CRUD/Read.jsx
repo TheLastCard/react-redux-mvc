@@ -95,7 +95,7 @@ define(['react', 'CRUD/ReadOptions'], function (React, ReadOptions) {
                 console.error('variableName is not defined! You need to include that in options for the read component <Read options={myOptions} />: myOptions = {variables:[{variableName: \'someVariableName\'}]}');
                 return false;
             }
-            if (!this.props.item[option.variableName]) {
+            if (this.props.item.length > 0 && !this.props.item[option.variableName]) {
                 console.error('variableName, ' + option.variableName + ' cannot be found in the dataset you have supplied to the read element!');
                 return false;
             }

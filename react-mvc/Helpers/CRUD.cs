@@ -20,13 +20,13 @@ namespace react_mvc.Helpers
         public void Add(T newEntity, bool save = false)
         {
             _set.Add(newEntity);
-            if (save) { Commit(); }
+            if (save) { this.Commit(); }
         }
 
         public void Delete(T entity, bool save = false)
         {
             _set.Remove(entity);
-            if (save) { Commit(); }
+            if (save) { this.Commit(); }
         }
 
         public IQueryable<T> FindAll()
