@@ -11,7 +11,9 @@ This soultion requires Visual Studio 2015 or higher to compile
 
 3#: Add a valid database connection string to the web.config
 
-4#: Open up the "Package Manager Console" and run "Update-Database -ConfigurationTypeName react_mvc.DBContexts.Migrations.Configuration"
+4#: Build the project
+
+5#: Open up the "Package Manager Console" and run "Update-Database -ConfigurationTypeName react_mvc.DBContexts.Migrations.Configuration"
 
 
 SASS-compilation with Ruby: in the main directory there is already a file, scss.bat that automaticly starts up SASS-compilation for you when run if you have Ruby installed and the SASS gem
