@@ -32,6 +32,7 @@
             var currentElement = $(this);
             currentElement.on('click', function (e) {
                 e.preventDefault();
+                $("#loader").show();
                 $.ajax(currentElement.attr('href'), 'GET')
                 .done(function (result) {
                     if (unmountComponent) {
