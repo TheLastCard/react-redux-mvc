@@ -21,16 +21,16 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     };
     var actions = CRUDActions(urls);
 
-    //var alternatives = [];
 
-    //$.ajax('TargetGroups/ReadTargetGroupsAsArray', 'GET')
-    //    .done(function (result) {
-    //        console.log('result ', result);
-    //        alternatives = result;
-    //    })
-    //    .error(function (error) {
-    //        console.log('error ', error);
-    //    });
+    $.ajax('TargetGroups/ReadTargetGroupsAsArray', 'GET')
+        .done(function (result) {
+            console.log('result ', result);
+            CRUDOptions.formInputs[2].alternatives = JSON.parse(result);
+            render();
+        })
+        .error(function (error) {
+            console.log('error ', error);
+        });
 
     const CRUDOptions = {
         debug: true,
@@ -75,7 +75,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             label: 'Target Group',
             name: 'targetGroup',
             type: InputOptions.Checkbox,
-            alternatives: [{ name: 'Children' }, { name: 'Adults' }, { name: 'Seniors' }],
+            alternatives: null,
             defaultValue: null,
             placeholder: 'Pick a target group',
             wrapperClassName: 'small-12 columns',
@@ -189,6 +189,4 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
         unsubscribeCRUDFormRedux();
         unsubscribeCRUDRedux();
     }
-
-    render();
 });

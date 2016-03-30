@@ -67,11 +67,11 @@ namespace react_mvc.Controllers
             updateDBCategory.Description = modelIn.Description;
 
             var newTargetGroups = TargetGroupsCRUD.FindAll().Where(x => modelIn.TargetGroup.Contains(x.Name)).ToList();
-            foreach(var tg in updateDBCategory.TargetGroups.Except(newTargetGroups))
+            foreach(var tg in updateDBCategory.TargetGroups.ToList())
             {
                 updateDBCategory.TargetGroups.Remove(tg);
             }
-            foreach (var tg in newTargetGroups.Except(updateDBCategory.TargetGroups))
+            foreach (var tg in newTargetGroups.Except(updateDBCategory.TargetGroups.ToList()))
             {
                 updateDBCategory.TargetGroups.Add(tg);
             }

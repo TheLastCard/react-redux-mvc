@@ -76,7 +76,12 @@ namespace react_mvc.Controllers
         [HttpGet]
         public JsonResult ReadTargetGroupsAsArray()
         {
-            return Json(string.Join(",", TargetGroupsCRUD.FindAll().Select(x => x.Name)), JsonRequestBehavior.AllowGet);
+            List<object> result = new List<object>();
+            foreach(var tg in TargetGroupsCRUD.FindAll())
+            {
+                result.Add(new { name= tg.Name });
+            }
+            return Json(JsonConvert.SerializeObject(result), JsonRequestBehavior.AllowGet);
         }
 
         public TargetGroupsDBModel CreateTargetGroupsDBModel(TargetGroupsModel model)
