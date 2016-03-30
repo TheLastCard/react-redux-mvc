@@ -16,15 +16,17 @@
     </div>
 }
 
-<script>
-    var unmountComponent = null;
-</script>
+@* Used to generate antiforgery token that we use with create, update and delete requrests *@
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
 
 <div id="content"></div>
 <div id="crudContainer"></div>
 
-    
 <script>
+    var unmountComponent = null;
     $(function () {
         $('.menuPartial').each(function () {
             var currentElement = $(this);

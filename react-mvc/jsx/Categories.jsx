@@ -21,6 +21,17 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     };
     var actions = CRUDActions(urls);
 
+    //var alternatives = [];
+
+    //$.ajax('TargetGroups/ReadTargetGroupsAsArray', 'GET')
+    //    .done(function (result) {
+    //        console.log('result ', result);
+    //        alternatives = result;
+    //    })
+    //    .error(function (error) {
+    //        console.log('error ', error);
+    //    });
+
     const CRUDOptions = {
         debug: true,
         data: actions.READ,
@@ -64,25 +75,8 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             label: 'Target Group',
             name: 'targetGroup',
             type: InputOptions.Checkbox,
-            alternatives: [
-                {
-                    name: 'Children',
-                    value: 'Children'
-                },
-                {
-                    name: 'Young Adults',
-                    value: 'Young Adults'
-                },
-                {
-                    name: 'Adults',
-                    value: 'Adults'
-                },
-                {
-                    name: 'Seniors',
-                    value: 'Seniors'
-                }
-            ],
-            defaultValue: ['Adults'],
+            alternatives: [{ name: 'Children' }, { name: 'Adults' }, { name: 'Seniors' }],
+            defaultValue: null,
             placeholder: 'Pick a target group',
             wrapperClassName: 'small-12 columns',
             required: true,

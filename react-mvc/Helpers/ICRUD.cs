@@ -11,7 +11,8 @@ namespace react_mvc.Helpers
         void Add(T newEntity, bool save);
         void Delete(T entity, bool save);
         T FindById(int id);
-        IQueryable<T> FindAll();
+        T FindByName(string name);
+        IEnumerable<T> FindAll();
         int Commit();
     }
 }

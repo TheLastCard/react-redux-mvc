@@ -13,17 +13,7 @@ namespace react_mvc
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Categories",
-                url: "categories",
-                defaults: new { controller = "Categories", action = "GetCategories" }
-            );
-
-            routes.MapRoute(
-                name: "NewCategory",
-                url: "categories/new",
-                defaults: new { controller = "Categories", action = "AddCategory" }
-            );
+            routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
                 name: "Default",

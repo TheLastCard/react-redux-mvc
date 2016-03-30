@@ -388,7 +388,7 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
                 console.error(input.type + ' : ' + input.name + '-> Alternatives is not set or is not an array!');
                 return false;
             }
-            if (!input.alternatives[0].name) {
+            if (input.alternatives[0] && !input.alternatives[0].name) {
                 console.error(input.type + ' : ' + input.name + '-> Alternatives is not defined correctly! Should be an array of objects like this:');
                 console.error('alternatives: [{name: "somename", value: "this one is optional with name as fallback"}]');
             }

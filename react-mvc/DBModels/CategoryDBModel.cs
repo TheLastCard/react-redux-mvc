@@ -5,17 +5,15 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.Data.Entity;
 
 namespace react_mvc.DBModels
 {
     public class CategoryDBModel
     {
-        public CategoryDBModel Populate(CategoryModel model)
+        public CategoryDBModel()
         {
-            this.Name = model.Name;
-            this.Description = model.Description;
-            this.TargetGroup = string.Join(",", model.TargetGroup);
-            return this;
+            TargetGroups = new HashSet<TargetGroupsDBModel>();
         }
 
         [Key]
@@ -25,6 +23,12 @@ namespace react_mvc.DBModels
 
         public string Description { get; set; }
 
-        public string TargetGroup { get; set; }
+        public virtual ICollection<TargetGroupsDBModel> TargetGroups { get; set; }
+
+        internal static void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+
+        }
+
     }
 }

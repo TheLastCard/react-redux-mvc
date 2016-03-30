@@ -14,34 +14,46 @@ namespace react_mvc.Controllers
 {
     public class CategoriesController : Controller
     {
-        private CRUD<CategoryDBModel> CategoriesCRUD = new CRUD<CategoryDBModel>(new DBContexts.CRUDDB());
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly CRUD<CategoryDBModel> CategoriesCRUD;
+        private readonly CRUD<TargetGroupsDBModel> TargetGroupsCRUD;
+        private readonly Logger Logger;
+
+        public CategoriesController()
+        {
+            var db = new DBContexts.CRUDDB();
+            CategoriesCRUD = new CRUD<CategoryDBModel>(db);
+            TargetGroupsCRUD = new CRUD<TargetGroupsDBModel>(db);
+            Logger = LogManager.GetCurrentClassLogger();
+        }
 
         [HttpGet]
         public JsonResult Read()
         {
             List<CategoryModel> returnList = new List<CategoryModel>();
-            foreach (var category in CategoriesCRUD.FindAll())
+            var categories = CategoriesCRUD.FindAll();
+            foreach (var category in categories.ToList())
             {
-                returnList.Add(new CategoryModel().Populate(category));
+                returnList.Add(CreateCategoryModel(category));
             }
             Logger.Log(LogLevel.Debug, "GetCategories() ->"+ returnList);
             return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
-    
+
+        [ValidateAntiForgeryToken]
         public JsonResult Create(string model)
         {
             CategoryModel newCategory = JsonConvert.DeserializeObject<CategoryModel>(model);
-            var newDBCategory = new CategoryDBModel().Populate(newCategory);
+            var newDBCategory = CreateCategoryDBModel(newCategory);
             CategoriesCRUD.Add(newDBCategory, true);
             return Json(JsonConvert.SerializeObject( new { id=newDBCategory.Id}), JsonRequestBehavior.AllowGet);
         }
 
+        [ValidateAntiForgeryToken]
         public JsonResult Update(string model)
         {
-            CategoryModel updateCategory = JsonConvert.DeserializeObject<CategoryModel>(model);
-            int id = updateCategory.Id == null ? -1 : (int)updateCategory.Id;
-            if (updateCategory.Id == -1)
+            CategoryModel modelIn = JsonConvert.DeserializeObject<CategoryModel>(model);
+            int id = modelIn.Id == null ? -1 : (int)modelIn.Id;
+            if (modelIn.Id == -1)
             {
                 Json(JsonConvert.SerializeObject(new { status = "Error! Id is missing" }), JsonRequestBehavior.AllowGet);
             }
@@ -51,18 +63,47 @@ namespace react_mvc.Controllers
                 Json(JsonConvert.SerializeObject(new { status = "Error! Could not find object with that id!" }), JsonRequestBehavior.AllowGet);
             }
 
-            updateDBCategory.Name = updateCategory.Name;
-            updateDBCategory.Description = updateCategory.Description;
-            updateDBCategory.TargetGroup = string.Join(",",updateCategory.TargetGroup);
+            updateDBCategory.Name = modelIn.Name;
+            updateDBCategory.Description = modelIn.Description;
+
+            var newTargetGroups = TargetGroupsCRUD.FindAll().Where(x => modelIn.TargetGroup.Contains(x.Name)).ToList();
+            foreach(var tg in updateDBCategory.TargetGroups.Except(newTargetGroups))
+            {
+                updateDBCategory.TargetGroups.Remove(tg);
+            }
+            foreach (var tg in newTargetGroups.Except(updateDBCategory.TargetGroups))
+            {
+                updateDBCategory.TargetGroups.Add(tg);
+            }
 
             CategoriesCRUD.Commit();
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
+        [ValidateAntiForgeryToken]
         public JsonResult Delete(int id)
         {
             CategoriesCRUD.Delete(CategoriesCRUD.FindById(id), true);
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
+        }
+
+        public CategoryDBModel CreateCategoryDBModel(CategoryModel model)
+        {
+            var dbModel = new CategoryDBModel();
+            dbModel.Name = model.Name;
+            dbModel.Description = model.Description;
+            dbModel.TargetGroups = TargetGroupsCRUD.FindAll().Where(x => model.TargetGroup.Any(z => z == x.Name)).ToList();
+            return dbModel;
+        }
+
+        public CategoryModel CreateCategoryModel(CategoryDBModel model)
+        {
+            var viewModel = new CategoryModel();
+            viewModel.Id = model.Id;
+            viewModel.Name = model.Name;
+            viewModel.Description = model.Description;
+            viewModel.TargetGroup = model.TargetGroups.Select(x => x.Name).ToList();
+            return viewModel;
         }
     }
 }

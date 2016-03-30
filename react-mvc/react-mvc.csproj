@@ -194,10 +194,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\CRUDDB.mdf" />
-    <Content Include="App_Data\CRUDDB_log.ldf">
-      <DependentUpon>CRUDDB.mdf</DependentUpon>
-    </Content>
     <Content Include="css\app.css" />
     <Content Include="css\font-awesome.css" />
     <Content Include="css\foundation-flex.css" />
@@ -298,6 +294,10 @@
     <Compile Include="DBContexts\Migrations\201603281729301_Update of initial tables.Designer.cs">
       <DependentUpon>201603281729301_Update of initial tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="DBContexts\Migrations\201603290850240_TargetGroups connection to Category.cs" />
+    <Compile Include="DBContexts\Migrations\201603290850240_TargetGroups connection to Category.Designer.cs">
+      <DependentUpon>201603290850240_TargetGroups connection to Category.cs</DependentUpon>
+    </Compile>
     <Compile Include="DBContexts\Migrations\Configuration.cs" />
     <Compile Include="DBModels\CategoryDBModel.cs" />
     <Compile Include="DBModels\ProductDBModel.cs" />
@@ -308,6 +308,7 @@
     <Compile Include="Helpers\CRUD.cs" />
     <Compile Include="Helpers\EnumExtension.cs" />
     <Compile Include="Helpers\ICRUD.cs" />
+    <Compile Include="Helpers\IEntity.cs" />
     <Compile Include="Helpers\TargetGroupEnum.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -350,6 +351,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DBContexts\Migrations\201603281729301_Update of initial tables.resx">
       <DependentUpon>201603281729301_Update of initial tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DBContexts\Migrations\201603290850240_TargetGroups connection to Category.resx">
+      <DependentUpon>201603290850240_TargetGroups connection to Category.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

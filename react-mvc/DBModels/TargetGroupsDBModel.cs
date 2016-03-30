@@ -5,17 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace react_mvc.DBModels
 {
     public class TargetGroupsDBModel
     {
-        public TargetGroupsDBModel Populate(TargetGroupsModel model)
+        public TargetGroupsDBModel()
         {
-            this.Name = model.Name;
-            this.MinAge = model.MinAge;
-            this.MaxAge = model.MaxAge;
-            return this;
+            CategoryDBModels = new HashSet<CategoryDBModel>();
         }
 
         [Key]
@@ -26,5 +24,12 @@ namespace react_mvc.DBModels
         public int MinAge { get; set; }
 
         public int MaxAge { get; set; }
+
+        public virtual ICollection<CategoryDBModel> CategoryDBModels { get; set; }
+
+        internal static void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            
+        }
     }
 }

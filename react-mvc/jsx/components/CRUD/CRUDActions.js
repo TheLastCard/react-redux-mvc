@@ -44,12 +44,18 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
         };
 
         const ajaxOptions = (type, event, inputs, id) => {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            console.log('token', token);
             switch (type) {
                 case 'CREATE':
                     return {
                         url: urls.createUrl,
                         type: 'POST',
-                        data: { model: mapObjectValuesToJSONString(inputs, id) }
+                        data: {
+                            model: mapObjectValuesToJSONString(inputs, id),
+                            __RequestVerificationToken: token
+                        }
                     };
                     break;
                 case 'READ':
@@ -62,14 +68,20 @@ define(['jsx!CRUD/CRUDRedux'], function (CRUDRedux) {
                     return {
                         url: urls.updateUrl,
                         type: 'POST',
-                        data: { model: mapObjectValuesToJSONString(inputs, id) }
+                        data: {
+                            model: mapObjectValuesToJSONString(inputs, id),
+                            __RequestVerificationToken: token
+                        }
                     };
                     break;
                 case 'DELETE':
                     return {
                         url: urls.deleteUrl,
                         type: 'POST',
-                        data: { id: id }
+                        data: {
+                            id: id,
+                            __RequestVerificationToken: token
+                        }
                     };
                     break;
                 default:

@@ -14,29 +14,36 @@ namespace react_mvc.Controllers
 {
     public class TargetGroupsController : Controller
     {
-        private CRUD<TargetGroupsDBModel> TargetGroupsCRUD = new CRUD<TargetGroupsDBModel>(new DBContexts.CRUDDB());
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
+        private readonly CRUD<TargetGroupsDBModel> TargetGroupsCRUD;
+        private readonly Logger Logger;
+        public TargetGroupsController()
+        {
+            TargetGroupsCRUD = new CRUD<TargetGroupsDBModel>(new DBContexts.CRUDDB());
+            Logger = LogManager.GetCurrentClassLogger();
+        }
+        
         [HttpGet]
         public JsonResult Read()
         {
             List<TargetGroupsModel> returnList = new List<TargetGroupsModel>();
             foreach (var TargetGroups in TargetGroupsCRUD.FindAll())
             {
-                returnList.Add(new TargetGroupsModel().Populate(TargetGroups));
+                returnList.Add(CreateTargetGroupsModel(TargetGroups));
             }
             Logger.Log(LogLevel.Debug, "GetTargetGroups() ->"+ returnList);
             return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
     
+        [ValidateAntiForgeryToken]
         public JsonResult Create(string model)
         {
             TargetGroupsModel newTargetGroups = JsonConvert.DeserializeObject<TargetGroupsModel>(model);
-            var newDBTargetGroups = new TargetGroupsDBModel().Populate(newTargetGroups);
+            var newDBTargetGroups = CreateTargetGroupsDBModel(newTargetGroups);
             TargetGroupsCRUD.Add(newDBTargetGroups, true);
             return Json(JsonConvert.SerializeObject( new { id=newDBTargetGroups.Id}), JsonRequestBehavior.AllowGet);
         }
 
+        [ValidateAntiForgeryToken]
         public JsonResult Update(string model)
         {
             TargetGroupsModel updateTargetGroups = JsonConvert.DeserializeObject<TargetGroupsModel>(model);
@@ -59,10 +66,36 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
+        [ValidateAntiForgeryToken]
         public JsonResult Delete(int id)
         {
             TargetGroupsCRUD.Delete(TargetGroupsCRUD.FindById(id), true);
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult ReadTargetGroupsAsArray()
+        {
+            return Json(string.Join(",", TargetGroupsCRUD.FindAll().Select(x => x.Name)), JsonRequestBehavior.AllowGet);
+        }
+
+        public TargetGroupsDBModel CreateTargetGroupsDBModel(TargetGroupsModel model)
+        {
+            var dbModel = new TargetGroupsDBModel();
+            dbModel.Name = model.Name;
+            dbModel.MaxAge = model.MaxAge;
+            dbModel.MinAge = model.MinAge;
+            return dbModel;
+        }
+
+        public TargetGroupsModel CreateTargetGroupsModel(TargetGroupsDBModel model)
+        {
+            var viewModel = new TargetGroupsModel();
+            viewModel.Id = model.Id;
+            viewModel.Name = model.Name;
+            viewModel.MaxAge = model.MaxAge;
+            viewModel.MinAge = model.MinAge;
+            return viewModel;
         }
     }
 }

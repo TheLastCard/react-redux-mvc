@@ -29,9 +29,9 @@ namespace react_mvc.Helpers
             if (save) { this.Commit(); }
         }
 
-        public IQueryable<T> FindAll()
+        public IEnumerable<T> FindAll()
         {
-            return _set.AsQueryable();
+            return _set;
         }
 
         public T FindById(int id)
@@ -47,6 +47,11 @@ namespace react_mvc.Helpers
         public void Dispose()
         {
             _db.Dispose();
+        }
+
+        public T FindByName(string name)
+        {
+            return _set.Find(name);
         }
     }
 }
