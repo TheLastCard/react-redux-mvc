@@ -115,6 +115,7 @@ namespace react_mvc.Controllers
         private void ClearReadCache()
         {
             Response.RemoveOutputCacheItem(Url.Action("Read"));
+            Response.RemoveOutputCacheItem(Url.Action("ReadTargetGroupsAsArray"));
         }
     }
 }
