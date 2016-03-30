@@ -22,8 +22,10 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     var actions = CRUDActions(urls);
 
     const init = () => {
+        console.log("init");
         $.ajax('TargetGroups/ReadTargetGroupsAsArray', 'GET')
         .done(function (result) {
+            console.log(result);
             CRUDOptions.formInputs[2].alternatives = JSON.parse(result);
             render();
         })

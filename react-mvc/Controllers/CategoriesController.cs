@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace react_mvc.Controllers
 {
@@ -27,6 +28,7 @@ namespace react_mvc.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration = 7200, Location = OutputCacheLocation.Server)]
         public JsonResult Read()
         {
             List<CategoryModel> returnList = new List<CategoryModel>();
@@ -39,15 +41,18 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Create(string model)
         {
             CategoryModel newCategory = JsonConvert.DeserializeObject<CategoryModel>(model);
             var newDBCategory = CreateCategoryDBModel(newCategory);
             CategoriesCRUD.Add(newDBCategory, true);
+            ClearReadCache();
             return Json(JsonConvert.SerializeObject( new { id=newDBCategory.Id}), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Update(string model)
         {
@@ -77,17 +82,20 @@ namespace react_mvc.Controllers
             }
 
             CategoriesCRUD.Commit();
+            ClearReadCache();
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Delete(int id)
         {
             CategoriesCRUD.Delete(CategoriesCRUD.FindById(id), true);
+            ClearReadCache();
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
-        public CategoryDBModel CreateCategoryDBModel(CategoryModel model)
+        private CategoryDBModel CreateCategoryDBModel(CategoryModel model)
         {
             var dbModel = new CategoryDBModel();
             dbModel.Name = model.Name;
@@ -96,7 +104,7 @@ namespace react_mvc.Controllers
             return dbModel;
         }
 
-        public CategoryModel CreateCategoryModel(CategoryDBModel model)
+        private CategoryModel CreateCategoryModel(CategoryDBModel model)
         {
             var viewModel = new CategoryModel();
             viewModel.Id = model.Id;
@@ -104,6 +112,11 @@ namespace react_mvc.Controllers
             viewModel.Description = model.Description;
             viewModel.TargetGroup = model.TargetGroups.Select(x => x.Name).ToList();
             return viewModel;
+        }
+
+        private void ClearReadCache()
+        {
+            Response.RemoveOutputCacheItem(Url.Action("Read"));
         }
     }
 }

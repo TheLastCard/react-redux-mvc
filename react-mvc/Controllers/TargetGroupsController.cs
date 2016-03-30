@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace react_mvc.Controllers
 {
@@ -23,6 +24,7 @@ namespace react_mvc.Controllers
         }
         
         [HttpGet]
+        [OutputCache(Duration = 7200, Location = OutputCacheLocation.Server)]
         public JsonResult Read()
         {
             List<TargetGroupsModel> returnList = new List<TargetGroupsModel>();
@@ -33,16 +35,19 @@ namespace react_mvc.Controllers
             Logger.Log(LogLevel.Debug, "GetTargetGroups() ->"+ returnList);
             return Json(JsonConvert.SerializeObject(returnList), JsonRequestBehavior.AllowGet);
         }
-    
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Create(string model)
         {
             TargetGroupsModel newTargetGroups = JsonConvert.DeserializeObject<TargetGroupsModel>(model);
             var newDBTargetGroups = CreateTargetGroupsDBModel(newTargetGroups);
             TargetGroupsCRUD.Add(newDBTargetGroups, true);
+            ClearReadCache();
             return Json(JsonConvert.SerializeObject( new { id=newDBTargetGroups.Id}), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Update(string model)
         {
@@ -63,17 +68,21 @@ namespace react_mvc.Controllers
             updateDBTargetGroups.MaxAge = updateTargetGroups.MaxAge;
 
             TargetGroupsCRUD.Commit();
+            ClearReadCache();
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Delete(int id)
         {
             TargetGroupsCRUD.Delete(TargetGroupsCRUD.FindById(id), true);
+            ClearReadCache();
             return Json(JsonConvert.SerializeObject(new { status = "ok" }), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
+        [OutputCache(Duration = 7200, Location = OutputCacheLocation.Server)]
         public JsonResult ReadTargetGroupsAsArray()
         {
             List<object> result = new List<object>();
@@ -84,7 +93,7 @@ namespace react_mvc.Controllers
             return Json(JsonConvert.SerializeObject(result), JsonRequestBehavior.AllowGet);
         }
 
-        public TargetGroupsDBModel CreateTargetGroupsDBModel(TargetGroupsModel model)
+        private TargetGroupsDBModel CreateTargetGroupsDBModel(TargetGroupsModel model)
         {
             var dbModel = new TargetGroupsDBModel();
             dbModel.Name = model.Name;
@@ -93,7 +102,7 @@ namespace react_mvc.Controllers
             return dbModel;
         }
 
-        public TargetGroupsModel CreateTargetGroupsModel(TargetGroupsDBModel model)
+        private TargetGroupsModel CreateTargetGroupsModel(TargetGroupsDBModel model)
         {
             var viewModel = new TargetGroupsModel();
             viewModel.Id = model.Id;
@@ -101,6 +110,11 @@ namespace react_mvc.Controllers
             viewModel.MaxAge = model.MaxAge;
             viewModel.MinAge = model.MinAge;
             return viewModel;
+        }
+
+        private void ClearReadCache()
+        {
+            Response.RemoveOutputCacheItem(Url.Action("Read"));
         }
     }
 }
