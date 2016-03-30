@@ -21,16 +21,17 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
     };
     var actions = CRUDActions(urls);
 
-
-    $.ajax('TargetGroups/ReadTargetGroupsAsArray', 'GET')
+    const init = () => {
+        $.ajax('TargetGroups/ReadTargetGroupsAsArray', 'GET')
         .done(function (result) {
-            console.log('result ', result);
             CRUDOptions.formInputs[2].alternatives = JSON.parse(result);
             render();
         })
         .error(function (error) {
-            console.log('error ', error);
+            console.log('Failed to retrieve the TargetGroups alternatives', error);
         });
+    }
+
 
     const CRUDOptions = {
         debug: true,
@@ -49,7 +50,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
                 {
                     variableName: 'targetGroup',
                     style: ReadOptions.Tablecell,
-                    format: (value) => { return value ? value.toString().replace(',', ', '): ''; }
+                    format: (value) => { return value ? value.toString().replace(',', ', ') : ''; }
                 }
             ]
         },
@@ -172,8 +173,8 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             );
         }
     });
-    
-    
+
+
     const render = () => {
         ReactDOM.render(
             <Categories />,
@@ -189,4 +190,6 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
         unsubscribeCRUDFormRedux();
         unsubscribeCRUDRedux();
     }
+
+    init();
 });
