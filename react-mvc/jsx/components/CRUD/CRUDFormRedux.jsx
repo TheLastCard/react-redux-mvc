@@ -19,7 +19,7 @@ define(['redux', 'expect', 'CRUD/InputOptions'], function (Redux, expect, InputO
                 });
                 break;
             case 'CHANGE':
-                console.log('CHANGE CRUDFormRedux');
+                console.log('CHANGE CRUDFormRedux', action);
                 var inputsCopy = state.slice();
                 var input = inputsCopy[action.index];
 

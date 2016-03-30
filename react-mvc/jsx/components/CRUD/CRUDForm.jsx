@@ -29,8 +29,9 @@
 //    labelClassName: 'Classes to add to the label',
 //    inputClassName: 'Classes to add to the input',
 //    maxValue: 100, //Only used for range slider
-//    minValue: 0, //Only used for range slider,
-//    stepValue: 1, //stepvalue for slider
+//    minValue: 0, //Only used for range slider
+//    stepValue: 1, //Minimum step value for slider
+//    stepDecimal: 0, //Amount of decimals for slider
 //    required: true, //Set to true if input is required
 //    errorMessage: 'Type in an error message. (Has fallback to a more generic error message)',
 //    regex: '^[a-zA-Z]{3}$' //Regex string to test against. Ignored for radio or checkbox
@@ -68,6 +69,7 @@
 
 define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React, InputOptions, CRUDFormRedux) {
     var CRUDForm = React.createClass({
+        uniqId: '',
         modalId: '',
         getInitialState: function () {
             if (!this.props.inputs) {
@@ -83,7 +85,8 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
             }
         },
         componentWillMount: function () {
-            this.modalId = '#CRUDFormModal' + Math.floor((Math.random() * 10000) + 1).toString();
+            this.uniqId = Math.floor((Math.random() * 1000000) + 1).toString();
+            this.modalId = '#CRUDFormModal' + this.uniqId;
         },
         componentDidMount: function () {
             var self = this;
@@ -91,13 +94,21 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
 
             this.state.inputs.map(function (input, index) {
                 if (input.type === InputOptions.Range) {
-                    $('#' + input.name).on('change', function (event) {
-                        self.onChangeHandler(event, index, input.onChange)
+                    var sliderHandle = $('#' + input.name + 'Slider' + self.uniqId);
+                    var sliderInput = $('#' + input.name + self.uniqId);
+
+                    sliderInput.on('change', function (event) {
+                        self.onChangeHandler(event, index, input.onChange);
+                        console.log(event.target.value);
                     });
-                    $('#' + input.name + 'Slider').on('mouseup ondragend', function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        $('#' + input.name).trigger('change');
+
+                    sliderHandle.on('mouseleave', function (e) {
+                        $(document).on('mouseup', function () {
+                            sliderInput.trigger('change');
+                            $(this).unbind();
+                        });
+                    }).on('mouseup click', function (e) {
+                        sliderInput.trigger('change');
                     });
                 }
             });
@@ -248,23 +259,23 @@ define(['react', 'CRUD/InputOptions', 'jsx!CRUD/CRUDFormRedux'], function (React
         createRangeSlider: function(input, index){
             var self = this;
             var disabled = input.disabled ? 'disabled ' : '';
-
+            var minValue = input.minValue ? input.minValue : 0;
             return (
                 <div key={input.name + 'classes'} className={input.wrapperClassName}>{ self.createLabel(input) }
                     <div className={input.hasError ? 'hasErrorRangeSlider' : ''}>
                         <div className="small-10 columns">
-                            <div id={input.name+'Slider'} className={'slider ' + disabled + input.inputClassName} data-slider data-initial-start={input.minValue ? input.minValue: 0} data-end={input.maxValue ? input.maxValue: 100} data-step={input.stepValue}>
-                                <span className="slider-handle" data-slider-handle role="slider" tabIndex={index} aria-controls={input.name}></span>
+                            <div id={input.name + 'Slider' + self.uniqId} className={'slider ' + disabled + input.inputClassName} data-slider data-start={minValue} data-end={input.maxValue ? input.maxValue : 100} data-initial-start={input.value ? input.value : minValue} data-step={input.stepValue} data-decimal={input.stepDecimal ?input.stepDecimal: 0 } data-move-time="">
+                                <span className="slider-handle" data-slider-handle role="slider" aria-controls={input.name + self.uniqId}></span>
                                 <span className="slider-fill" data-slider-fill></span>
                             </div>
                         </div>
                         <div className="small-2 columns">
+                            <p>{input.value}</p>
                             <input key={input.name}
-                                   id={input.name}
+                                   id={input.name + self.uniqId}
                                    type="number"
                                    name={input.name}
                                    value={input.value}
-                                   onChange={(event) => self.onChangeHandler(event, index, input.onChange)}
                                    required={input.required} />
                         </div>
                     </div>

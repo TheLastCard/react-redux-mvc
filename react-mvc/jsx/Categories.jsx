@@ -78,7 +78,7 @@ function (React, ReactDOM, ReactRedux, Redux, CRUD, CRUDRedux, CRUDFormRedux, Re
             label: 'Target Group',
             name: 'targetGroup',
             type: InputOptions.Checkbox,
-            alternatives: null,
+            alternatives: [],
             defaultValue: null,
             placeholder: 'Pick a target group',
             wrapperClassName: 'small-12 columns',
